@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 import '../../../../utils/jwt_settings.dart';
 import '../../../common/common.dart';
 import '../../application/application.dart';
-import '../../domain/domain.dart';
 
 @Singleton(as: JwtTokenService)
 class ProdJwtTokenService implements JwtTokenService {
@@ -16,12 +15,10 @@ class ProdJwtTokenService implements JwtTokenService {
   final JwtSettings jwtSettings;
 
   @override
-  TokenPair generate(EndUser user) {
-    final accessTokenJwt = JWT(
+  String generate(User user) {
+    final tokenJwt = JWT(
       {
-        'firstName': user.firstName,
-        'lastName': user.lastName,
-        'email': user.email,
+        'name': user.name,
       },
       subject: user.id.str,
       jwtId: Uuid().v4(),
@@ -29,32 +26,12 @@ class ProdJwtTokenService implements JwtTokenService {
       audience: Audience.one(jwtSettings.audience),
     );
 
-    final accessToken = accessTokenJwt.sign(
+    final token = tokenJwt.sign(
       SecretKey(jwtSettings.secret),
       expiresIn: Duration(minutes: jwtSettings.accessExpiresInMins),
     );
 
-    final refreshTokenJwt = JWT(
-      {
-        'firstName': user.firstName,
-        'lastName': user.lastName,
-        'email': user.email,
-      },
-      subject: user.id.str,
-      jwtId: Uuid().v4(),
-      issuer: jwtSettings.issuer,
-      audience: Audience.one(jwtSettings.audience),
-    );
-
-    final refreshToken = refreshTokenJwt.sign(
-      SecretKey(jwtSettings.secret),
-      expiresIn: Duration(minutes: jwtSettings.refreshExpiresInMins),
-    );
-
-    return TokenPair(
-      access: accessToken,
-      refresh: refreshToken,
-    );
+    return token;
   }
 
   @override

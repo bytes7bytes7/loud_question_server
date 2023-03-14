@@ -10,7 +10,7 @@ class LogOutRequestStringToLogOutCommandMapper
   @override
   LogOutCommand map() {
     return LogOutCommand(
-      accessToken: _accessToken,
+      token: _accessToken,
     );
   }
 

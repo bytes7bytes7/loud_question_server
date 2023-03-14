@@ -9,7 +9,7 @@ import '../services/jwt_token_service.dart';
 Middleware authorize({
   required JwtSettings jwtSettings,
   required JwtTokenService jwtTokenService,
-  required EndUserRepository endUserRepository,
+  required UserRepository userRepository,
   required TokenRepository tokenRepository,
 }) =>
     (innerHandler) {
@@ -32,15 +32,15 @@ Middleware authorize({
           return problemHandler([const TokenExpired()]);
         }
 
-        final userID = await tokenRepository.getUserIDByAccessToken(
-          accessToken: accessToken,
+        final userID = await tokenRepository.getUserIDByToken(
+          token: accessToken,
         );
 
         if (userID == null) {
           return problemHandler([const TokenExpired()]);
         }
 
-        final user = await endUserRepository.getByID(id: userID);
+        final user = await userRepository.getByID(id: userID);
 
         if (user == null) {
           return problemHandler([const UserDoesNotExist()]);

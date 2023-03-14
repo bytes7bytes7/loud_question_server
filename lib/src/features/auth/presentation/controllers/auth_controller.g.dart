@@ -28,10 +28,5 @@ Router _$AuthControllerRouter(AuthController service) {
     r'/verify_token',
     service.verifyToken,
   );
-  router.add(
-    'POST',
-    r'/refresh_token',
-    service.refreshToken,
-  );
   return router;
 }

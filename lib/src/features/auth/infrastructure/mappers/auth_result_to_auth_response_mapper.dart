@@ -11,11 +11,8 @@ class AuthResultToAuthResponseMapper
   AuthResponse map() {
     return AuthResponse(
       id: _authResult.user.id,
-      firstName: _authResult.user.firstName,
-      lastName: _authResult.user.lastName,
-      email: _authResult.user.email,
-      accessToken: _authResult.accessToken,
-      refreshToken: _authResult.refreshToken,
+      name: _authResult.user.name,
+      token: _authResult.token,
     );
   }
 

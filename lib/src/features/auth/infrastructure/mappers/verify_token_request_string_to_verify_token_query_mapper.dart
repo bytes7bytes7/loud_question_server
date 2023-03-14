@@ -10,12 +10,9 @@ class VerifyTokenRequestStringToVerifyTokenQueryMapper
   @override
   VerifyTokenQuery map() {
     return VerifyTokenQuery(
-      accessToken: _accessToken,
-      deviceInfo: _request.deviceInfo,
+      token: _accessToken,
     );
   }
-
-  VerifyTokenRequest get _request => source1;
 
   String get _accessToken => source2;
 }

@@ -37,10 +37,7 @@ class AuthController extends ApiController {
       );
     }
 
-    final connectionInfo = request.connectionInfo;
-    final ip = connectionInfo.remoteAddress.address;
-
-    final command = _mapster.map2(registerRequest, ip, To<RegisterCommand>());
+    final command = _mapster.map1(registerRequest, To<RegisterCommand>());
 
     final authResult = await command.sendTo(_mediator);
 
@@ -61,10 +58,7 @@ class AuthController extends ApiController {
       );
     }
 
-    final connectionInfo = request.connectionInfo;
-    final ip = connectionInfo.remoteAddress.address;
-
-    final query = _mapster.map2(logInRequest, ip, To<LogInQuery>());
+    final query = _mapster.map1(logInRequest, To<LogInQuery>());
 
     final authResult = await query.sendTo(_mediator);
 
@@ -130,31 +124,6 @@ class AuthController extends ApiController {
     return verifyTokenResult.match(
       problem,
       (r) => ok(_mapster.map1(r, To<VerifyTokenResponse>())),
-    );
-  }
-
-  @Route.post('/refresh_token')
-  Future<Response> refreshToken(Request request) async {
-    late final RefreshTokenRequest refreshTokenRequest;
-    try {
-      refreshTokenRequest = await parseRequest<RefreshTokenRequest>(request);
-    } catch (e) {
-      return problem(
-        [const InvalidBodyException()],
-      );
-    }
-
-    final connectionInfo = request.connectionInfo;
-    final ip = connectionInfo.remoteAddress.address;
-
-    final command =
-        _mapster.map2(refreshTokenRequest, ip, To<RefreshTokenCommand>());
-
-    final refreshTokenResult = await command.sendTo(_mediator);
-
-    return refreshTokenResult.match(
-      problem,
-      (r) => ok(_mapster.map1(r, To<RefreshTokenResponse>())),
     );
   }
 }

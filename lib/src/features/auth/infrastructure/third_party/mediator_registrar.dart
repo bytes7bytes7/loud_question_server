@@ -21,7 +21,6 @@ class AuthMediatorRegistrar {
       ..registerRequestHandler(() => _getIt.get<LogInQueryHandler>())
       ..registerRequestHandler(() => _getIt.get<LogOutCommandHandler>())
       ..registerRequestHandler(() => _getIt.get<VerifyTokenQueryHandler>())
-      ..registerRequestHandler(() => _getIt.get<RefreshTokenCommandHandler>())
 
       // PipelineBehavior
       ..registerPipelineBehavior(
@@ -35,9 +34,6 @@ class AuthMediatorRegistrar {
       )
       ..registerPipelineBehavior(
         () => ValidationBehavior([_getIt.get<VerifyTokenQueryValidator>()]),
-      )
-      ..registerPipelineBehavior(
-        () => ValidationBehavior([_getIt.get<RefreshTokenCommandValidator>()]),
       );
   }
 }

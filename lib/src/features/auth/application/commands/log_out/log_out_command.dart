@@ -7,8 +7,8 @@ import '../../common/common.dart';
 class LogOutCommand
     extends Request<Either<List<DetailedException>, LogOutResult>> {
   LogOutCommand({
-    required this.accessToken,
+    required this.token,
   }) : super(LogOutCommand);
 
-  final String accessToken;
+  final String token;
 }

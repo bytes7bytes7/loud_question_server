@@ -12,8 +12,8 @@ class AuthMapsterRegistrar {
   @postConstruct
   void register() {
     _mapster
-      ..register(MapperMeta.two(RegisterRequestIPToRegisterCommandMapper.new))
-      ..register(MapperMeta.two(LogInRequestIPToLogInQueryMapper.new))
+      ..register(MapperMeta.one(RegisterRequestToRegisterCommandMapper.new))
+      ..register(MapperMeta.one(LogInRequestToLogInQueryMapper.new))
       ..register(MapperMeta.one(AuthResultToAuthResponseMapper.new))
       ..register(MapperMeta.two(LogOutRequestStringToLogOutCommandMapper.new))
       ..register(MapperMeta.one(LogOutResultToLogOutResponse.new))
@@ -22,12 +22,6 @@ class AuthMapsterRegistrar {
       )
       ..register(
         MapperMeta.one(VerifyTokenResultToVerifyTokenResponseMapper.new),
-      )
-      ..register(
-        MapperMeta.two(RefreshTokenRequestIPToRefreshTokenCommandMapper.new),
-      )
-      ..register(
-        MapperMeta.one(RefreshTokenResultToRefreshTokenResponseMapper.new),
       );
   }
 }

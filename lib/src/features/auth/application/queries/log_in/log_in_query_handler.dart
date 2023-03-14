@@ -18,29 +18,26 @@ class LogInQueryHandler extends RequestHandler<
   const LogInQueryHandler({
     required JwtTokenService jwtTokenService,
     required HashService hashService,
-    required EndUserRepository endUserRepository,
+    required UserRepository userRepository,
     required PasswordHashRepository passwordHashRepository,
     required TokenRepository tokenRepository,
-    required DateTimeRepository dateTimeRepository,
   })  : _jwtTokenService = jwtTokenService,
         _hashService = hashService,
-        _endUserRepository = endUserRepository,
+        _userRepository = userRepository,
         _passwordHashRepository = passwordHashRepository,
-        _tokenRepository = tokenRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _tokenRepository = tokenRepository;
 
   final JwtTokenService _jwtTokenService;
   final HashService _hashService;
-  final EndUserRepository _endUserRepository;
+  final UserRepository _userRepository;
   final PasswordHashRepository _passwordHashRepository;
   final TokenRepository _tokenRepository;
-  final DateTimeRepository _dateTimeRepository;
 
   @override
   FutureOr<Either<List<DetailedException>, AuthResult>> handle(
     LogInQuery request,
   ) async {
-    final user = await _endUserRepository.getByEmail(email: request.email);
+    final user = await _userRepository.getByEmail(email: request.name);
     final userDoesNotExist = user == null;
 
     if (userDoesNotExist) {
@@ -55,21 +52,17 @@ class LogInQueryHandler extends RequestHandler<
       return left([const InvalidCredentials()]);
     }
 
-    final tokenPair = _jwtTokenService.generate(user);
+    final token = _jwtTokenService.generate(user);
 
-    await _tokenRepository.addOrUpdate(
-      tokenPair: tokenPair,
+    await _tokenRepository.add(
+      token: token,
       userID: user.id,
-      deviceInfo: request.deviceInfo,
-      ip: request.ip,
-      createdAt: _dateTimeRepository.now(),
     );
 
     return right(
       AuthResult(
         user: user,
-        accessToken: tokenPair.access,
-        refreshToken: tokenPair.refresh,
+        token: token,
       ),
     );
   }

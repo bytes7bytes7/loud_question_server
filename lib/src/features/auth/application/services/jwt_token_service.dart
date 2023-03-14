@@ -1,5 +1,4 @@
 import '../../../common/common.dart';
-import '../../domain/domain.dart';
 
 enum JwtVerificationStatus {
   verified,
@@ -8,7 +7,7 @@ enum JwtVerificationStatus {
 }
 
 abstract class JwtTokenService {
-  TokenPair generate(EndUser user);
+  String generate(User user);
 
   JwtVerificationStatus verify(String token);
 }

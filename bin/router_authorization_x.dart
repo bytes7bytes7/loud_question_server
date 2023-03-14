@@ -11,7 +11,7 @@ extension RouterAuthorizationX on Router {
           authorize(
             jwtSettings: _getIt.get<JwtSettings>(),
             jwtTokenService: _getIt.get<JwtTokenService>(),
-            endUserRepository: _getIt.get<EndUserRepository>(),
+            userRepository: _getIt.get<UserRepository>(),
             tokenRepository: _getIt.get<TokenRepository>(),
           ),
         )

@@ -15,7 +15,7 @@ extension RequestX on Request {
     return context[_shelfConnectionInfoKey] as HttpConnectionInfo;
   }
 
-  Request setUser(EndUser user) {
+  Request setUser(User user) {
     return change(
       context: Map<String, Object?>.from(context)
         ..[_userContextKey] = user,
@@ -29,8 +29,8 @@ extension RequestX on Request {
     );
   }
 
-  EndUser? get user {
-    return context[_userContextKey] as EndUser?;
+  User? get user {
+    return context[_userContextKey] as User?;
   }
 
   Request setToken(String token) {

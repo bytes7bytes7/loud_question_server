@@ -27,30 +27,18 @@ class VerifyTokenQueryHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, VerifyTokenResult>> handle(
     VerifyTokenQuery request,
   ) async {
-    final userID = await _tokenRepository.getUserIDByAccessToken(
-      accessToken: request.accessToken,
+    final userID = await _tokenRepository.getUserIDByToken(
+      token: request.token,
     );
 
     if (userID == null) {
       return left([const TokenExpired()]);
     }
 
-    final validationStatus = _jwtTokenService.verify(request.accessToken);
+    final validationStatus = _jwtTokenService.verify(request.token);
 
     if (validationStatus != JwtVerificationStatus.verified) {
       return left([const TokenExpired()]);
-    }
-
-    final deviceInfo = await _tokenRepository.getDeviceInfoByAccessToken(
-      accessToken: request.accessToken,
-    );
-
-    if (deviceInfo != request.deviceInfo) {
-      await _tokenRepository.removeNoteByAccessToken(
-        accessToken: request.accessToken,
-      );
-
-      return left([const StolenToken()]);
     }
 
     return right(VerifyTokenResult(info: 'Token is valid'));

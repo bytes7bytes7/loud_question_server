@@ -7,25 +7,12 @@ part 'user.freezed.dart';
 
 part 'user.g.dart';
 
-@Freezed(
-  unionKey: 'type',
-)
+@freezed
 class User with _$User {
-  const factory User.end({
-    required UserID id,
-    required String email,
-    required String firstName,
-    required List<String> avatarUrls,
-    String? lastName,
-    String? nick,
-  }) = EndUser;
-
-  const factory User.staff({
+  const factory User({
     required UserID id,
     required String name,
-    required List<String> avatarUrls,
-    String? nick,
-  }) = StaffUser;
+  }) = _User;
 
   factory User.fromJson(JsonMap json) => _$UserFromJson(json);
 }

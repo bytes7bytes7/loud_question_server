@@ -15,30 +15,27 @@ class RegisterCommandHandler extends RequestHandler<
   const RegisterCommandHandler({
     required JwtTokenService jwtTokenService,
     required HashService hashService,
-    required EndUserRepository endUserRepository,
+    required UserRepository userRepository,
     required PasswordHashRepository passwordHashRepository,
     required TokenRepository tokenRepository,
-    required DateTimeRepository dateTimeRepository,
   })  : _jwtTokenService = jwtTokenService,
         _hashService = hashService,
-        _endUserRepository = endUserRepository,
+        _userRepository = userRepository,
         _passwordHashRepository = passwordHashRepository,
-        _tokenRepository = tokenRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _tokenRepository = tokenRepository;
 
   final JwtTokenService _jwtTokenService;
   final HashService _hashService;
-  final EndUserRepository _endUserRepository;
+  final UserRepository _userRepository;
   final PasswordHashRepository _passwordHashRepository;
   final TokenRepository _tokenRepository;
-  final DateTimeRepository _dateTimeRepository;
 
   @override
   Future<Either<List<DetailedException>, AuthResult>> handle(
     RegisterCommand request,
   ) async {
     final userAlreadyExists =
-        await _endUserRepository.getByEmail(email: request.email) != null;
+        await _userRepository.getByEmail(email: request.name) != null;
 
     if (userAlreadyExists) {
       return left([const DuplicateEmail()]);
@@ -47,39 +44,32 @@ class RegisterCommandHandler extends RequestHandler<
     late UserID userID;
     do {
       userID = UserID.generateEnd();
-    } while ((await _endUserRepository.getByID(id: userID)) != null);
+    } while ((await _userRepository.getByID(id: userID)) != null);
 
     final passwordHash = _hashService.hashPassword(request.password);
 
-    final user = EndUser(
+    final user = User(
       id: userID,
-      firstName: request.firstName,
-      lastName: request.lastName,
-      email: request.email,
-      avatarUrls: [],
+      name: request.name,
     );
 
-    await _endUserRepository.addOrUpdate(user: user);
+    await _userRepository.addOrUpdate(user: user);
     await _passwordHashRepository.saveHashByID(
       userID: userID,
       passwordHash: passwordHash,
     );
 
-    final tokenPair = _jwtTokenService.generate(user);
+    final token = _jwtTokenService.generate(user);
 
-    await _tokenRepository.addOrUpdate(
-      tokenPair: tokenPair,
+    await _tokenRepository.add(
+      token: token,
       userID: userID,
-      deviceInfo: request.deviceInfo,
-      ip: request.ip,
-      createdAt: _dateTimeRepository.now(),
     );
 
     return right(
       AuthResult(
         user: user,
-        accessToken: tokenPair.access,
-        refreshToken: tokenPair.refresh,
+        token: token,
       ),
     );
   }

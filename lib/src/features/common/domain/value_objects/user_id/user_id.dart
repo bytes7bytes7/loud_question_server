@@ -7,7 +7,7 @@ part 'user_id.freezed.dart';
 
 part 'user_id.g.dart';
 
-const _endUserPrefix = 'e';
+const _userPrefix = 'e';
 const _staffUserPrefix = 's';
 
 @freezed
@@ -15,7 +15,7 @@ class UserID with _$UserID {
   const factory UserID(String value) = _UserID;
 
   factory UserID.generateEnd() {
-    return _UserID('$_endUserPrefix${Uuid().v4()}');
+    return _UserID('$_userPrefix${Uuid().v4()}');
   }
 
   factory UserID.generateStaff() {
@@ -28,7 +28,7 @@ class UserID with _$UserID {
 
   String get str => value;
 
-  bool get isEndUserID => value.startsWith(_endUserPrefix);
+  bool get isUserID => value.startsWith(_userPrefix);
 
   bool get isStaffUserID => value.startsWith(_staffUserPrefix);
 }
