@@ -31,7 +31,7 @@ class CreateLobbyCommandHandler extends RequestHandler<
   ) async {
     final passwordHash = _hashService.hashLobbyPassword(request.password);
     final lobby =
-        await _lobbyRepository.createLobby(creatorID: request.creatorID);
+        await _lobbyRepository.create(creatorID: request.creatorID);
     await _lobbyPasswordHashRepository.setOrUpdate(
       id: lobby.id,
       passwordHash: passwordHash,

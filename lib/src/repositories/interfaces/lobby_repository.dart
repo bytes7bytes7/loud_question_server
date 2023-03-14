@@ -2,22 +2,19 @@ import '../../features/common/domain/domain.dart';
 import '../../features/lobby/domain/domain.dart';
 
 abstract class LobbyRepository {
-  Future<Lobby> createLobby({
+  Future<Lobby> create({
     required UserID creatorID,
   });
 
-  Future<void> removeLobby({
-    required UserID creatorID,
+  Future<Lobby?> getByID({
     required LobbyID id,
   });
 
-  Future<Lobby> addGuest({
-    required LobbyID lobbyID,
-    required UserID guestID,
+  Future<void> remove({
+    required LobbyID id,
   });
 
-  Future<Lobby> removeGuest({
-    required LobbyID lobbyID,
-    required UserID guestID,
+  Future<Lobby?> update({
+    required Lobby lobby,
   });
 }

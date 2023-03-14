@@ -19,6 +19,13 @@ class TestLobbyPasswordHashRepository implements LobbyPasswordHashRepository {
   }
 
   @override
+  Future<String?> getPasswordHashByID({
+    required LobbyID id,
+  }) async {
+    return _storage[id];
+  }
+
+  @override
   Future<void> remove({
     required LobbyID id,
   }) async {

@@ -18,10 +18,14 @@ class LobbyMediatorRegistrar {
     _mediator
       // RequestHandler
       ..registerRequestHandler(() => _getIt.get<CreateLobbyCommandHandler>())
+      ..registerRequestHandler(() => _getIt.get<JoinLobbyCommandHandler>())
 
       // PipelineBehavior
       ..registerPipelineBehavior(
         () => ValidationBehavior([_getIt.get<CreateLobbyCommandValidator>()]),
+      )
+      ..registerPipelineBehavior(
+        () => ValidationBehavior([_getIt.get<JoinLobbyCommandValidator>()]),
       );
   }
 }

@@ -6,6 +6,10 @@ abstract class LobbyPasswordHashRepository {
     required String passwordHash,
   });
 
+  Future<String?> getPasswordHashByID({
+    required LobbyID id,
+  });
+
   Future<void> remove({
     required LobbyID id,
   });

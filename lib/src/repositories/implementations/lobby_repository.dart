@@ -18,9 +18,10 @@ class TestLobbyRepository implements LobbyRepository {
 
   final _userIDToLobbyID = HashMap<UserID, List<LobbyID>>();
   final _lobbyIDToLobby = HashMap<LobbyID, Lobby>();
+  final _lobbyIDToUserID = HashMap<LobbyID, UserID>();
 
   @override
-  Future<Lobby> createLobby({
+  Future<Lobby> create({
     required UserID creatorID,
   }) async {
     late LobbyID lobbyID;
@@ -36,6 +37,7 @@ class TestLobbyRepository implements LobbyRepository {
     );
 
     _lobbyIDToLobby[lobbyID] = lobby;
+    _lobbyIDToUserID[lobbyID] = creatorID;
 
     final lobbies = _userIDToLobbyID[creatorID];
 
@@ -49,56 +51,43 @@ class TestLobbyRepository implements LobbyRepository {
   }
 
   @override
-  Future<void> removeLobby({
-    required UserID creatorID,
+  Future<Lobby?> getByID({
     required LobbyID id,
   }) async {
-    final lobbyIDs = _userIDToLobbyID[creatorID];
+    return _lobbyIDToLobby[id];
+  }
 
-    if (lobbyIDs != null) {
-      lobbyIDs.removeWhere((e) => e == id);
+  @override
+  Future<void> remove({
+    required LobbyID id,
+  }) async {
+    final userID = _lobbyIDToUserID.remove(id);
+
+    if (userID != null) {
+      _lobbyIDToLobby.remove(id);
+
+      _userIDToLobbyID[userID] =
+          List<LobbyID>.from(_userIDToLobbyID[userID] ?? [])..remove(id);
     }
   }
 
   @override
-  Future<Lobby> addGuest({
-    required LobbyID lobbyID,
-    required UserID guestID,
+  Future<Lobby?> update({
+    required Lobby lobby,
   }) async {
-    final lobby = _lobbyIDToLobby[lobbyID];
+    final userID = _lobbyIDToUserID[lobby.id];
 
-    if (lobby != null) {
-      final guests = List<UserID>.from(lobby.guests)..add(guestID);
-      final newLobby = lobby.copyWith(
-        guests: guests,
-      );
+    if (userID != null) {
+      final lobbyIDs = _userIDToLobbyID[userID] ?? [];
 
-      _lobbyIDToLobby[lobbyID] = newLobby;
+      final hasLobby = lobbyIDs.contains(lobby.id);
 
-      return newLobby;
+      if (hasLobby) {
+        _lobbyIDToLobby[lobby.id] = lobby;
+        return lobby;
+      }
     }
 
-    throw Exception('No lobby found');
-  }
-
-  @override
-  Future<Lobby> removeGuest({
-    required LobbyID lobbyID,
-    required UserID guestID,
-  }) async {
-    final lobby = _lobbyIDToLobby[lobbyID];
-
-    if (lobby != null) {
-      final guests = List<UserID>.from(lobby.guests)..remove(guestID);
-      final newLobby = lobby.copyWith(
-        guests: guests,
-      );
-
-      _lobbyIDToLobby[lobbyID] = newLobby;
-
-      return newLobby;
-    }
-
-    throw Exception('No lobby found');
+    return null;
   }
 }
