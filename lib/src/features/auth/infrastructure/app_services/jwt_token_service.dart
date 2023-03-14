@@ -28,7 +28,7 @@ class ProdJwtTokenService implements JwtTokenService {
 
     final token = tokenJwt.sign(
       SecretKey(jwtSettings.secret),
-      expiresIn: Duration(minutes: jwtSettings.accessExpiresInMins),
+      expiresIn: Duration(minutes: jwtSettings.tokenExpiresInMins),
     );
 
     return token;
