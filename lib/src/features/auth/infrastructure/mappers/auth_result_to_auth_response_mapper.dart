@@ -1,5 +1,6 @@
 import 'package:mapster/mapster.dart';
 
+import '../../../common/domain/domain.dart';
 import '../../application/application.dart';
 import '../../presentation/presentation.dart';
 
@@ -10,8 +11,10 @@ class AuthResultToAuthResponseMapper
   @override
   AuthResponse map() {
     return AuthResponse(
-      id: _authResult.user.id,
-      name: _authResult.user.name,
+      user: User(
+        id: _authResult.user.id,
+        name: _authResult.user.name,
+      ),
       token: _authResult.token,
     );
   }

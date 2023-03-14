@@ -8,7 +8,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart' as _i9;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:json_annotation/json_annotation.dart' as _i12;
+import 'package:json_annotation/json_annotation.dart' as _i13;
 import 'package:load_question_server/src/features/auth/application/application.dart'
     as _i17;
 import 'package:load_question_server/src/features/auth/application/commands/log_out/log_out_command_handler.dart'
@@ -32,13 +32,13 @@ import 'package:load_question_server/src/features/auth/application/services/jwt_
 import 'package:load_question_server/src/features/auth/infrastructure/app_services/jwt_token_service.dart'
     as _i18;
 import 'package:load_question_server/src/features/auth/infrastructure/json_converters/log_in_request_json_converter.dart'
-    as _i14;
-import 'package:load_question_server/src/features/auth/infrastructure/json_converters/log_out_request_json_converter.dart'
-    as _i15;
-import 'package:load_question_server/src/features/auth/infrastructure/json_converters/register_request_json_converter.dart'
-    as _i13;
-import 'package:load_question_server/src/features/auth/infrastructure/json_converters/verify_token_request_json_converter.dart'
     as _i11;
+import 'package:load_question_server/src/features/auth/infrastructure/json_converters/log_out_request_json_converter.dart'
+    as _i12;
+import 'package:load_question_server/src/features/auth/infrastructure/json_converters/register_request_json_converter.dart'
+    as _i14;
+import 'package:load_question_server/src/features/auth/infrastructure/json_converters/verify_token_request_json_converter.dart'
+    as _i15;
 import 'package:load_question_server/src/features/auth/infrastructure/third_party/mapster_registrar.dart'
     as _i32;
 import 'package:load_question_server/src/features/auth/infrastructure/third_party/mediator_registrar.dart'
@@ -97,15 +97,15 @@ _i1.GetIt init(
   gh.singleton<_i3.DateTimeProvider>(_i4.ProdDateTimeProvider());
   gh.singleton<_i5.DateTimeRepository>(_i6.ProdDateTimeRepository());
   gh.singleton<_i7.HashService>(_i8.ProdHashService());
+  gh.singleton<_i9.JsonConverter<_i10.LogInRequest, Map<String, Object?>>>(
+      _i11.LogInRequestJsonConverter());
+  gh.singleton<_i9.JsonConverter<_i10.LogOutRequest, Map<String, Object?>>>(
+      _i12.LogOutRequestJsonConverter());
+  gh.singleton<_i13.JsonConverter<_i10.RegisterRequest, Map<String, Object?>>>(
+      _i14.RegisterRequestJsonConverter());
   gh.singleton<
           _i9.JsonConverter<_i10.VerifyTokenRequest, Map<String, Object?>>>(
-      _i11.VerifyTokenRequestJsonConverter());
-  gh.singleton<_i12.JsonConverter<_i10.RegisterRequest, Map<String, Object?>>>(
-      _i13.RegisterRequestJsonConverter());
-  gh.singleton<_i9.JsonConverter<_i10.LogInRequest, Map<String, Object?>>>(
-      _i14.LogInRequestJsonConverter());
-  gh.singleton<_i9.JsonConverter<_i10.LogOutRequest, Map<String, Object?>>>(
-      _i15.LogOutRequestJsonConverter());
+      _i15.VerifyTokenRequestJsonConverter());
   gh.singleton<_i16.JwtSettings>(envModule.jwtSettings);
   gh.singleton<_i17.JwtTokenService>(
       _i18.ProdJwtTokenService(gh<_i16.JwtSettings>()));

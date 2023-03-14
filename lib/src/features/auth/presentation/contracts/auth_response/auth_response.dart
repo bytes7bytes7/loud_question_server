@@ -8,13 +8,11 @@ part 'auth_response.g.dart';
 @JsonSerializable()
 class AuthResponse {
   const AuthResponse({
-    required this.id,
-    required this.name,
+    required this.user,
     required this.token,
   });
 
-  final UserID id;
-  final String name;
+  final User user;
   final String token;
 
   factory AuthResponse.fromJson(JsonMap json) => _$AuthResponseFromJson(json);

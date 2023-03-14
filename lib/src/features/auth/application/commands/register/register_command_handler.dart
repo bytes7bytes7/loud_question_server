@@ -5,7 +5,7 @@ import 'package:mediator/mediator.dart';
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/common.dart';
 import '../../common/common.dart';
-import '../../exceptions/duplicate_email.dart';
+import '../../exceptions/duplicate_name.dart';
 import '../../services/jwt_token_service.dart';
 import 'register_command.dart';
 
@@ -38,12 +38,12 @@ class RegisterCommandHandler extends RequestHandler<
         await _userRepository.getByEmail(email: request.name) != null;
 
     if (userAlreadyExists) {
-      return left([const DuplicateEmail()]);
+      return left([const DuplicateName()]);
     }
 
     late UserID userID;
     do {
-      userID = UserID.generateEnd();
+      userID = UserID.generate();
     } while ((await _userRepository.getByID(id: userID)) != null);
 
     final passwordHash = _hashService.hashPassword(request.password);
