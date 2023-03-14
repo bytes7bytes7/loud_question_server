@@ -1,32 +1,69 @@
-import 'dart:io';
+import 'package:load_question_server/load_question_server.dart';
 
-import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart';
-import 'package:shelf_router/shelf_router.dart';
+import 'router_authorization_x.dart';
 
-// Configure routes.
-final _router = Router()
-  ..get('/', _rootHandler)
-  ..get('/echo/<message>', _echoHandler);
+const _printLogsKey = 'print_logs';
+const _envKey = 'env';
 
-Response _rootHandler(Request req) {
-  return Response.ok('Hello, World!\n');
-}
+const _defaultPort = 8080;
 
-Response _echoHandler(Request request) {
-  final message = request.params['message'];
-  return Response.ok('$message\n');
-}
+final _getIt = GetIt.instance;
+final _logger = Logger('main');
 
 void main(List<String> args) async {
-  // Use any available host or container IP (usually `0.0.0.0`).
+  final parser = ArgParser()
+    ..addOption(
+      _envKey,
+      defaultsTo: 'prod',
+    )
+    ..addFlag(
+      _printLogsKey,
+      defaultsTo: false,
+    );
+
+  final result = parser.parse(args);
+  final env = result[_envKey];
+  final printLogs = result[_printLogsKey];
+
+  _configLogger(
+    printLogs: printLogs,
+  );
+
+  await configInjector(env: env);
+
+  final app = Router()
+    ..mount(
+      AuthController.path,
+      _getIt.get<AuthController>().router,
+    );
+
+  final handler = Pipeline()
+      .addMiddleware(
+        logRequests(
+          logger: (message, isError) =>
+              isError ? _logger.shout(message) : _logger.info(message),
+        ),
+      )
+      .addHandler(app);
+
   final ip = InternetAddress.anyIPv4;
-
-  // Configure a pipeline that logs requests.
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(_router);
-
-  // For running in containers, we respect the PORT environment variable.
-  final port = int.parse(Platform.environment['PORT'] ?? '8080');
+  final port = int.parse(Platform.environment['PORT'] ?? '$_defaultPort');
   final server = await serve(handler, ip, port);
-  print('Server listening on port ${server.port}');
+
+  _logger.info('Server listening on port ${server.port}');
+}
+
+void _configLogger({required bool printLogs}) {
+  if (printLogs) {
+    Logger.root.level = Level.ALL;
+    Logger.root.onRecord.listen((record) {
+      // ignore: avoid_print
+      print(
+        '[${record.time}] '
+        '${record.level.name} | '
+        '${record.loggerName}: '
+        '${record.message}',
+      );
+    });
+  }
 }

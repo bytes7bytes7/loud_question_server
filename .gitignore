@@ -8,3 +8,6 @@ build/
 # My
 .fvm/
 .idea/
+.env.*
+**/env.dart
+**/env.g.dart
