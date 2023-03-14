@@ -46,7 +46,7 @@ class LogInQueryHandler extends RequestHandler<
 
     final rightPasswordHash =
         await _passwordHashRepository.getHashByID(userID: user.id);
-    final currentPasswordHash = _hashService.hashPassword(request.password);
+    final currentPasswordHash = _hashService.hashUserPassword(request.password);
 
     if (currentPasswordHash != rightPasswordHash) {
       return left([const InvalidCredentials()]);

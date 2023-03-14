@@ -1,3 +1,5 @@
 abstract class HashService {
-  String hashPassword(String password);
+  String hashUserPassword(String password);
+
+  String hashLobbyPassword(String password);
 }

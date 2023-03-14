@@ -35,6 +35,10 @@ void main(List<String> args) async {
     ..mount(
       AuthController.path,
       _getIt.get<AuthController>().router,
+    )
+    ..mount(
+      LobbyController.path,
+      _getIt.get<LobbyController>().router.addAuthorization(),
     );
 
   final handler = Pipeline()

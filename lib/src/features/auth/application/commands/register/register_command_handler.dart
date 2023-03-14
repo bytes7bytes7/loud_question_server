@@ -46,7 +46,7 @@ class RegisterCommandHandler extends RequestHandler<
       userID = UserID.generate();
     } while ((await _userRepository.getByID(id: userID)) != null);
 
-    final passwordHash = _hashService.hashPassword(request.password);
+    final passwordHash = _hashService.hashUserPassword(request.password);
 
     final user = User(
       id: userID,

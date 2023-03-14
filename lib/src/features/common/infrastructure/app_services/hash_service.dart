@@ -10,9 +10,16 @@ class ProdHashService implements HashService {
   const ProdHashService();
 
   @override
-  String hashPassword(String password) {
+  String hashUserPassword(String password) {
     final bytes = utf8.encode(password);
     final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  @override
+  String hashLobbyPassword(String password) {
+    final bytes = utf8.encode(password);
+    final digest = sha1.convert(bytes);
     return digest.toString();
   }
 }
