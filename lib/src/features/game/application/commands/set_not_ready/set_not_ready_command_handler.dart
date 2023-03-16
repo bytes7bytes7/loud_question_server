@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
-import '../../../../common/application/exceptions/detailed_exception.dart';
+import '../../../../common/application/exceptions/exceptions.dart';
 import '../../../../common/domain/domain.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
@@ -17,14 +17,26 @@ class SetNotReadyCommandHandler extends RequestHandler<
     Either<List<DetailedException>, SetNotReadyResult>, SetNotReadyCommand> {
   const SetNotReadyCommandHandler({
     required GameRepository gameRepository,
-  }) : _gameRepository = gameRepository;
+    required LobbyRepository lobbyRepository,
+  })  : _gameRepository = gameRepository,
+        _lobbyRepository = lobbyRepository;
 
   final GameRepository _gameRepository;
+  final LobbyRepository _lobbyRepository;
 
   @override
   FutureOr<Either<List<DetailedException>, SetNotReadyResult>> handle(
     SetNotReadyCommand request,
   ) async {
+    final lobbyExists =
+        (await _lobbyRepository.getByID(id: request.lobbyID)) != null;
+
+    if (!lobbyExists) {
+      return left(
+        [const LobbyDoesNotExist()],
+      );
+    }
+
     final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;

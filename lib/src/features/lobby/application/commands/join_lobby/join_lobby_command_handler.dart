@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
-import '../../../../common/application/exceptions/detailed_exception.dart';
+import '../../../../common/application/exceptions/exceptions.dart';
 import '../../../../common/application/services/hash_service.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
