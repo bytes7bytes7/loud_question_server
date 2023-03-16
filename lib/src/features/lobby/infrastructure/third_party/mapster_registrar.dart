@@ -23,6 +23,12 @@ class LobbyMapsterRegistrar {
       )
       ..register(
         MapperMeta.one(JoinLobbyResultToJoinLobbyResponseMapper.new),
+      )
+      ..register(
+        MapperMeta.two(GetLobbiesRequestIDToGetLobbiesQueryMapper.new),
+      )
+      ..register(
+        MapperMeta.one(GetLobbiesResultToGetLobbiesResponseMapper.new),
       );
   }
 }

@@ -18,5 +18,10 @@ Router _$LobbyControllerRouter(LobbyController service) {
     r'/<lobbyID>/join',
     service.joinLobby,
   );
+  router.add(
+    'GET',
+    r'/all',
+    service.getLobbies,
+  );
   return router;
 }

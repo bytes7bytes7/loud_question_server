@@ -14,7 +14,7 @@ class Lobby with _$Lobby {
     required LobbyID id,
     required UserID creatorID,
     required int createdAtInMSSinceEpoch,
-    required List<UserID> guests,
+    required List<UserID> guestIDs,
   }) = _Lobby;
 
   factory Lobby.fromJson(JsonMap json) => _$LobbyFromJson(json);

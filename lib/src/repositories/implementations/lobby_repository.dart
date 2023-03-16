@@ -16,9 +16,26 @@ class TestLobbyRepository implements LobbyRepository {
 
   final DateTimeRepository _dateTimeRepository;
 
-  final _userIDToLobbyID = HashMap<UserID, List<LobbyID>>();
+  final _creatorIDToLobbyIDs = HashMap<UserID, List<LobbyID>>();
   final _lobbyIDToLobby = HashMap<LobbyID, Lobby>();
   final _lobbyIDToUserID = HashMap<LobbyID, UserID>();
+
+  @override
+  Future<List<Lobby>> getAllByUserID({
+    required UserID userID,
+  }) async {
+    final lobbies = <Lobby>[];
+
+    for (final pair in _lobbyIDToLobby.entries) {
+      final lobby = pair.value;
+
+      if (lobby.creatorID == userID || lobby.guestIDs.contains(userID)) {
+        lobbies.add(lobby);
+      }
+    }
+
+    return lobbies;
+  }
 
   @override
   Future<Lobby> create({
@@ -33,18 +50,18 @@ class TestLobbyRepository implements LobbyRepository {
       id: lobbyID,
       creatorID: creatorID,
       createdAtInMSSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
-      guests: [],
+      guestIDs: [],
     );
 
     _lobbyIDToLobby[lobbyID] = lobby;
     _lobbyIDToUserID[lobbyID] = creatorID;
 
-    final lobbies = _userIDToLobbyID[creatorID];
+    final lobbies = _creatorIDToLobbyIDs[creatorID];
 
     if (lobbies != null) {
       lobbies.add(lobbyID);
     } else {
-      _userIDToLobbyID[creatorID] = <LobbyID>[lobbyID];
+      _creatorIDToLobbyIDs[creatorID] = <LobbyID>[lobbyID];
     }
 
     return lobby;
@@ -66,8 +83,8 @@ class TestLobbyRepository implements LobbyRepository {
     if (userID != null) {
       _lobbyIDToLobby.remove(id);
 
-      _userIDToLobbyID[userID] =
-          List<LobbyID>.from(_userIDToLobbyID[userID] ?? [])..remove(id);
+      _creatorIDToLobbyIDs[userID] =
+          List<LobbyID>.from(_creatorIDToLobbyIDs[userID] ?? [])..remove(id);
     }
   }
 
@@ -75,10 +92,10 @@ class TestLobbyRepository implements LobbyRepository {
   Future<Lobby?> update({
     required Lobby lobby,
   }) async {
-    final userID = _lobbyIDToUserID[lobby.id];
+    final creatorID = _lobbyIDToUserID[lobby.id];
 
-    if (userID != null) {
-      final lobbyIDs = _userIDToLobbyID[userID] ?? [];
+    if (creatorID != null) {
+      final lobbyIDs = _creatorIDToLobbyIDs[creatorID] ?? [];
 
       final hasLobby = lobbyIDs.contains(lobby.id);
 

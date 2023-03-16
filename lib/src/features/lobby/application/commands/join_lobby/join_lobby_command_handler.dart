@@ -56,7 +56,7 @@ class JoinLobbyCommandHandler extends RequestHandler<
     }
 
     final alreadyJoint = lobby.creatorID == request.guestID ||
-        lobby.guests.contains(request.guestID);
+        lobby.guestIDs.contains(request.guestID);
 
     if (alreadyJoint) {
       return left(
@@ -65,7 +65,7 @@ class JoinLobbyCommandHandler extends RequestHandler<
     }
 
     final updatedLobby = lobby.copyWith(
-      guests: List.from(lobby.guests)..add(request.guestID),
+      guestIDs: List.from(lobby.guestIDs)..add(request.guestID),
     );
 
     final resultLobby = await _lobbyRepository.update(lobby: updatedLobby);
