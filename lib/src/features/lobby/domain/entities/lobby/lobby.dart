@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../utils/typedef.dart';
 import '../../../../common/domain/domain.dart';
-import '../../value_objects/lobby_id/lobby_id.dart';
 
 part 'lobby.freezed.dart';
 

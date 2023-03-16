@@ -39,6 +39,10 @@ void main(List<String> args) async {
     ..mount(
       LobbyController.path,
       _getIt.get<LobbyController>().router.addAuthorization(),
+    )
+    ..mount(
+      GameController.path,
+      _getIt.get<GameController>().router.addAuthorization(),
     );
 
   final handler = Pipeline()

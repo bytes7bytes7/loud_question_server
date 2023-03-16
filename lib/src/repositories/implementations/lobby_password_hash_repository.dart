@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:injectable/injectable.dart';
 
-import '../../features/lobby/domain/domain.dart';
+import '../../features/common/domain/domain.dart';
 import '../interfaces/lobby_password_hash_repository.dart';
 
 @test

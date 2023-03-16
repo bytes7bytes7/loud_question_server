@@ -5,15 +5,13 @@ import '../../../../common/application/exceptions/detailed_exception.dart';
 import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
-class JoinLobbyCommand
-    extends Request<Either<List<DetailedException>, JoinLobbyResult>> {
-  JoinLobbyCommand({
-    required this.guestID,
+class SetReadyCommand
+    extends Request<Either<List<DetailedException>, SetReadyResult>> {
+  SetReadyCommand({
+    required this.userID,
     required this.lobbyID,
-    required this.password,
-  }) : super(JoinLobbyCommand);
+  }) : super(SetReadyCommand);
 
-  final UserID guestID;
+  final UserID userID;
   final LobbyID lobbyID;
-  final String password;
 }

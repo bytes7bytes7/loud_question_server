@@ -1,4 +1,4 @@
-import '../../features/lobby/domain/domain.dart';
+import '../../features/common/domain/domain.dart';
 
 abstract class LobbyPasswordHashRepository {
   Future<void> setOrUpdate({

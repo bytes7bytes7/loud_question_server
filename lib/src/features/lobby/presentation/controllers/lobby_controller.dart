@@ -110,4 +110,6 @@ class LobbyController extends ApiController {
       (r) => ok(_mapster.map1(r, To<GetLobbiesResponse>())),
     );
   }
+
+  // leave lobby handler
 }
