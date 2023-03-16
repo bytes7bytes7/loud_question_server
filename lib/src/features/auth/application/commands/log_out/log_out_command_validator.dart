@@ -6,4 +6,4 @@ import 'log_out_command.dart';
 
 @singleton
 class LogOutCommandValidator
-    extends BehaviorValidator<LogOutResult, LogOutCommand> {}
+    extends BehaviorValidator<LogOutCommand, LogOutResult> {}

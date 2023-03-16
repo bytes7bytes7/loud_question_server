@@ -10,39 +10,38 @@ import '../../../../common/domain/domain.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
-import 'set_ready_command.dart';
+import 'set_not_ready_command.dart';
 
 @singleton
-class SetReadyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, SetReadyResult>, SetReadyCommand> {
-  const SetReadyCommandHandler({
+class SetNotReadyCommandHandler extends RequestHandler<
+    Either<List<DetailedException>, SetNotReadyResult>, SetNotReadyCommand> {
+  const SetNotReadyCommandHandler({
     required GameRepository gameRepository,
   }) : _gameRepository = gameRepository;
 
   final GameRepository _gameRepository;
 
   @override
-  FutureOr<Either<List<DetailedException>, SetReadyResult>> handle(
-    SetReadyCommand request,
+  FutureOr<Either<List<DetailedException>, SetNotReadyResult>> handle(
+    SetNotReadyCommand request,
   ) async {
     final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;
     if (oldGameState == null) {
-      newGameState = GameState.init(
-        lobbyID: request.lobbyID,
-        ready: [request.userID],
+      return left(
+        [const YouAlreadyNotReady()],
       );
     } else {
       if (oldGameState is InitGameState) {
-        if (oldGameState.ready.contains(request.userID)) {
+        if (!oldGameState.ready.contains(request.userID)) {
           return left(
-            [const YouAlreadyReady()],
+            [const YouAlreadyNotReady()],
           );
         }
 
         final ready = List<UserID>.from(oldGameState.ready)
-          ..add(request.userID);
+          ..remove(request.userID);
         newGameState = oldGameState.copyWith(
           ready: ready,
         );
@@ -57,7 +56,7 @@ class SetReadyCommandHandler extends RequestHandler<
         await _gameRepository.update(gameState: newGameState);
 
     return right(
-      SetReadyResult(
+      SetNotReadyResult(
         gameState: resultGameState,
       ),
     );

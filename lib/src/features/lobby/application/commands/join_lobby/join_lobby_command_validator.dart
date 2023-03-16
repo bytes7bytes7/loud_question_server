@@ -6,7 +6,7 @@ import 'join_lobby_command.dart';
 
 @singleton
 class JoinLobbyCommandValidator
-    extends BehaviorValidator<JoinLobbyResult, JoinLobbyCommand> {
+    extends BehaviorValidator<JoinLobbyCommand, JoinLobbyResult> {
   JoinLobbyCommandValidator() {
     ruleFor((e) => e.password, key: 'password').notEmpty();
   }

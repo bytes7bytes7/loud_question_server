@@ -7,7 +7,7 @@ import 'create_lobby_command.dart';
 
 @singleton
 class CreateLobbyCommandValidator
-    extends BehaviorValidator<CreateLobbyResult, CreateLobbyCommand> {
+    extends BehaviorValidator<CreateLobbyCommand, CreateLobbyResult> {
   CreateLobbyCommandValidator() {
     ruleFor((e) => e.password, key: 'password').notEmpty();
   }

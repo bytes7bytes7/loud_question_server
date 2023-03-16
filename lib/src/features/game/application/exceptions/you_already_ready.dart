@@ -1,9 +1,9 @@
 import '../../../common/application/exceptions/detailed_exception.dart';
 
-class YouAreAlreadySetAsReady extends DetailedException {
-  const YouAreAlreadySetAsReady()
+class YouAlreadyReady extends DetailedException {
+  const YouAlreadyReady()
       : super.conflict(
-          code: 'game.youAreAlreadySetAsReady',
+          code: 'game.youAlreadyReady',
           description: 'You are already set as ready.',
         );
 }

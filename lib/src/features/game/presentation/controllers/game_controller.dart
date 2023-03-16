@@ -27,8 +27,6 @@ class GameController extends ApiController {
 
   Router get router => _$GameControllerRouter(this);
 
-  // getState
-
   @Route.post('/ready')
   Future<Response> setReady(Request request) async {
     late final SetReadyRequest setReadyRequest;
@@ -57,7 +55,35 @@ class GameController extends ApiController {
     );
   }
 
-// set no ready
+  @Route.post('/not_ready')
+  Future<Response> setNotReady(Request request) async {
+    late final SetNotReadyRequest setNotReadyRequest;
+    try {
+      setNotReadyRequest = await parseRequest<SetNotReadyRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(setNotReadyRequest, user.id, To<SetNotReadyCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<SetNotReadyResponse>())),
+    );
+  }
+
+// getState
 
 // start
 

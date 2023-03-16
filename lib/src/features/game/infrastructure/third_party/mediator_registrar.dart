@@ -18,8 +18,12 @@ class GameMediatorRegistrar {
     _mediator
       // RequestHandler
       ..registerRequestHandler(() => _getIt.get<SetReadyCommandHandler>())
+      ..registerRequestHandler(() => _getIt.get<SetNotReadyCommandHandler>())
 
       // PipelineBehavior
+      ..registerPipelineBehavior(
+        () => ValidationBehavior([_getIt.get<SetReadyCommandValidator>()]),
+      )
       ..registerPipelineBehavior(
         () => ValidationBehavior([_getIt.get<SetReadyCommandValidator>()]),
       );

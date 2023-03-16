@@ -6,4 +6,4 @@ import 'verify_token_query.dart';
 
 @singleton
 class VerifyTokenQueryValidator
-    extends BehaviorValidator<VerifyTokenResult, VerifyTokenQuery> {}
+    extends BehaviorValidator<VerifyTokenQuery, VerifyTokenResult> {}

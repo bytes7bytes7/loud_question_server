@@ -17,6 +17,12 @@ class GameMapsterRegistrar {
       )
       ..register(
         MapperMeta.one(SetReadyResultToSetReadyResponseMapper.new),
+      )
+      ..register(
+        MapperMeta.two(SetNotReadyRequestIDToSetNotReadyCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.one(SetNotReadyResultToSetNotReadyResponse.new),
       );
   }
 }

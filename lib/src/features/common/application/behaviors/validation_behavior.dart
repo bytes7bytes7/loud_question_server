@@ -13,7 +13,7 @@ class ValidationBehavior<RS,
     extends PipelineBehavior<Either<List<DetailedException>, RS>, RQ> {
   ValidationBehavior(@factoryParam this._validators);
 
-  final List<BehaviorValidator<RS, RQ>> _validators;
+  final List<BehaviorValidator<RQ, RS>> _validators;
 
   @override
   FutureOr<Either<List<DetailedException>, RS>> handle(

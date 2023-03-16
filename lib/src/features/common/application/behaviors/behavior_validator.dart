@@ -4,4 +4,4 @@ import 'package:mediator/mediator.dart';
 /// [I] - input
 /// [O] - output
 /// Wrapper that helps working with [PipelineBehavior].
-class BehaviorValidator<O, I> extends AbstractValidator<I> {}
+class BehaviorValidator<I, O> extends AbstractValidator<I> {}
