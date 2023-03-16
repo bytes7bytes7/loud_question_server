@@ -25,7 +25,8 @@ Map<String, dynamic> _$$InitGameStateToJson(_$InitGameState instance) =>
 _$PlayingGameState _$$PlayingGameStateFromJson(Map<String, dynamic> json) =>
     _$PlayingGameState(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
-      secondsLeft: json['secondsLeft'] as int,
+      startedAtMSSinceEpoch: json['startedAtMSSinceEpoch'] as int,
+      endsAfterSeconds: json['endsAfterSeconds'] as int,
       question: json['question'] as String?,
       $type: json['type'] as String?,
     );
@@ -33,7 +34,8 @@ _$PlayingGameState _$$PlayingGameStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$PlayingGameStateToJson(_$PlayingGameState instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
-      'secondsLeft': instance.secondsLeft,
+      'startedAtMSSinceEpoch': instance.startedAtMSSinceEpoch,
+      'endsAfterSeconds': instance.endsAfterSeconds,
       'question': instance.question,
       'type': instance.$type,
     };

@@ -83,9 +83,35 @@ class GameController extends ApiController {
     );
   }
 
-// getState
+  @Route.post('/start')
+  Future<Response> start(Request request) async {
+    late final StartRoundRequest startRoundRequest;
+    try {
+      startRoundRequest = await parseRequest<StartRoundRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
 
-// start
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(startRoundRequest, user.id, To<StartRoundCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<StartRoundResponse>())),
+    );
+  }
+
+// getState
 
 // terminate
 

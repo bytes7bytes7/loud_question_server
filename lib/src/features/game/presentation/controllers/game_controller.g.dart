@@ -18,5 +18,10 @@ Router _$GameControllerRouter(GameController service) {
     r'/not_ready',
     service.setNotReady,
   );
+  router.add(
+    'POST',
+    r'/start',
+    service.start,
+  );
   return router;
 }

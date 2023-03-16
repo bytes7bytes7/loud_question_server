@@ -23,6 +23,12 @@ class GameMapsterRegistrar {
       )
       ..register(
         MapperMeta.one(SetNotReadyResultToSetNotReadyResponse.new),
+      )
+      ..register(
+        MapperMeta.two(StartRoundRequestIDToStartRoundCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.one(StartRoundResultToStartRoundResponseMapper.new),
       );
   }
 }

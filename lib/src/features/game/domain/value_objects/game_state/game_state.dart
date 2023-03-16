@@ -5,7 +5,6 @@ import '../../../../common/domain/domain.dart';
 import '../user_answer/user_answer.dart';
 
 part 'game_state.freezed.dart';
-
 part 'game_state.g.dart';
 
 @Freezed(
@@ -19,7 +18,8 @@ class GameState with _$GameState {
 
   const factory GameState.playing({
     required LobbyID lobbyID,
-    required int secondsLeft,
+    required int startedAtMSSinceEpoch,
+    required int endsAfterSeconds,
     // question is NOT null only for a presenter
     required String? question,
   }) = PlayingGameState;
