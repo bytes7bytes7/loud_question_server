@@ -6,27 +6,26 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
-import '../../../../common/domain/domain.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
-import 'set_not_ready_command.dart';
+import 'set_leader_command.dart';
 
 @singleton
-class SetNotReadyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, SetNotReadyCommand> {
-  const SetNotReadyCommandHandler({
-    required GameRepository gameRepository,
+class SetLeaderCommandHandler extends RequestHandler<
+    Either<List<DetailedException>, GameStateResult>, SetLeaderCommand> {
+  const SetLeaderCommandHandler({
     required LobbyRepository lobbyRepository,
-  })  : _gameRepository = gameRepository,
-        _lobbyRepository = lobbyRepository;
+    required GameRepository gameRepository,
+  })  : _lobbyRepository = lobbyRepository,
+        _gameRepository = gameRepository;
 
-  final GameRepository _gameRepository;
   final LobbyRepository _lobbyRepository;
+  final GameRepository _gameRepository;
 
   @override
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
-    SetNotReadyCommand request,
+    SetLeaderCommand request,
   ) async {
     final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
 
@@ -36,12 +35,16 @@ class SetNotReadyCommandHandler extends RequestHandler<
       );
     }
 
-    final joint = lobby.creatorID == request.userID ||
-        lobby.guestIDs.contains(request.userID);
-
-    if (!joint) {
+    if (request.userID != lobby.creatorID) {
       return left(
-        [const YouShouldJoinLobby()],
+        [const NoPermission()],
+      );
+    }
+
+    if (lobby.creatorID != request.leaderID &&
+        !lobby.guestIDs.contains(request.leaderID)) {
+      return left(
+        [const UserShouldJoinLobby()],
       );
     }
 
@@ -49,24 +52,26 @@ class SetNotReadyCommandHandler extends RequestHandler<
 
     late GameState newGameState;
     if (oldGameState == null) {
-      return left(
-        [const YouAlreadyNotReady()],
+      newGameState = GameState.init(
+        leaderID: request.leaderID,
+        lobbyID: request.lobbyID,
+        ready: [request.userID],
       );
     } else if (oldGameState is InitGameState) {
-      if (!oldGameState.ready.contains(request.userID)) {
+      if (oldGameState.leaderID == request.leaderID) {
         return left(
-          [const YouAlreadyNotReady()],
+          [const UserAlreadyLeader()],
         );
       }
 
-      final ready = List<UserID>.from(oldGameState.ready)
-        ..remove(request.userID);
       newGameState = oldGameState.copyWith(
-        ready: ready,
+        leaderID: request.leaderID,
       );
     } else if (oldGameState is CheckingAnswerGameState) {
-      return left(
-        [const YouAlreadyNotReady()],
+      newGameState = GameState.init(
+        leaderID: request.leaderID,
+        lobbyID: request.lobbyID,
+        ready: [request.userID],
       );
     } else {
       return left(
@@ -74,12 +79,11 @@ class SetNotReadyCommandHandler extends RequestHandler<
       );
     }
 
-    final resultGameState =
-        await _gameRepository.update(gameState: newGameState);
+    await _gameRepository.update(gameState: newGameState);
 
     return right(
       GameStateResult(
-        gameState: resultGameState,
+        gameState: newGameState,
       ),
     );
   }

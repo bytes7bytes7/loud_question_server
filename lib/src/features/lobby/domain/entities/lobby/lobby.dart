@@ -12,7 +12,6 @@ class Lobby with _$Lobby {
   const factory Lobby({
     required LobbyID id,
     required UserID creatorID,
-    required UserID leaderID,
     required int createdAtInMSSinceEpoch,
     required List<UserID> guestIDs,
   }) = _Lobby;

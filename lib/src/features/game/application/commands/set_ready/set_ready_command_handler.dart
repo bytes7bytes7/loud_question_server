@@ -50,11 +50,7 @@ class SetReadyCommandHandler extends RequestHandler<
     late GameState newGameState;
     if (oldGameState == null) {
       newGameState = GameState.init(
-        lobbyID: request.lobbyID,
-        ready: [request.userID],
-      );
-    } else if (oldGameState is CheckingAnswerGameState) {
-      newGameState = GameState.init(
+        leaderID: lobby.creatorID,
         lobbyID: request.lobbyID,
         ready: [request.userID],
       );
@@ -68,6 +64,12 @@ class SetReadyCommandHandler extends RequestHandler<
       final ready = List<UserID>.from(oldGameState.ready)..add(request.userID);
       newGameState = oldGameState.copyWith(
         ready: ready,
+      );
+    } else if (oldGameState is CheckingAnswerGameState) {
+      newGameState = GameState.init(
+        leaderID: oldGameState.leaderID,
+        lobbyID: request.lobbyID,
+        ready: [request.userID],
       );
     } else {
       return left(

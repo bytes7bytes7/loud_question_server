@@ -34,45 +34,50 @@ GameState _$GameStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GameState {
   LobbyID get lobbyID => throw _privateConstructorUsedError;
+  UserID get leaderID => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LobbyID lobbyID, List<UserID> ready) init,
-    required TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)
-        playing,
     required TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)
+            LobbyID lobbyID, UserID leaderID, List<UserID> ready)
+        init,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+        playing,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)
         waitingForAnswer,
-    required TResult Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)
         checkingAnswer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult? Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult? Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)?
         waitingForAnswer,
-    TResult? Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)?
         checkingAnswer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
+            String? question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, List<UserAnswer> answers, String question,
-            String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
+            String question, String rightAnswer)?
         checkingAnswer,
     required TResult orElse(),
   }) =>
@@ -113,9 +118,10 @@ abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res, GameState>;
   @useResult
-  $Res call({LobbyID lobbyID});
+  $Res call({LobbyID lobbyID, UserID leaderID});
 
   $LobbyIDCopyWith<$Res> get lobbyID;
+  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -132,12 +138,17 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   @override
   $Res call({
     Object? lobbyID = null,
+    Object? leaderID = null,
   }) {
     return _then(_value.copyWith(
       lobbyID: null == lobbyID
           ? _value.lobbyID
           : lobbyID // ignore: cast_nullable_to_non_nullable
               as LobbyID,
+      leaderID: null == leaderID
+          ? _value.leaderID
+          : leaderID // ignore: cast_nullable_to_non_nullable
+              as UserID,
     ) as $Val);
   }
 
@@ -146,6 +157,14 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   $LobbyIDCopyWith<$Res> get lobbyID {
     return $LobbyIDCopyWith<$Res>(_value.lobbyID, (value) {
       return _then(_value.copyWith(lobbyID: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserIDCopyWith<$Res> get leaderID {
+    return $UserIDCopyWith<$Res>(_value.leaderID, (value) {
+      return _then(_value.copyWith(leaderID: value) as $Val);
     });
   }
 }
@@ -158,10 +177,12 @@ abstract class _$$InitGameStateCopyWith<$Res>
       __$$InitGameStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({LobbyID lobbyID, List<UserID> ready});
+  $Res call({LobbyID lobbyID, UserID leaderID, List<UserID> ready});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
+  @override
+  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -176,6 +197,7 @@ class __$$InitGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? lobbyID = null,
+    Object? leaderID = null,
     Object? ready = null,
   }) {
     return _then(_$InitGameState(
@@ -183,6 +205,10 @@ class __$$InitGameStateCopyWithImpl<$Res>
           ? _value.lobbyID
           : lobbyID // ignore: cast_nullable_to_non_nullable
               as LobbyID,
+      leaderID: null == leaderID
+          ? _value.leaderID
+          : leaderID // ignore: cast_nullable_to_non_nullable
+              as UserID,
       ready: null == ready
           ? _value._ready
           : ready // ignore: cast_nullable_to_non_nullable
@@ -196,6 +222,7 @@ class __$$InitGameStateCopyWithImpl<$Res>
 class _$InitGameState implements InitGameState {
   const _$InitGameState(
       {required this.lobbyID,
+      required this.leaderID,
       required final List<UserID> ready,
       final String? $type})
       : _ready = ready,
@@ -206,6 +233,8 @@ class _$InitGameState implements InitGameState {
 
   @override
   final LobbyID lobbyID;
+  @override
+  final UserID leaderID;
   final List<UserID> _ready;
   @override
   List<UserID> get ready {
@@ -219,7 +248,7 @@ class _$InitGameState implements InitGameState {
 
   @override
   String toString() {
-    return 'GameState.init(lobbyID: $lobbyID, ready: $ready)';
+    return 'GameState.init(lobbyID: $lobbyID, leaderID: $leaderID, ready: $ready)';
   }
 
   @override
@@ -228,13 +257,15 @@ class _$InitGameState implements InitGameState {
         (other.runtimeType == runtimeType &&
             other is _$InitGameState &&
             (identical(other.lobbyID, lobbyID) || other.lobbyID == lobbyID) &&
+            (identical(other.leaderID, leaderID) ||
+                other.leaderID == leaderID) &&
             const DeepCollectionEquality().equals(other._ready, _ready));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, lobbyID, const DeepCollectionEquality().hash(_ready));
+  int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
+      const DeepCollectionEquality().hash(_ready));
 
   @JsonKey(ignore: true)
   @override
@@ -245,54 +276,58 @@ class _$InitGameState implements InitGameState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LobbyID lobbyID, List<UserID> ready) init,
-    required TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)
-        playing,
     required TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)
+            LobbyID lobbyID, UserID leaderID, List<UserID> ready)
+        init,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+        playing,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)
         waitingForAnswer,
-    required TResult Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)
         checkingAnswer,
   }) {
-    return init(lobbyID, ready);
+    return init(lobbyID, leaderID, ready);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult? Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult? Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)?
         waitingForAnswer,
-    TResult? Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)?
         checkingAnswer,
   }) {
-    return init?.call(lobbyID, ready);
+    return init?.call(lobbyID, leaderID, ready);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
+            String? question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, List<UserAnswer> answers, String question,
-            String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
+            String question, String rightAnswer)?
         checkingAnswer,
     required TResult orElse(),
   }) {
     if (init != null) {
-      return init(lobbyID, ready);
+      return init(lobbyID, leaderID, ready);
     }
     return orElse();
   }
@@ -345,6 +380,7 @@ class _$InitGameState implements InitGameState {
 abstract class InitGameState implements GameState {
   const factory InitGameState(
       {required final LobbyID lobbyID,
+      required final UserID leaderID,
       required final List<UserID> ready}) = _$InitGameState;
 
   factory InitGameState.fromJson(Map<String, dynamic> json) =
@@ -352,6 +388,8 @@ abstract class InitGameState implements GameState {
 
   @override
   LobbyID get lobbyID;
+  @override
+  UserID get leaderID;
   List<UserID> get ready;
   @override
   @JsonKey(ignore: true)
@@ -369,12 +407,15 @@ abstract class _$$PlayingGameStateCopyWith<$Res>
   @useResult
   $Res call(
       {LobbyID lobbyID,
+      UserID leaderID,
       int startedAtMSSinceEpoch,
       int endsAfterSeconds,
       String? question});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
+  @override
+  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -389,6 +430,7 @@ class __$$PlayingGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? lobbyID = null,
+    Object? leaderID = null,
     Object? startedAtMSSinceEpoch = null,
     Object? endsAfterSeconds = null,
     Object? question = freezed,
@@ -398,6 +440,10 @@ class __$$PlayingGameStateCopyWithImpl<$Res>
           ? _value.lobbyID
           : lobbyID // ignore: cast_nullable_to_non_nullable
               as LobbyID,
+      leaderID: null == leaderID
+          ? _value.leaderID
+          : leaderID // ignore: cast_nullable_to_non_nullable
+              as UserID,
       startedAtMSSinceEpoch: null == startedAtMSSinceEpoch
           ? _value.startedAtMSSinceEpoch
           : startedAtMSSinceEpoch // ignore: cast_nullable_to_non_nullable
@@ -419,6 +465,7 @@ class __$$PlayingGameStateCopyWithImpl<$Res>
 class _$PlayingGameState implements PlayingGameState {
   const _$PlayingGameState(
       {required this.lobbyID,
+      required this.leaderID,
       required this.startedAtMSSinceEpoch,
       required this.endsAfterSeconds,
       required this.question,
@@ -430,6 +477,8 @@ class _$PlayingGameState implements PlayingGameState {
 
   @override
   final LobbyID lobbyID;
+  @override
+  final UserID leaderID;
   @override
   final int startedAtMSSinceEpoch;
   @override
@@ -443,7 +492,7 @@ class _$PlayingGameState implements PlayingGameState {
 
   @override
   String toString() {
-    return 'GameState.playing(lobbyID: $lobbyID, startedAtMSSinceEpoch: $startedAtMSSinceEpoch, endsAfterSeconds: $endsAfterSeconds, question: $question)';
+    return 'GameState.playing(lobbyID: $lobbyID, leaderID: $leaderID, startedAtMSSinceEpoch: $startedAtMSSinceEpoch, endsAfterSeconds: $endsAfterSeconds, question: $question)';
   }
 
   @override
@@ -452,6 +501,8 @@ class _$PlayingGameState implements PlayingGameState {
         (other.runtimeType == runtimeType &&
             other is _$PlayingGameState &&
             (identical(other.lobbyID, lobbyID) || other.lobbyID == lobbyID) &&
+            (identical(other.leaderID, leaderID) ||
+                other.leaderID == leaderID) &&
             (identical(other.startedAtMSSinceEpoch, startedAtMSSinceEpoch) ||
                 other.startedAtMSSinceEpoch == startedAtMSSinceEpoch) &&
             (identical(other.endsAfterSeconds, endsAfterSeconds) ||
@@ -462,8 +513,8 @@ class _$PlayingGameState implements PlayingGameState {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, lobbyID, startedAtMSSinceEpoch, endsAfterSeconds, question);
+  int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
+      startedAtMSSinceEpoch, endsAfterSeconds, question);
 
   @JsonKey(ignore: true)
   @override
@@ -474,56 +525,61 @@ class _$PlayingGameState implements PlayingGameState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LobbyID lobbyID, List<UserID> ready) init,
-    required TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)
-        playing,
     required TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)
+            LobbyID lobbyID, UserID leaderID, List<UserID> ready)
+        init,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+        playing,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)
         waitingForAnswer,
-    required TResult Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)
         checkingAnswer,
   }) {
-    return playing(lobbyID, startedAtMSSinceEpoch, endsAfterSeconds, question);
+    return playing(
+        lobbyID, leaderID, startedAtMSSinceEpoch, endsAfterSeconds, question);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult? Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult? Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)?
         waitingForAnswer,
-    TResult? Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)?
         checkingAnswer,
   }) {
     return playing?.call(
-        lobbyID, startedAtMSSinceEpoch, endsAfterSeconds, question);
+        lobbyID, leaderID, startedAtMSSinceEpoch, endsAfterSeconds, question);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
+            String? question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, List<UserAnswer> answers, String question,
-            String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
+            String question, String rightAnswer)?
         checkingAnswer,
     required TResult orElse(),
   }) {
     if (playing != null) {
       return playing(
-          lobbyID, startedAtMSSinceEpoch, endsAfterSeconds, question);
+          lobbyID, leaderID, startedAtMSSinceEpoch, endsAfterSeconds, question);
     }
     return orElse();
   }
@@ -576,6 +632,7 @@ class _$PlayingGameState implements PlayingGameState {
 abstract class PlayingGameState implements GameState {
   const factory PlayingGameState(
       {required final LobbyID lobbyID,
+      required final UserID leaderID,
       required final int startedAtMSSinceEpoch,
       required final int endsAfterSeconds,
       required final String? question}) = _$PlayingGameState;
@@ -585,6 +642,8 @@ abstract class PlayingGameState implements GameState {
 
   @override
   LobbyID get lobbyID;
+  @override
+  UserID get leaderID;
   int get startedAtMSSinceEpoch;
   int get endsAfterSeconds; // question is NOT null only for a presenter
   String? get question;
@@ -603,10 +662,16 @@ abstract class _$$WaitingForAnswerGameStateCopyWith<$Res>
       __$$WaitingForAnswerGameStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({LobbyID lobbyID, List<UserID> hasAnswered, String? question});
+  $Res call(
+      {LobbyID lobbyID,
+      UserID leaderID,
+      List<UserID> hasAnswered,
+      String? question});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
+  @override
+  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -621,6 +686,7 @@ class __$$WaitingForAnswerGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? lobbyID = null,
+    Object? leaderID = null,
     Object? hasAnswered = null,
     Object? question = freezed,
   }) {
@@ -629,6 +695,10 @@ class __$$WaitingForAnswerGameStateCopyWithImpl<$Res>
           ? _value.lobbyID
           : lobbyID // ignore: cast_nullable_to_non_nullable
               as LobbyID,
+      leaderID: null == leaderID
+          ? _value.leaderID
+          : leaderID // ignore: cast_nullable_to_non_nullable
+              as UserID,
       hasAnswered: null == hasAnswered
           ? _value._hasAnswered
           : hasAnswered // ignore: cast_nullable_to_non_nullable
@@ -646,6 +716,7 @@ class __$$WaitingForAnswerGameStateCopyWithImpl<$Res>
 class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
   const _$WaitingForAnswerGameState(
       {required this.lobbyID,
+      required this.leaderID,
       required final List<UserID> hasAnswered,
       required this.question,
       final String? $type})
@@ -657,6 +728,8 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
 
   @override
   final LobbyID lobbyID;
+  @override
+  final UserID leaderID;
   final List<UserID> _hasAnswered;
   @override
   List<UserID> get hasAnswered {
@@ -674,7 +747,7 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
 
   @override
   String toString() {
-    return 'GameState.waitingForAnswer(lobbyID: $lobbyID, hasAnswered: $hasAnswered, question: $question)';
+    return 'GameState.waitingForAnswer(lobbyID: $lobbyID, leaderID: $leaderID, hasAnswered: $hasAnswered, question: $question)';
   }
 
   @override
@@ -683,6 +756,8 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
         (other.runtimeType == runtimeType &&
             other is _$WaitingForAnswerGameState &&
             (identical(other.lobbyID, lobbyID) || other.lobbyID == lobbyID) &&
+            (identical(other.leaderID, leaderID) ||
+                other.leaderID == leaderID) &&
             const DeepCollectionEquality()
                 .equals(other._hasAnswered, _hasAnswered) &&
             (identical(other.question, question) ||
@@ -691,7 +766,7 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, lobbyID,
+  int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
       const DeepCollectionEquality().hash(_hasAnswered), question);
 
   @JsonKey(ignore: true)
@@ -704,54 +779,58 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LobbyID lobbyID, List<UserID> ready) init,
-    required TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)
-        playing,
     required TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)
+            LobbyID lobbyID, UserID leaderID, List<UserID> ready)
+        init,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+        playing,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)
         waitingForAnswer,
-    required TResult Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)
         checkingAnswer,
   }) {
-    return waitingForAnswer(lobbyID, hasAnswered, question);
+    return waitingForAnswer(lobbyID, leaderID, hasAnswered, question);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult? Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult? Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)?
         waitingForAnswer,
-    TResult? Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)?
         checkingAnswer,
   }) {
-    return waitingForAnswer?.call(lobbyID, hasAnswered, question);
+    return waitingForAnswer?.call(lobbyID, leaderID, hasAnswered, question);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
+            String? question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, List<UserAnswer> answers, String question,
-            String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
+            String question, String rightAnswer)?
         checkingAnswer,
     required TResult orElse(),
   }) {
     if (waitingForAnswer != null) {
-      return waitingForAnswer(lobbyID, hasAnswered, question);
+      return waitingForAnswer(lobbyID, leaderID, hasAnswered, question);
     }
     return orElse();
   }
@@ -804,6 +883,7 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
 abstract class WaitingForAnswerGameState implements GameState {
   const factory WaitingForAnswerGameState(
       {required final LobbyID lobbyID,
+      required final UserID leaderID,
       required final List<UserID> hasAnswered,
       required final String? question}) = _$WaitingForAnswerGameState;
 
@@ -812,6 +892,8 @@ abstract class WaitingForAnswerGameState implements GameState {
 
   @override
   LobbyID get lobbyID;
+  @override
+  UserID get leaderID;
   List<UserID> get hasAnswered; // question is NOT null only for a presenter
   String? get question;
   @override
@@ -830,12 +912,15 @@ abstract class _$$CheckingAnswerGameStateCopyWith<$Res>
   @useResult
   $Res call(
       {LobbyID lobbyID,
+      UserID leaderID,
       List<UserAnswer> answers,
       String question,
       String rightAnswer});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
+  @override
+  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -850,6 +935,7 @@ class __$$CheckingAnswerGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? lobbyID = null,
+    Object? leaderID = null,
     Object? answers = null,
     Object? question = null,
     Object? rightAnswer = null,
@@ -859,6 +945,10 @@ class __$$CheckingAnswerGameStateCopyWithImpl<$Res>
           ? _value.lobbyID
           : lobbyID // ignore: cast_nullable_to_non_nullable
               as LobbyID,
+      leaderID: null == leaderID
+          ? _value.leaderID
+          : leaderID // ignore: cast_nullable_to_non_nullable
+              as UserID,
       answers: null == answers
           ? _value._answers
           : answers // ignore: cast_nullable_to_non_nullable
@@ -880,6 +970,7 @@ class __$$CheckingAnswerGameStateCopyWithImpl<$Res>
 class _$CheckingAnswerGameState implements CheckingAnswerGameState {
   const _$CheckingAnswerGameState(
       {required this.lobbyID,
+      required this.leaderID,
       required final List<UserAnswer> answers,
       required this.question,
       required this.rightAnswer,
@@ -892,6 +983,8 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
 
   @override
   final LobbyID lobbyID;
+  @override
+  final UserID leaderID;
   final List<UserAnswer> _answers;
   @override
   List<UserAnswer> get answers {
@@ -910,7 +1003,7 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
 
   @override
   String toString() {
-    return 'GameState.checkingAnswer(lobbyID: $lobbyID, answers: $answers, question: $question, rightAnswer: $rightAnswer)';
+    return 'GameState.checkingAnswer(lobbyID: $lobbyID, leaderID: $leaderID, answers: $answers, question: $question, rightAnswer: $rightAnswer)';
   }
 
   @override
@@ -919,6 +1012,8 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
         (other.runtimeType == runtimeType &&
             other is _$CheckingAnswerGameState &&
             (identical(other.lobbyID, lobbyID) || other.lobbyID == lobbyID) &&
+            (identical(other.leaderID, leaderID) ||
+                other.leaderID == leaderID) &&
             const DeepCollectionEquality().equals(other._answers, _answers) &&
             (identical(other.question, question) ||
                 other.question == question) &&
@@ -928,7 +1023,7 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, lobbyID,
+  int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
       const DeepCollectionEquality().hash(_answers), question, rightAnswer);
 
   @JsonKey(ignore: true)
@@ -941,54 +1036,59 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LobbyID lobbyID, List<UserID> ready) init,
-    required TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)
-        playing,
     required TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)
+            LobbyID lobbyID, UserID leaderID, List<UserID> ready)
+        init,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+        playing,
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)
         waitingForAnswer,
-    required TResult Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)
+    required TResult Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)
         checkingAnswer,
   }) {
-    return checkingAnswer(lobbyID, answers, question, rightAnswer);
+    return checkingAnswer(lobbyID, leaderID, answers, question, rightAnswer);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult? Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult? Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserID> hasAnswered, String? question)?
         waitingForAnswer,
-    TResult? Function(LobbyID lobbyID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult? Function(LobbyID lobbyID, UserID leaderID,
+            List<UserAnswer> answers, String question, String rightAnswer)?
         checkingAnswer,
   }) {
-    return checkingAnswer?.call(lobbyID, answers, question, rightAnswer);
+    return checkingAnswer?.call(
+        lobbyID, leaderID, answers, question, rightAnswer);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LobbyID lobbyID, List<UserID> ready)? init,
-    TResult Function(LobbyID lobbyID, int startedAtMSSinceEpoch,
-            int endsAfterSeconds, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
+        init,
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
         playing,
-    TResult Function(
-            LobbyID lobbyID, List<UserID> hasAnswered, String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
+            String? question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, List<UserAnswer> answers, String question,
-            String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
+            String question, String rightAnswer)?
         checkingAnswer,
     required TResult orElse(),
   }) {
     if (checkingAnswer != null) {
-      return checkingAnswer(lobbyID, answers, question, rightAnswer);
+      return checkingAnswer(lobbyID, leaderID, answers, question, rightAnswer);
     }
     return orElse();
   }
@@ -1041,6 +1141,7 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
 abstract class CheckingAnswerGameState implements GameState {
   const factory CheckingAnswerGameState(
       {required final LobbyID lobbyID,
+      required final UserID leaderID,
       required final List<UserAnswer> answers,
       required final String question,
       required final String rightAnswer}) = _$CheckingAnswerGameState;
@@ -1050,6 +1151,8 @@ abstract class CheckingAnswerGameState implements GameState {
 
   @override
   LobbyID get lobbyID;
+  @override
+  UserID get leaderID;
   List<UserAnswer> get answers;
   String get question;
   String get rightAnswer;

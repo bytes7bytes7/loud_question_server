@@ -49,7 +49,6 @@ class TestLobbyRepository implements LobbyRepository {
     final lobby = Lobby(
       id: lobbyID,
       creatorID: creatorID,
-      leaderID: creatorID,
       createdAtInMSSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
       guestIDs: [],
     );

@@ -81,6 +81,7 @@ class GiveAnswerCommandHandler extends RequestHandler<
       }
 
       newGameState = WaitingForAnswerGameState(
+        leaderID: oldGameState.leaderID,
         lobbyID: oldGameState.lobbyID,
         hasAnswered: [request.userID],
         question: oldGameState.question,

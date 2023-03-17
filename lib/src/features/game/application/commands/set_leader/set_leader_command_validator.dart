@@ -6,4 +6,4 @@ import 'set_leader_command.dart';
 
 @singleton
 class SetLeaderCommandValidator
-    extends BehaviorValidator<SetLeaderCommand, SetLeaderResult> {}
+    extends BehaviorValidator<SetLeaderCommand, GameStateResult> {}

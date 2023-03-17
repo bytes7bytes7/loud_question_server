@@ -13,11 +13,13 @@ part 'game_state.g.dart';
 class GameState with _$GameState {
   const factory GameState.init({
     required LobbyID lobbyID,
+    required UserID leaderID,
     required List<UserID> ready,
   }) = InitGameState;
 
   const factory GameState.playing({
     required LobbyID lobbyID,
+    required UserID leaderID,
     required int startedAtMSSinceEpoch,
     required int endsAfterSeconds,
     // question is NOT null only for a presenter
@@ -26,6 +28,7 @@ class GameState with _$GameState {
 
   const factory GameState.waitingForAnswer({
     required LobbyID lobbyID,
+    required UserID leaderID,
     required List<UserID> hasAnswered,
     // question is NOT null only for a presenter
     required String? question,
@@ -33,6 +36,7 @@ class GameState with _$GameState {
 
   const factory GameState.checkingAnswer({
     required LobbyID lobbyID,
+    required UserID leaderID,
     required List<UserAnswer> answers,
     required String question,
     required String rightAnswer,

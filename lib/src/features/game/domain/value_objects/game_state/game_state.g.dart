@@ -9,6 +9,7 @@ part of 'game_state.dart';
 _$InitGameState _$$InitGameStateFromJson(Map<String, dynamic> json) =>
     _$InitGameState(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
+      leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       ready: (json['ready'] as List<dynamic>)
           .map((e) => UserID.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -18,6 +19,7 @@ _$InitGameState _$$InitGameStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$InitGameStateToJson(_$InitGameState instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
+      'leaderID': instance.leaderID,
       'ready': instance.ready,
       'type': instance.$type,
     };
@@ -25,6 +27,7 @@ Map<String, dynamic> _$$InitGameStateToJson(_$InitGameState instance) =>
 _$PlayingGameState _$$PlayingGameStateFromJson(Map<String, dynamic> json) =>
     _$PlayingGameState(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
+      leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       startedAtMSSinceEpoch: json['startedAtMSSinceEpoch'] as int,
       endsAfterSeconds: json['endsAfterSeconds'] as int,
       question: json['question'] as String?,
@@ -34,6 +37,7 @@ _$PlayingGameState _$$PlayingGameStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$PlayingGameStateToJson(_$PlayingGameState instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
+      'leaderID': instance.leaderID,
       'startedAtMSSinceEpoch': instance.startedAtMSSinceEpoch,
       'endsAfterSeconds': instance.endsAfterSeconds,
       'question': instance.question,
@@ -44,6 +48,7 @@ _$WaitingForAnswerGameState _$$WaitingForAnswerGameStateFromJson(
         Map<String, dynamic> json) =>
     _$WaitingForAnswerGameState(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
+      leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       hasAnswered: (json['hasAnswered'] as List<dynamic>)
           .map((e) => UserID.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -55,6 +60,7 @@ Map<String, dynamic> _$$WaitingForAnswerGameStateToJson(
         _$WaitingForAnswerGameState instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
+      'leaderID': instance.leaderID,
       'hasAnswered': instance.hasAnswered,
       'question': instance.question,
       'type': instance.$type,
@@ -64,6 +70,7 @@ _$CheckingAnswerGameState _$$CheckingAnswerGameStateFromJson(
         Map<String, dynamic> json) =>
     _$CheckingAnswerGameState(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
+      leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       answers: (json['answers'] as List<dynamic>)
           .map((e) => UserAnswer.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -76,6 +83,7 @@ Map<String, dynamic> _$$CheckingAnswerGameStateToJson(
         _$CheckingAnswerGameState instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
+      'leaderID': instance.leaderID,
       'answers': instance.answers,
       'question': instance.question,
       'rightAnswer': instance.rightAnswer,

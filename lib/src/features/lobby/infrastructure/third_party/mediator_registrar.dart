@@ -20,7 +20,6 @@ class LobbyMediatorRegistrar {
       ..registerRequestHandler(() => _getIt.get<CreateLobbyCommandHandler>())
       ..registerRequestHandler(() => _getIt.get<JoinLobbyCommandHandler>())
       ..registerRequestHandler(() => _getIt.get<GetLobbiesQueryHandler>())
-      ..registerRequestHandler(() => _getIt.get<SetLeaderCommandHandler>())
 
       // PipelineBehavior
       ..registerPipelineBehavior(
@@ -31,9 +30,6 @@ class LobbyMediatorRegistrar {
       )
       ..registerPipelineBehavior(
         () => ValidationBehavior([_getIt.get<GetLobbiesQueryValidator>()]),
-      )
-      ..registerPipelineBehavior(
-        () => ValidationBehavior([_getIt.get<SetLeaderCommandValidator>()]),
       );
   }
 }

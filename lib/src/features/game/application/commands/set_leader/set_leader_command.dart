@@ -6,7 +6,7 @@ import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
 class SetLeaderCommand
-    extends Request<Either<List<DetailedException>, SetLeaderResult>> {
+    extends Request<Either<List<DetailedException>, GameStateResult>> {
   SetLeaderCommand({
     required this.userID,
     required this.leaderID,

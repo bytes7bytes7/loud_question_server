@@ -28,5 +28,10 @@ Router _$GameControllerRouter(GameController service) {
     r'/give_answer',
     service.giveAnswer,
   );
+  router.add(
+    'POST',
+    r'/set_leader',
+    service.setLeader,
+  );
   return router;
 }

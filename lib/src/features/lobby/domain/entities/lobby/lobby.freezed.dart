@@ -22,7 +22,6 @@ Lobby _$LobbyFromJson(Map<String, dynamic> json) {
 mixin _$Lobby {
   LobbyID get id => throw _privateConstructorUsedError;
   UserID get creatorID => throw _privateConstructorUsedError;
-  UserID get leaderID => throw _privateConstructorUsedError;
   int get createdAtInMSSinceEpoch => throw _privateConstructorUsedError;
   List<UserID> get guestIDs => throw _privateConstructorUsedError;
 
@@ -39,13 +38,11 @@ abstract class $LobbyCopyWith<$Res> {
   $Res call(
       {LobbyID id,
       UserID creatorID,
-      UserID leaderID,
       int createdAtInMSSinceEpoch,
       List<UserID> guestIDs});
 
   $LobbyIDCopyWith<$Res> get id;
   $UserIDCopyWith<$Res> get creatorID;
-  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -63,7 +60,6 @@ class _$LobbyCopyWithImpl<$Res, $Val extends Lobby>
   $Res call({
     Object? id = null,
     Object? creatorID = null,
-    Object? leaderID = null,
     Object? createdAtInMSSinceEpoch = null,
     Object? guestIDs = null,
   }) {
@@ -75,10 +71,6 @@ class _$LobbyCopyWithImpl<$Res, $Val extends Lobby>
       creatorID: null == creatorID
           ? _value.creatorID
           : creatorID // ignore: cast_nullable_to_non_nullable
-              as UserID,
-      leaderID: null == leaderID
-          ? _value.leaderID
-          : leaderID // ignore: cast_nullable_to_non_nullable
               as UserID,
       createdAtInMSSinceEpoch: null == createdAtInMSSinceEpoch
           ? _value.createdAtInMSSinceEpoch
@@ -106,14 +98,6 @@ class _$LobbyCopyWithImpl<$Res, $Val extends Lobby>
       return _then(_value.copyWith(creatorID: value) as $Val);
     });
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserIDCopyWith<$Res> get leaderID {
-    return $UserIDCopyWith<$Res>(_value.leaderID, (value) {
-      return _then(_value.copyWith(leaderID: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -125,7 +109,6 @@ abstract class _$$_LobbyCopyWith<$Res> implements $LobbyCopyWith<$Res> {
   $Res call(
       {LobbyID id,
       UserID creatorID,
-      UserID leaderID,
       int createdAtInMSSinceEpoch,
       List<UserID> guestIDs});
 
@@ -133,8 +116,6 @@ abstract class _$$_LobbyCopyWith<$Res> implements $LobbyCopyWith<$Res> {
   $LobbyIDCopyWith<$Res> get id;
   @override
   $UserIDCopyWith<$Res> get creatorID;
-  @override
-  $UserIDCopyWith<$Res> get leaderID;
 }
 
 /// @nodoc
@@ -148,7 +129,6 @@ class __$$_LobbyCopyWithImpl<$Res> extends _$LobbyCopyWithImpl<$Res, _$_Lobby>
   $Res call({
     Object? id = null,
     Object? creatorID = null,
-    Object? leaderID = null,
     Object? createdAtInMSSinceEpoch = null,
     Object? guestIDs = null,
   }) {
@@ -160,10 +140,6 @@ class __$$_LobbyCopyWithImpl<$Res> extends _$LobbyCopyWithImpl<$Res, _$_Lobby>
       creatorID: null == creatorID
           ? _value.creatorID
           : creatorID // ignore: cast_nullable_to_non_nullable
-              as UserID,
-      leaderID: null == leaderID
-          ? _value.leaderID
-          : leaderID // ignore: cast_nullable_to_non_nullable
               as UserID,
       createdAtInMSSinceEpoch: null == createdAtInMSSinceEpoch
           ? _value.createdAtInMSSinceEpoch
@@ -183,7 +159,6 @@ class _$_Lobby implements _Lobby {
   const _$_Lobby(
       {required this.id,
       required this.creatorID,
-      required this.leaderID,
       required this.createdAtInMSSinceEpoch,
       required final List<UserID> guestIDs})
       : _guestIDs = guestIDs;
@@ -196,8 +171,6 @@ class _$_Lobby implements _Lobby {
   @override
   final UserID creatorID;
   @override
-  final UserID leaderID;
-  @override
   final int createdAtInMSSinceEpoch;
   final List<UserID> _guestIDs;
   @override
@@ -209,7 +182,7 @@ class _$_Lobby implements _Lobby {
 
   @override
   String toString() {
-    return 'Lobby(id: $id, creatorID: $creatorID, leaderID: $leaderID, createdAtInMSSinceEpoch: $createdAtInMSSinceEpoch, guestIDs: $guestIDs)';
+    return 'Lobby(id: $id, creatorID: $creatorID, createdAtInMSSinceEpoch: $createdAtInMSSinceEpoch, guestIDs: $guestIDs)';
   }
 
   @override
@@ -220,8 +193,6 @@ class _$_Lobby implements _Lobby {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.creatorID, creatorID) ||
                 other.creatorID == creatorID) &&
-            (identical(other.leaderID, leaderID) ||
-                other.leaderID == leaderID) &&
             (identical(
                     other.createdAtInMSSinceEpoch, createdAtInMSSinceEpoch) ||
                 other.createdAtInMSSinceEpoch == createdAtInMSSinceEpoch) &&
@@ -230,7 +201,7 @@ class _$_Lobby implements _Lobby {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, creatorID, leaderID,
+  int get hashCode => Object.hash(runtimeType, id, creatorID,
       createdAtInMSSinceEpoch, const DeepCollectionEquality().hash(_guestIDs));
 
   @JsonKey(ignore: true)
@@ -251,7 +222,6 @@ abstract class _Lobby implements Lobby {
   const factory _Lobby(
       {required final LobbyID id,
       required final UserID creatorID,
-      required final UserID leaderID,
       required final int createdAtInMSSinceEpoch,
       required final List<UserID> guestIDs}) = _$_Lobby;
 
@@ -261,8 +231,6 @@ abstract class _Lobby implements Lobby {
   LobbyID get id;
   @override
   UserID get creatorID;
-  @override
-  UserID get leaderID;
   @override
   int get createdAtInMSSinceEpoch;
   @override

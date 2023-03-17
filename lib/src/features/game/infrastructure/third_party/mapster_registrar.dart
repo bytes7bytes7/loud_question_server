@@ -26,6 +26,9 @@ class GameMapsterRegistrar {
       )
       ..register(
         MapperMeta.two(GiveAnswerRequestIDToGiveAnswerCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.two(SetLeaderRequestIDToSetLeaderCommandMapper.new),
       );
   }
 }

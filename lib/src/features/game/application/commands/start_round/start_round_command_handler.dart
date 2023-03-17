@@ -91,6 +91,7 @@ class StartRoundCommandHandler extends RequestHandler<
         _dateTimeRepository.now().millisecondsSinceEpoch;
 
     final resultGameState = GameState.playing(
+      leaderID: oldGameState.leaderID,
       lobbyID: oldGameState.lobbyID,
       startedAtMSSinceEpoch: startedAtMSSinceEpoch,
       endsAfterSeconds: _endsAfterSeconds,
