@@ -6,7 +6,7 @@ import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
 class StartRoundCommand
-    extends Request<Either<List<DetailedException>, StartRoundResult>> {
+    extends Request<Either<List<DetailedException>, GameStateResult>> {
   StartRoundCommand({
     required this.userID,
     required this.lobbyID,

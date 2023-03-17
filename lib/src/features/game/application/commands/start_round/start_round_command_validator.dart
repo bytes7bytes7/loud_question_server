@@ -6,4 +6,4 @@ import 'start_round_command.dart';
 
 @singleton
 class StartRoundCommandValidator
-    extends BehaviorValidator<StartRoundCommand, StartRoundResult> {}
+    extends BehaviorValidator<StartRoundCommand, GameStateResult> {}

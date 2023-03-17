@@ -6,7 +6,7 @@ import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
 class SetNotReadyCommand
-    extends Request<Either<List<DetailedException>, SetNotReadyResult>> {
+    extends Request<Either<List<DetailedException>, GameStateResult>> {
   SetNotReadyCommand({
     required this.userID,
     required this.lobbyID,

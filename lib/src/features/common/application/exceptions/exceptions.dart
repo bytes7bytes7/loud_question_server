@@ -5,3 +5,4 @@ export 'lobby_does_not_exist.dart';
 export 'no_permission.dart';
 export 'no_token_provided.dart';
 export 'user_does_not_exist.dart';
+export 'you_should_join_lobby.dart';

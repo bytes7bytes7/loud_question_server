@@ -51,7 +51,7 @@ class GameController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<SetReadyResponse>())),
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
     );
   }
 
@@ -79,7 +79,7 @@ class GameController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<SetNotReadyResponse>())),
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
     );
   }
 
@@ -107,15 +107,41 @@ class GameController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<StartRoundResponse>())),
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
+    );
+  }
+
+  @Route.post('/give_answer')
+  Future<Response> giveAnswer(Request request) async {
+    late final GiveAnswerRequest giveAnswerRequest;
+    try {
+      giveAnswerRequest = await parseRequest<GiveAnswerRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(giveAnswerRequest, user.id, To<GiveAnswerCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
     );
   }
 
 // getState
 
 // terminate
-
-// give answer
 
 // get answer
 }

@@ -16,7 +16,7 @@ const _endsAfterSeconds = 60;
 
 @singleton
 class StartRoundCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, StartRoundResult>, StartRoundCommand> {
+    Either<List<DetailedException>, GameStateResult>, StartRoundCommand> {
   const StartRoundCommandHandler({
     required GameRepository gameRepository,
     required LobbyRepository lobbyRepository,
@@ -33,7 +33,7 @@ class StartRoundCommandHandler extends RequestHandler<
   final DateTimeRepository _dateTimeRepository;
 
   @override
-  FutureOr<Either<List<DetailedException>, StartRoundResult>> handle(
+  FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
     StartRoundCommand request,
   ) async {
     final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
@@ -41,6 +41,15 @@ class StartRoundCommandHandler extends RequestHandler<
     if (lobby == null) {
       return left(
         [const LobbyDoesNotExist()],
+      );
+    }
+
+    final joint = lobby.creatorID == request.userID ||
+        lobby.guestIDs.contains(request.userID);
+
+    if (!joint) {
+      return left(
+        [const YouShouldJoinLobby()],
       );
     }
 
@@ -91,7 +100,7 @@ class StartRoundCommandHandler extends RequestHandler<
     unawaited(_gameRepository.update(gameState: resultGameState));
 
     return right(
-      StartRoundResult(
+      GameStateResult(
         gameState: resultGameState,
       ),
     );

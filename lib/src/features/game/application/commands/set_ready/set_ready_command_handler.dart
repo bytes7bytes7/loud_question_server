@@ -14,7 +14,7 @@ import 'set_ready_command.dart';
 
 @singleton
 class SetReadyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, SetReadyResult>, SetReadyCommand> {
+    Either<List<DetailedException>, GameStateResult>, SetReadyCommand> {
   const SetReadyCommandHandler({
     required GameRepository gameRepository,
     required LobbyRepository lobbyRepository,
@@ -25,15 +25,23 @@ class SetReadyCommandHandler extends RequestHandler<
   final LobbyRepository _lobbyRepository;
 
   @override
-  FutureOr<Either<List<DetailedException>, SetReadyResult>> handle(
+  FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
     SetReadyCommand request,
   ) async {
-    final lobbyExists =
-        (await _lobbyRepository.getByID(id: request.lobbyID)) != null;
+    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
 
-    if (!lobbyExists) {
+    if (lobby == null) {
       return left(
         [const LobbyDoesNotExist()],
+      );
+    }
+
+    final joint = lobby.creatorID == request.userID ||
+        lobby.guestIDs.contains(request.userID);
+
+    if (!joint) {
+      return left(
+        [const YouShouldJoinLobby()],
       );
     }
 
@@ -71,7 +79,7 @@ class SetReadyCommandHandler extends RequestHandler<
         await _gameRepository.update(gameState: newGameState);
 
     return right(
-      SetReadyResult(
+      GameStateResult(
         gameState: resultGameState,
       ),
     );

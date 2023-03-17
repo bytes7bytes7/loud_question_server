@@ -5,13 +5,15 @@ import '../../../../common/application/exceptions/detailed_exception.dart';
 import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
-class SetReadyCommand
+class GiveAnswerCommand
     extends Request<Either<List<DetailedException>, GameStateResult>> {
-  SetReadyCommand({
+  GiveAnswerCommand({
     required this.userID,
     required this.lobbyID,
-  }) : super(SetReadyCommand);
+    required this.answer,
+  }) : super(GiveAnswerCommand);
 
   final UserID userID;
   final LobbyID lobbyID;
+  final String answer;
 }

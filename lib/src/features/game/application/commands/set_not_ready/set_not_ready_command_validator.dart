@@ -6,4 +6,4 @@ import 'set_not_ready_command.dart';
 
 @singleton
 class SetNotReadyCommandValidator
-    extends BehaviorValidator<SetNotReadyCommand, SetNotReadyResult> {}
+    extends BehaviorValidator<SetNotReadyCommand, GameStateResult> {}

@@ -1,7 +1,7 @@
 import '../../domain/domain.dart';
 
-class SetNotReadyResult {
-  const SetNotReadyResult({
+class GameStateResult {
+  const GameStateResult({
     required this.gameState,
   });
 

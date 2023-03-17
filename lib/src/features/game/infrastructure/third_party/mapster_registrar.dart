@@ -16,19 +16,16 @@ class GameMapsterRegistrar {
         MapperMeta.two(SetReadyRequestIDToSetReadyCommandMapper.new),
       )
       ..register(
-        MapperMeta.one(SetReadyResultToSetReadyResponseMapper.new),
-      )
-      ..register(
         MapperMeta.two(SetNotReadyRequestIDToSetNotReadyCommandMapper.new),
       )
       ..register(
-        MapperMeta.one(SetNotReadyResultToSetNotReadyResponse.new),
+        MapperMeta.one(GameStateResultToGameStateResponse.new),
       )
       ..register(
         MapperMeta.two(StartRoundRequestIDToStartRoundCommandMapper.new),
       )
       ..register(
-        MapperMeta.one(StartRoundResultToStartRoundResponseMapper.new),
+        MapperMeta.two(GiveAnswerRequestIDToGiveAnswerCommandMapper.new),
       );
   }
 }
