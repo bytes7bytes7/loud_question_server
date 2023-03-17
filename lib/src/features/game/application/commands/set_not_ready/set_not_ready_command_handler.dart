@@ -44,24 +44,26 @@ class SetNotReadyCommandHandler extends RequestHandler<
       return left(
         [const YouAlreadyNotReady()],
       );
-    } else {
-      if (oldGameState is InitGameState) {
-        if (!oldGameState.ready.contains(request.userID)) {
-          return left(
-            [const YouAlreadyNotReady()],
-          );
-        }
-
-        final ready = List<UserID>.from(oldGameState.ready)
-          ..remove(request.userID);
-        newGameState = oldGameState.copyWith(
-          ready: ready,
-        );
-      } else {
+    } else if (oldGameState is CheckingAnswerGameState) {
+      return left(
+        [const YouAlreadyNotReady()],
+      );
+    } else if (oldGameState is InitGameState) {
+      if (!oldGameState.ready.contains(request.userID)) {
         return left(
-          [const UnavailableGameOperation()],
+          [const YouAlreadyNotReady()],
         );
       }
+
+      final ready = List<UserID>.from(oldGameState.ready)
+        ..remove(request.userID);
+      newGameState = oldGameState.copyWith(
+        ready: ready,
+      );
+    } else {
+      return left(
+        [const UnavailableGameOperation()],
+      );
     }
 
     final resultGameState =

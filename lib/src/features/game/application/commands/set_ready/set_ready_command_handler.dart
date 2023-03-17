@@ -45,24 +45,26 @@ class SetReadyCommandHandler extends RequestHandler<
         lobbyID: request.lobbyID,
         ready: [request.userID],
       );
-    } else {
-      if (oldGameState is InitGameState) {
-        if (oldGameState.ready.contains(request.userID)) {
-          return left(
-            [const YouAlreadyReady()],
-          );
-        }
-
-        final ready = List<UserID>.from(oldGameState.ready)
-          ..add(request.userID);
-        newGameState = oldGameState.copyWith(
-          ready: ready,
-        );
-      } else {
+    } else if (oldGameState is CheckingAnswerGameState) {
+      newGameState = GameState.init(
+        lobbyID: request.lobbyID,
+        ready: [request.userID],
+      );
+    } else if (oldGameState is InitGameState) {
+      if (oldGameState.ready.contains(request.userID)) {
         return left(
-          [const UnavailableGameOperation()],
+          [const YouAlreadyReady()],
         );
       }
+
+      final ready = List<UserID>.from(oldGameState.ready)..add(request.userID);
+      newGameState = oldGameState.copyWith(
+        ready: ready,
+      );
+    } else {
+      return left(
+        [const UnavailableGameOperation()],
+      );
     }
 
     final resultGameState =

@@ -88,6 +88,8 @@ class StartRoundCommandHandler extends RequestHandler<
       question: question.content,
     );
 
+    unawaited(_gameRepository.update(gameState: resultGameState));
+
     return right(
       StartRoundResult(
         gameState: resultGameState,
