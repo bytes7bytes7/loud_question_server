@@ -29,6 +29,12 @@ class LobbyMapsterRegistrar {
       )
       ..register(
         MapperMeta.one(GetLobbiesResultToGetLobbiesResponseMapper.new),
+      )
+      ..register(
+        MapperMeta.two(SetLeaderRequestIDToSetLeaderCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.one(SetLeaderResultToSetLeaderResponseMapper.new),
       );
   }
 }

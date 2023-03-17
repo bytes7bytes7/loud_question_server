@@ -55,7 +55,7 @@ class LobbyController extends ApiController {
     );
   }
 
-  @Route.post('/<lobbyID>/join')
+  @Route.post('/join')
   Future<Response> joinLobby(Request request) async {
     late final JoinLobbyRequest joinLobbyRequest;
     try {
@@ -129,7 +129,7 @@ class LobbyController extends ApiController {
     }
 
     final command =
-        _mapster.map2(setLeaderRequest, user.id, To<SetLeaderRequest>());
+        _mapster.map2(setLeaderRequest, user.id, To<SetLeaderCommand>());
 
     final result = await command.sendTo(_mediator);
 
