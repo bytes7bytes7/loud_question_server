@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../utils/typedef.dart';
+import '../../../../common/domain/domain.dart';
 
 part 'start_round_request.g.dart';
 
@@ -10,7 +11,7 @@ class StartRoundRequest {
     required this.lobbyID,
   });
 
-  final String lobbyID;
+  final LobbyID lobbyID;
 
   factory StartRoundRequest.fromJson(JsonMap json) =>
       _$StartRoundRequestFromJson(json);

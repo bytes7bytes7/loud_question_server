@@ -1,17 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'start_round_request.dart';
+part of 'set_leader_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-StartRoundRequest _$StartRoundRequestFromJson(Map<String, dynamic> json) =>
-    StartRoundRequest(
+SetLeaderRequest _$SetLeaderRequestFromJson(Map<String, dynamic> json) =>
+    SetLeaderRequest(
+      userID: UserID.fromJson(json['userID'] as Map<String, dynamic>),
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$StartRoundRequestToJson(StartRoundRequest instance) =>
+Map<String, dynamic> _$SetLeaderRequestToJson(SetLeaderRequest instance) =>
     <String, dynamic>{
+      'userID': instance.userID,
       'lobbyID': instance.lobbyID,
     };

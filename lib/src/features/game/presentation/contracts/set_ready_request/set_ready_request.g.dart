@@ -8,7 +8,7 @@ part of 'set_ready_request.dart';
 
 SetReadyRequest _$SetReadyRequestFromJson(Map<String, dynamic> json) =>
     SetReadyRequest(
-      lobbyID: json['lobbyID'] as String,
+      lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SetReadyRequestToJson(SetReadyRequest instance) =>

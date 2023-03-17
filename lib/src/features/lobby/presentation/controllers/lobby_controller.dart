@@ -111,5 +111,31 @@ class LobbyController extends ApiController {
     );
   }
 
-  // leave lobby handler
+  @Route.post('/set_leader')
+  Future<Response> setLeader(Request request) async {
+    late final SetLeaderRequest setLeaderRequest;
+    try {
+      setLeaderRequest = await parseRequest<SetLeaderRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(setLeaderRequest, user.id, To<SetLeaderRequest>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<SetLeaderResponse>())),
+    );
+  }
 }

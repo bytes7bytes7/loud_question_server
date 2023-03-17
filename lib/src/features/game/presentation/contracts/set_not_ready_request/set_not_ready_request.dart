@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../utils/typedef.dart';
+import '../../../../common/domain/domain.dart';
 
 part 'set_not_ready_request.g.dart';
 
@@ -10,7 +11,7 @@ class SetNotReadyRequest {
     required this.lobbyID,
   });
 
-  final String lobbyID;
+  final LobbyID lobbyID;
 
   factory SetNotReadyRequest.fromJson(JsonMap json) =>
       _$SetNotReadyRequestFromJson(json);

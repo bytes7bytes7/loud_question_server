@@ -23,5 +23,10 @@ Router _$LobbyControllerRouter(LobbyController service) {
     r'/all',
     service.getLobbies,
   );
+  router.add(
+    'POST',
+    r'/set_leader',
+    service.setLeader,
+  );
   return router;
 }

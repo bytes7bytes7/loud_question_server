@@ -8,7 +8,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart' as _i15;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:json_annotation/json_annotation.dart' as _i28;
+import 'package:json_annotation/json_annotation.dart' as _i29;
 import 'package:load_question_server/src/features/auth/application/application.dart'
     as _i32;
 import 'package:load_question_server/src/features/auth/application/commands/log_out/log_out_command_handler.dart'
@@ -34,17 +34,17 @@ import 'package:load_question_server/src/features/auth/infrastructure/app_servic
 import 'package:load_question_server/src/features/auth/infrastructure/json_converters/log_in_request_json_converter.dart'
     as _i24;
 import 'package:load_question_server/src/features/auth/infrastructure/json_converters/log_out_request_json_converter.dart'
-    as _i30;
+    as _i23;
 import 'package:load_question_server/src/features/auth/infrastructure/json_converters/register_request_json_converter.dart'
-    as _i29;
+    as _i30;
 import 'package:load_question_server/src/features/auth/infrastructure/json_converters/verify_token_request_json_converter.dart'
-    as _i21;
+    as _i28;
 import 'package:load_question_server/src/features/auth/infrastructure/third_party/mapster_registrar.dart'
     as _i59;
 import 'package:load_question_server/src/features/auth/infrastructure/third_party/mediator_registrar.dart'
     as _i60;
 import 'package:load_question_server/src/features/auth/presentation/contracts/contracts.dart'
-    as _i20;
+    as _i22;
 import 'package:load_question_server/src/features/auth/presentation/controllers/auth_controller.dart'
     as _i58;
 import 'package:load_question_server/src/features/common/application/application.dart'
@@ -75,17 +75,17 @@ import 'package:load_question_server/src/features/game/application/commands/star
 import 'package:load_question_server/src/features/game/infrastructure/json_converters/give_answer_request_json_converter.dart'
     as _i26;
 import 'package:load_question_server/src/features/game/infrastructure/json_converters/set_not_ready_request_json_converter.dart'
-    as _i17;
+    as _i19;
 import 'package:load_question_server/src/features/game/infrastructure/json_converters/set_ready_request_json_converter.dart'
-    as _i25;
+    as _i20;
 import 'package:load_question_server/src/features/game/infrastructure/json_converters/start_round_request_json_converter.dart'
-    as _i22;
+    as _i21;
 import 'package:load_question_server/src/features/game/infrastructure/third_party/mapster_registrar.dart'
     as _i63;
 import 'package:load_question_server/src/features/game/infrastructure/third_party/mediator_registrar.dart'
     as _i64;
 import 'package:load_question_server/src/features/game/presentation/contracts/contracts.dart'
-    as _i16;
+    as _i18;
 import 'package:load_question_server/src/features/game/presentation/controllers/game_controller.dart'
     as _i62;
 import 'package:load_question_server/src/features/lobby/application/commands/create_lobby/create_lobby_command_handler.dart'
@@ -103,15 +103,15 @@ import 'package:load_question_server/src/features/lobby/application/queries/get_
 import 'package:load_question_server/src/features/lobby/infrastructure/json_converters/create_lobby_request_json_converter.dart'
     as _i27;
 import 'package:load_question_server/src/features/lobby/infrastructure/json_converters/get_lobbies_request_json_converter.dart'
-    as _i19;
+    as _i17;
 import 'package:load_question_server/src/features/lobby/infrastructure/json_converters/join_lobby_request_json_converter.dart'
-    as _i23;
+    as _i25;
 import 'package:load_question_server/src/features/lobby/infrastructure/third_party/mapster_registrar.dart'
     as _i69;
 import 'package:load_question_server/src/features/lobby/infrastructure/third_party/mediator_registrar.dart'
     as _i70;
 import 'package:load_question_server/src/features/lobby/presentation/contracts/contracts.dart'
-    as _i18;
+    as _i16;
 import 'package:load_question_server/src/features/lobby/presentation/controllers/lobby_controller.dart'
     as _i68;
 import 'package:load_question_server/src/repositories/implementations/date_time_repository.dart'
@@ -183,33 +183,33 @@ _i1.GetIt init(
   gh.singleton<_i14.JoinLobbyCommandValidator>(
       _i14.JoinLobbyCommandValidator());
   gh.singleton<
-          _i15.JsonConverter<_i16.SetNotReadyRequest, Map<String, Object?>>>(
-      _i17.SetNotReadyRequestJsonConverter());
+          _i15.JsonConverter<_i16.GetLobbiesRequest, Map<String, Object?>>>(
+      _i17.GetLobbiesRequestJsonConverter());
   gh.singleton<
-          _i15.JsonConverter<_i18.GetLobbiesRequest, Map<String, Object?>>>(
-      _i19.GetLobbiesRequestJsonConverter());
+          _i15.JsonConverter<_i18.SetNotReadyRequest, Map<String, Object?>>>(
+      _i19.SetNotReadyRequestJsonConverter());
+  gh.singleton<_i15.JsonConverter<_i18.SetReadyRequest, Map<String, Object?>>>(
+      _i20.SetReadyRequestJsonConverter());
   gh.singleton<
-          _i15.JsonConverter<_i20.VerifyTokenRequest, Map<String, Object?>>>(
-      _i21.VerifyTokenRequestJsonConverter());
-  gh.singleton<
-          _i15.JsonConverter<_i16.StartRoundRequest, Map<String, Object?>>>(
-      _i22.StartRoundRequestJsonConverter());
-  gh.singleton<_i15.JsonConverter<_i18.JoinLobbyRequest, Map<String, Object?>>>(
-      _i23.JoinLobbyRequestJsonConverter());
-  gh.singleton<_i15.JsonConverter<_i20.LogInRequest, Map<String, Object?>>>(
+          _i15.JsonConverter<_i18.StartRoundRequest, Map<String, Object?>>>(
+      _i21.StartRoundRequestJsonConverter());
+  gh.singleton<_i15.JsonConverter<_i22.LogOutRequest, Map<String, Object?>>>(
+      _i23.LogOutRequestJsonConverter());
+  gh.singleton<_i15.JsonConverter<_i22.LogInRequest, Map<String, Object?>>>(
       _i24.LogInRequestJsonConverter());
-  gh.singleton<_i15.JsonConverter<_i16.SetReadyRequest, Map<String, Object?>>>(
-      _i25.SetReadyRequestJsonConverter());
+  gh.singleton<_i15.JsonConverter<_i16.JoinLobbyRequest, Map<String, Object?>>>(
+      _i25.JoinLobbyRequestJsonConverter());
   gh.singleton<
-          _i15.JsonConverter<_i16.GiveAnswerRequest, Map<String, Object?>>>(
+          _i15.JsonConverter<_i18.GiveAnswerRequest, Map<String, Object?>>>(
       _i26.GiveAnswerRequestJsonConverter());
   gh.singleton<
-          _i15.JsonConverter<_i18.CreateLobbyRequest, Map<String, Object?>>>(
+          _i15.JsonConverter<_i16.CreateLobbyRequest, Map<String, Object?>>>(
       _i27.CreateLobbyRequestJsonConverter());
-  gh.singleton<_i28.JsonConverter<_i20.RegisterRequest, Map<String, Object?>>>(
-      _i29.RegisterRequestJsonConverter());
-  gh.singleton<_i15.JsonConverter<_i20.LogOutRequest, Map<String, Object?>>>(
-      _i30.LogOutRequestJsonConverter());
+  gh.singleton<
+          _i15.JsonConverter<_i22.VerifyTokenRequest, Map<String, Object?>>>(
+      _i28.VerifyTokenRequestJsonConverter());
+  gh.singleton<_i29.JsonConverter<_i22.RegisterRequest, Map<String, Object?>>>(
+      _i30.RegisterRequestJsonConverter());
   gh.singleton<_i31.JwtSettings>(envModule.jwtSettings);
   gh.singleton<_i32.JwtTokenService>(
       _i33.ProdJwtTokenService(gh<_i31.JwtSettings>()));

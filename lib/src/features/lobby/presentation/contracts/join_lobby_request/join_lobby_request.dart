@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../utils/typedef.dart';
+import '../../../../common/domain/domain.dart';
 
 part 'join_lobby_request.g.dart';
 
@@ -11,7 +12,7 @@ class JoinLobbyRequest {
     required this.password,
   });
 
-  final String lobbyID;
+  final LobbyID lobbyID;
   final String password;
 
   factory JoinLobbyRequest.fromJson(JsonMap json) =>

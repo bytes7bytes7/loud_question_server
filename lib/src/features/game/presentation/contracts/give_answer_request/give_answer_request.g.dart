@@ -8,7 +8,7 @@ part of 'give_answer_request.dart';
 
 GiveAnswerRequest _$GiveAnswerRequestFromJson(Map<String, dynamic> json) =>
     GiveAnswerRequest(
-      lobbyID: json['lobbyID'] as String,
+      lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
       answer: json['answer'] as String,
     );
 

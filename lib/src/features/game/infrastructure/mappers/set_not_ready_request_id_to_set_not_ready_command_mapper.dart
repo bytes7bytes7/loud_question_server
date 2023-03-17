@@ -12,7 +12,7 @@ class SetNotReadyRequestIDToSetNotReadyCommandMapper
   SetNotReadyCommand map() {
     return SetNotReadyCommand(
       userID: _userID,
-      lobbyID: LobbyID(_request.lobbyID),
+      lobbyID: _request.lobbyID,
     );
   }
 

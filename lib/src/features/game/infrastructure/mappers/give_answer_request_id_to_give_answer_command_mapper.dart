@@ -12,7 +12,7 @@ class GiveAnswerRequestIDToGiveAnswerCommandMapper
   GiveAnswerCommand map() {
     return GiveAnswerCommand(
       userID: _userID,
-      lobbyID: LobbyID(_request.lobbyID),
+      lobbyID: _request.lobbyID,
       answer: _request.answer,
     );
   }

@@ -12,7 +12,7 @@ class SetReadyRequestIDToSetReadyCommandMapper
   SetReadyCommand map() {
     return SetReadyCommand(
       userID: _userID,
-      lobbyID: LobbyID(_request.lobbyID),
+      lobbyID: _request.lobbyID,
     );
   }
 

@@ -8,7 +8,7 @@ part of 'set_not_ready_request.dart';
 
 SetNotReadyRequest _$SetNotReadyRequestFromJson(Map<String, dynamic> json) =>
     SetNotReadyRequest(
-      lobbyID: json['lobbyID'] as String,
+      lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SetNotReadyRequestToJson(SetNotReadyRequest instance) =>

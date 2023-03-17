@@ -8,7 +8,7 @@ part of 'join_lobby_request.dart';
 
 JoinLobbyRequest _$JoinLobbyRequestFromJson(Map<String, dynamic> json) =>
     JoinLobbyRequest(
-      lobbyID: json['lobbyID'] as String,
+      lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
       password: json['password'] as String,
     );
 
