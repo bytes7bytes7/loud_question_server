@@ -9,6 +9,11 @@ part of 'game_controller.dart';
 Router _$GameControllerRouter(GameController service) {
   final router = Router();
   router.add(
+    'GET',
+    r'/<lobbyID>/state',
+    service.getState,
+  );
+  router.add(
     'POST',
     r'/<lobbyID>/ready',
     service.setReady,

@@ -27,6 +27,37 @@ class GameController extends ApiController {
 
   Router get router => _$GameControllerRouter(this);
 
+  @Route.get('/<lobbyID>/state')
+  Future<Response> getState(Request request) async {
+    late final GetStateRequest getStateRequest;
+    try {
+      getStateRequest = await parseRequest<GetStateRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final query = _mapster.map2(getStateRequest, user.id, To<GetStateQuery>());
+
+    final result = await query.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
+    );
+  }
+
+  /// Long polling
+  // @Route.get('/<lobbyID>/listen_state')
+  // Future<Response> listenState(Request request) async {}
+
   @Route.post('/<lobbyID>/ready')
   Future<Response> setReady(Request request) async {
     late final SetReadyRequest setReadyRequest;
@@ -222,6 +253,4 @@ class GameController extends ApiController {
       (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
     );
   }
-
-// getState
 }

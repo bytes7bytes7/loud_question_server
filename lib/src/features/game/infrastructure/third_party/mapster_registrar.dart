@@ -38,6 +38,9 @@ class GameMapsterRegistrar {
       )
       ..register(
         MapperMeta.two(RestartRequestIDToRestartCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.two(GetStateRequestIDToGetStateQueryMapper.new),
       );
   }
 }
