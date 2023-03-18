@@ -9,10 +9,6 @@ class LogOutResultToLogOutResponse
 
   @override
   LogOutResponse map() {
-    return LogOutResponse(
-      info: _result.info,
-    );
+    return LogOutResponse();
   }
-
-  LogOutResult get _result => source;
 }

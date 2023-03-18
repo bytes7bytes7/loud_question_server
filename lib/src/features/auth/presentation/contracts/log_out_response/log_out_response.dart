@@ -6,11 +6,7 @@ part 'log_out_response.g.dart';
 
 @JsonSerializable()
 class LogOutResponse {
-  const LogOutResponse({
-    required this.info,
-  });
-
-  final String info;
+  const LogOutResponse();
 
   factory LogOutResponse.fromJson(JsonMap json) =>
       _$LogOutResponseFromJson(json);
