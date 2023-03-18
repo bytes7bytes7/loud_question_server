@@ -51,7 +51,7 @@ class LobbyController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<CreateLobbyResponse>())),
+      (r) => created(_mapster.map1(r, To<CreateLobbyResponse>())),
     );
   }
 
@@ -110,5 +110,4 @@ class LobbyController extends ApiController {
       (r) => ok(_mapster.map1(r, To<GetLobbiesResponse>())),
     );
   }
-
 }

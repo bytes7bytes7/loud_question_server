@@ -6,11 +6,7 @@ part 'verify_token_response.g.dart';
 
 @JsonSerializable()
 class VerifyTokenResponse {
-  const VerifyTokenResponse({
-    required this.info,
-  });
-
-  final String info;
+  const VerifyTokenResponse();
 
   factory VerifyTokenResponse.fromJson(JsonMap json) =>
       _$VerifyTokenResponseFromJson(json);

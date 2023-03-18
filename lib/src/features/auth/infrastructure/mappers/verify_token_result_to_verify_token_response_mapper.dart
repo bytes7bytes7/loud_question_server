@@ -9,10 +9,6 @@ class VerifyTokenResultToVerifyTokenResponseMapper
 
   @override
   VerifyTokenResponse map() {
-    return VerifyTokenResponse(
-      info: _result.info,
-    );
+    return VerifyTokenResponse();
   }
-
-  VerifyTokenResult get _result => source;
 }

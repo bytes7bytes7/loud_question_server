@@ -34,11 +34,38 @@ class ApiController {
       problemHandler(exceptions);
 
   Response ok(Object result) {
-    return Response.ok(
-      _jsonEncoder.convert(result),
+    return _createResponse(
+      statusCode: HttpStatus.ok,
+      body: _jsonEncoder.convert(result),
       headers: {
         HttpHeaders.contentTypeHeader: ContentType.json.toString(),
       },
+    );
+  }
+
+  Response created(Object result) {
+    return _createResponse(
+      statusCode: HttpStatus.created,
+      body: _jsonEncoder.convert(result),
+      headers: {
+        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      },
+    );
+  }
+
+  Response _createResponse({
+    required int statusCode,
+    Object? body,
+    Map<String, Object>? headers,
+    Encoding? encoding,
+    Map<String, Object>? context,
+  }) {
+    return Response(
+      statusCode,
+      body: body,
+      headers: headers,
+      encoding: encoding,
+      context: context,
     );
   }
 }

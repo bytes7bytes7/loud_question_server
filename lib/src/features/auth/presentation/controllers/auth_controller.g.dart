@@ -24,7 +24,7 @@ Router _$AuthControllerRouter(AuthController service) {
     service.logOut,
   );
   router.add(
-    'POST',
+    'GET',
     r'/verify_token',
     service.verifyToken,
   );

@@ -43,7 +43,7 @@ class AuthController extends ApiController {
 
     return authResult.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<AuthResponse>())),
+      (r) => created(_mapster.map1(r, To<AuthResponse>())),
     );
   }
 
@@ -97,7 +97,7 @@ class AuthController extends ApiController {
     );
   }
 
-  @Route.post('/verify_token')
+  @Route.get('/verify_token')
   Future<Response> verifyToken(Request request) async {
     late final VerifyTokenRequest verifyTokenRequest;
     try {

@@ -7,12 +7,8 @@ part of 'verify_token_response.dart';
 // **************************************************************************
 
 VerifyTokenResponse _$VerifyTokenResponseFromJson(Map<String, dynamic> json) =>
-    VerifyTokenResponse(
-      info: json['info'] as String,
-    );
+    VerifyTokenResponse();
 
 Map<String, dynamic> _$VerifyTokenResponseToJson(
         VerifyTokenResponse instance) =>
-    <String, dynamic>{
-      'info': instance.info,
-    };
+    <String, dynamic>{};
