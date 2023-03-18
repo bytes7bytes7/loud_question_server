@@ -1,9 +1,9 @@
 import '../../../common/application/exceptions/detailed_exception.dart';
 
-class AlreadyJointLobby extends DetailedException {
-  const AlreadyJointLobby()
+class YouAlreadyJointLobby extends DetailedException {
+  const YouAlreadyJointLobby()
       : super.conflict(
-          code: 'lobby.alreadyJoint',
+          code: 'lobby.youAlreadyJoint',
           description: 'You have already joint this lobby.',
         );
 }

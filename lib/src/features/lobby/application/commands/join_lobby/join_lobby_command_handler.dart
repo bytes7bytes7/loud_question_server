@@ -32,8 +32,9 @@ class JoinLobbyCommandHandler extends RequestHandler<
   ) async {
     final rightPassword = await _lobbyPasswordHashRepository
         .getPasswordHashByID(id: request.lobbyID);
+    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
 
-    if (rightPassword == null) {
+    if (rightPassword == null || lobby == null) {
       return left(
         [const LobbyDoesNotExist()],
       );
@@ -47,20 +48,12 @@ class JoinLobbyCommandHandler extends RequestHandler<
       );
     }
 
-    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
-
-    if (lobby == null) {
-      return left(
-        [const LobbyDoesNotExist()],
-      );
-    }
-
     final alreadyJoint = lobby.creatorID == request.guestID ||
         lobby.guestIDs.contains(request.guestID);
 
     if (alreadyJoint) {
       return left(
-        [const AlreadyJointLobby()],
+        [const YouAlreadyJointLobby()],
       );
     }
 
