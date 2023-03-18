@@ -14,11 +14,11 @@ void main(List<String> args) async {
   final parser = ArgParser()
     ..addOption(
       _envKey,
-      defaultsTo: 'prod',
+      defaultsTo: 'test',
     )
     ..addFlag(
       _printLogsKey,
-      defaultsTo: false,
+      defaultsTo: true,
     );
 
   final result = parser.parse(args);
