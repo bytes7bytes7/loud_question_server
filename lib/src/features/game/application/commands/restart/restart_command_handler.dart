@@ -17,14 +17,14 @@ class RestartCommandHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, RestartCommand> {
   const RestartCommandHandler({
     required LobbyRepository lobbyRepository,
-    required GameRepository gameRepository,
+    required GameStateService gameStateService,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
-        _gameRepository = gameRepository,
+        _gameStateService = gameStateService,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
-  final GameRepository _gameRepository;
+  final GameStateService _gameStateService;
   final Mapster _mapster;
 
   @override
@@ -47,7 +47,7 @@ class RestartCommandHandler extends RequestHandler<
 
     // TODO: cancel timer (playing timer - 60 seconds)
 
-    final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;
     if (oldGameState == null) {
@@ -64,7 +64,7 @@ class RestartCommandHandler extends RequestHandler<
       );
     }
 
-    await _gameRepository.update(gameState: newGameState);
+    await _gameStateService.update(gameState: newGameState);
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

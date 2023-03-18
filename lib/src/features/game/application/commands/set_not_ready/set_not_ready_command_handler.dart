@@ -18,14 +18,14 @@ import 'set_not_ready_command.dart';
 class SetNotReadyCommandHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, SetNotReadyCommand> {
   const SetNotReadyCommandHandler({
-    required GameRepository gameRepository,
+    required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,
     required Mapster mapster,
-  })  : _gameRepository = gameRepository,
+  })  : _gameStateService = gameStateService,
         _lobbyRepository = lobbyRepository,
         _mapster = mapster;
 
-  final GameRepository _gameRepository;
+  final GameStateService _gameStateService;
   final LobbyRepository _lobbyRepository;
   final Mapster _mapster;
 
@@ -50,7 +50,7 @@ class SetNotReadyCommandHandler extends RequestHandler<
       );
     }
 
-    final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;
     if (oldGameState == null) {
@@ -79,7 +79,7 @@ class SetNotReadyCommandHandler extends RequestHandler<
       );
     }
 
-    await _gameRepository.update(gameState: newGameState);
+    await _gameStateService.update(gameState: newGameState);
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

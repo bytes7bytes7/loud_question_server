@@ -17,15 +17,13 @@ extension RequestX on Request {
 
   Request setUser(User user) {
     return change(
-      context: Map<String, Object?>.from(context)
-        ..[_userContextKey] = user,
+      context: Map<String, Object?>.from(context)..[_userContextKey] = user,
     );
   }
 
   Request removeUser() {
     return change(
-      context: Map<String, Object?>.from(context)
-        ..remove(_userContextKey),
+      context: Map<String, Object?>.from(context)..remove(_userContextKey),
     );
   }
 
@@ -43,7 +41,8 @@ extension RequestX on Request {
   Request removeToken() {
     return change(
       headers: Map<String, Object?>.from(headers)
-        ..remove(_tokenHeadersKey1)..remove(_tokenHeadersKey2),
+        ..remove(_tokenHeadersKey1)
+        ..remove(_tokenHeadersKey2),
     );
   }
 

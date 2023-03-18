@@ -17,14 +17,14 @@ class GetStateQueryHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, GetStateQuery> {
   const GetStateQueryHandler({
     required LobbyRepository lobbyRepository,
-    required GameRepository gameRepository,
+    required GameStateService gameStateService,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
-        _gameRepository = gameRepository,
+        _gameStateService = gameStateService,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
-  final GameRepository _gameRepository;
+  final GameStateService _gameStateService;
   final Mapster _mapster;
 
   @override
@@ -46,7 +46,7 @@ class GetStateQueryHandler extends RequestHandler<
       );
     }
 
-    final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;
     if (oldGameState == null) {
@@ -56,7 +56,7 @@ class GetStateQueryHandler extends RequestHandler<
         ready: [],
       );
 
-      await _gameRepository.update(gameState: newGameState);
+      await _gameStateService.update(gameState: newGameState);
     } else {
       newGameState = oldGameState;
     }

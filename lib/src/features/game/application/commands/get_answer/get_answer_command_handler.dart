@@ -18,14 +18,14 @@ class GetAnswerCommandHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, GetAnswerCommand> {
   const GetAnswerCommandHandler({
     required LobbyRepository lobbyRepository,
-    required GameRepository gameRepository,
+    required GameStateService gameStateService,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
-        _gameRepository = gameRepository,
+        _gameStateService = gameStateService,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
-  final GameRepository _gameRepository;
+  final GameStateService _gameStateService;
   final Mapster _mapster;
 
   @override
@@ -40,7 +40,7 @@ class GetAnswerCommandHandler extends RequestHandler<
       );
     }
 
-    final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     if (oldGameState == null) {
       return left(
@@ -69,7 +69,7 @@ class GetAnswerCommandHandler extends RequestHandler<
         answers: oldGameState.answers,
       );
 
-      await _gameRepository.update(gameState: newGameState);
+      await _gameStateService.update(gameState: newGameState);
     } else {
       return left(
         [const UnavailableGameOperation()],

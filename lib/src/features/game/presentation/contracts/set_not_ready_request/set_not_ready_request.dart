@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../utils/typedef.dart';
-import '../../../../common/domain/domain.dart';
 
 part 'set_not_ready_request.g.dart';
 

@@ -20,18 +20,18 @@ const _endsAfterSeconds = 60;
 class StartRoundCommandHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, StartRoundCommand> {
   const StartRoundCommandHandler({
-    required GameRepository gameRepository,
+    required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,
     required QuestionRepository questionRepository,
     required DateTimeRepository dateTimeRepository,
     required Mapster mapster,
-  })  : _gameRepository = gameRepository,
+  })  : _gameStateService = gameStateService,
         _lobbyRepository = lobbyRepository,
         _questionRepository = questionRepository,
         _dateTimeRepository = dateTimeRepository,
         _mapster = mapster;
 
-  final GameRepository _gameRepository;
+  final GameStateService _gameStateService;
   final LobbyRepository _lobbyRepository;
   final QuestionRepository _questionRepository;
   final DateTimeRepository _dateTimeRepository;
@@ -66,7 +66,7 @@ class StartRoundCommandHandler extends RequestHandler<
       );
     }
 
-    final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     if (oldGameState == null) {
       return left(
@@ -103,7 +103,7 @@ class StartRoundCommandHandler extends RequestHandler<
       question: question,
     );
 
-    unawaited(_gameRepository.update(gameState: newGameState));
+    unawaited(_gameStateService.update(gameState: newGameState));
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

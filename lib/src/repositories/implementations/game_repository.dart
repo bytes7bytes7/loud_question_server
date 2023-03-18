@@ -35,11 +35,4 @@ class TestGameRepository implements GameRepository {
 
     return gameState;
   }
-
-  @override
-  Future<void> remove({
-    required LobbyID lobbyID,
-  }) async {
-    _storage.remove(lobbyID);
-  }
 }

@@ -13,8 +13,4 @@ abstract class GameRepository {
   Future<GameState> update({
     required GameState gameState,
   });
-
-  Future<void> remove({
-    required LobbyID lobbyID,
-  });
 }

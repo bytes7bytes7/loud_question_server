@@ -14,6 +14,11 @@ Router _$GameControllerRouter(GameController service) {
     service.getState,
   );
   router.add(
+    'GET',
+    r'/<lobbyID>/listen_state',
+    service.listenState,
+  );
+  router.add(
     'POST',
     r'/<lobbyID>/ready',
     service.setReady,

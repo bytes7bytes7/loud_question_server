@@ -18,16 +18,16 @@ class GiveAnswerCommandHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, GiveAnswerCommand> {
   const GiveAnswerCommandHandler({
     required LobbyRepository lobbyRepository,
-    required GameRepository gameRepository,
+    required GameStateService gameStateService,
     required DateTimeRepository dateTimeRepository,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
-        _gameRepository = gameRepository,
+        _gameStateService = gameStateService,
         _dateTimeRepository = dateTimeRepository,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
-  final GameRepository _gameRepository;
+  final GameStateService _gameStateService;
   final DateTimeRepository _dateTimeRepository;
   final Mapster _mapster;
 
@@ -52,7 +52,7 @@ class GiveAnswerCommandHandler extends RequestHandler<
       );
     }
 
-    final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     if (oldGameState == null) {
       return left(
@@ -105,7 +105,7 @@ class GiveAnswerCommandHandler extends RequestHandler<
       );
     }
 
-    await _gameRepository.update(gameState: newGameState);
+    await _gameStateService.update(gameState: newGameState);
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

@@ -55,8 +55,33 @@ class GameController extends ApiController {
   }
 
   /// Long polling
-  // @Route.get('/<lobbyID>/listen_state')
-  // Future<Response> listenState(Request request) async {}
+  @Route.get('/<lobbyID>/listen_state')
+  Future<Response> listenState(Request request) async {
+    late final ListenStateRequest listenStateRequest;
+    try {
+      listenStateRequest = await parseRequest<ListenStateRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final query =
+        _mapster.map2(listenStateRequest, user.id, To<ListenStateQuery>());
+
+    final result = await query.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
+    );
+  }
 
   @Route.post('/<lobbyID>/ready')
   Future<Response> setReady(Request request) async {

@@ -25,7 +25,9 @@ class ApiController {
 
     final jsonConverter = _getIt.get<JsonConverter<T, JsonMap>>();
 
-    final fullJson = (jsonBody as JsonMap)..addAll(request.params);
+    final fullJson = (jsonBody as JsonMap)
+      ..addAll(request.params)
+      ..addAll(request.url.queryParameters);
 
     return jsonConverter.fromJson(fullJson);
   }
