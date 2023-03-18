@@ -3,18 +3,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../../utils/typedef.dart';
 import '../../../../common/domain/domain.dart';
 
-part 'set_ready_request.g.dart';
+part 'get_answer_request.g.dart';
 
 @JsonSerializable()
-class SetReadyRequest {
-  const SetReadyRequest({
+class GetAnswerRequest {
+  const GetAnswerRequest({
     required this.lobbyID,
   });
 
   final String lobbyID;
 
-  factory SetReadyRequest.fromJson(JsonMap json) =>
-      _$SetReadyRequestFromJson(json);
+  factory GetAnswerRequest.fromJson(JsonMap json) =>
+      _$GetAnswerRequestFromJson(json);
 
-  JsonMap toJson() => _$SetReadyRequestToJson(this);
+  JsonMap toJson() => _$GetAnswerRequestToJson(this);
 }

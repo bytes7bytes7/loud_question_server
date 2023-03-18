@@ -55,7 +55,7 @@ class LobbyController extends ApiController {
     );
   }
 
-  @Route.post('/join')
+  @Route.post('/<lobbyID>/join')
   Future<Response> joinLobby(Request request) async {
     late final JoinLobbyRequest joinLobbyRequest;
     try {

@@ -12,7 +12,7 @@ class JoinLobbyRequest {
     required this.password,
   });
 
-  final LobbyID lobbyID;
+  final String lobbyID;
   final String password;
 
   factory JoinLobbyRequest.fromJson(JsonMap json) =>

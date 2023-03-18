@@ -8,7 +8,8 @@ part of 'game_state_response.dart';
 
 GameStateResponse _$GameStateResponseFromJson(Map<String, dynamic> json) =>
     GameStateResponse(
-      gameState: GameState.fromJson(json['gameState'] as Map<String, dynamic>),
+      gameState:
+          GameStateVM.fromJson(json['gameState'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$GameStateResponseToJson(GameStateResponse instance) =>

@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mapster/mapster.dart';
 import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
-import '../../../../common/domain/domain.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
+import '../../view_models/view_models.dart';
 import 'give_answer_command.dart';
 
 @singleton
@@ -19,13 +20,16 @@ class GiveAnswerCommandHandler extends RequestHandler<
     required LobbyRepository lobbyRepository,
     required GameRepository gameRepository,
     required DateTimeRepository dateTimeRepository,
+    required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
         _gameRepository = gameRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _dateTimeRepository = dateTimeRepository,
+        _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
   final GameRepository _gameRepository;
   final DateTimeRepository _dateTimeRepository;
+  final Mapster _mapster;
 
   @override
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
@@ -83,28 +87,32 @@ class GiveAnswerCommandHandler extends RequestHandler<
       newGameState = WaitingForAnswerGameState(
         leaderID: oldGameState.leaderID,
         lobbyID: oldGameState.lobbyID,
-        hasAnswered: [request.userID],
+        answers: {
+          request.userID: request.answer,
+        },
         question: oldGameState.question,
       );
     } else if (oldGameState is WaitingForAnswerGameState) {
-      final hasAnswered = List<UserID>.from(oldGameState.hasAnswered);
+      final answers = Map.of(oldGameState.answers);
 
-      if (hasAnswered.contains(request.userID)) {
+      if (answers.keys.contains(request.userID)) {
         return left(
           [const YouAlreadyAnswered()],
         );
       }
 
       newGameState = oldGameState.copyWith(
-        hasAnswered: hasAnswered..add(request.userID),
+        answers: answers..[request.userID] = request.answer,
       );
     }
 
     await _gameRepository.update(gameState: newGameState);
 
+    final gameStateVM = _mapster.map1(newGameState, To<GameStateVM>());
+
     return right(
       GameStateResult(
-        gameState: newGameState,
+        gameState: gameStateVM,
       ),
     );
   }

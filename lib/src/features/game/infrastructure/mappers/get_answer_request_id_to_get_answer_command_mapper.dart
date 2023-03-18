@@ -4,20 +4,19 @@ import '../../../common/domain/domain.dart';
 import '../../application/commands/commands.dart';
 import '../../presentation/contracts/contracts.dart';
 
-class GiveAnswerRequestIDToGiveAnswerCommandMapper
-    extends TwoSourcesMapper<GiveAnswerRequest, UserID, GiveAnswerCommand> {
-  GiveAnswerRequestIDToGiveAnswerCommandMapper(super.input);
+class GetAnswerRequestIDToGetAnswerCommandMapper
+    extends TwoSourcesMapper<GetAnswerRequest, UserID, GetAnswerCommand> {
+  GetAnswerRequestIDToGetAnswerCommandMapper(super.input);
 
   @override
-  GiveAnswerCommand map() {
-    return GiveAnswerCommand(
+  GetAnswerCommand map() {
+    return GetAnswerCommand(
       userID: _userID,
       lobbyID: LobbyID.fromString(_request.lobbyID),
-      answer: _request.answer,
     );
   }
 
-  GiveAnswerRequest get _request => source1;
+  GetAnswerRequest get _request => source1;
 
   UserID get _userID => source2;
 }

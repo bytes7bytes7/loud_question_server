@@ -27,7 +27,7 @@ class GameController extends ApiController {
 
   Router get router => _$GameControllerRouter(this);
 
-  @Route.post('/ready')
+  @Route.post('/<lobbyID>/ready')
   Future<Response> setReady(Request request) async {
     late final SetReadyRequest setReadyRequest;
     try {
@@ -55,7 +55,7 @@ class GameController extends ApiController {
     );
   }
 
-  @Route.post('/not_ready')
+  @Route.post('/<lobbyID>/not_ready')
   Future<Response> setNotReady(Request request) async {
     late final SetNotReadyRequest setNotReadyRequest;
     try {
@@ -83,7 +83,7 @@ class GameController extends ApiController {
     );
   }
 
-  @Route.post('/start')
+  @Route.post('/<lobbyID>/start')
   Future<Response> start(Request request) async {
     late final StartRoundRequest startRoundRequest;
     try {
@@ -111,7 +111,7 @@ class GameController extends ApiController {
     );
   }
 
-  @Route.post('/give_answer')
+  @Route.post('/<lobbyID>/give_answer')
   Future<Response> giveAnswer(Request request) async {
     late final GiveAnswerRequest giveAnswerRequest;
     try {
@@ -139,7 +139,7 @@ class GameController extends ApiController {
     );
   }
 
-  @Route.post('/set_leader')
+  @Route.post('/<lobbyID>/set_leader')
   Future<Response> setLeader(Request request) async {
     late final SetLeaderRequest setLeaderRequest;
     try {
@@ -166,9 +166,36 @@ class GameController extends ApiController {
       (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
     );
   }
+
+  @Route.get('/<lobbyID>/get_answer')
+  Future<Response> getAnswer(Request request) async {
+    late final GetAnswerRequest getAnswerRequest;
+    try {
+      getAnswerRequest = await parseRequest<GetAnswerRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(getAnswerRequest, user.id, To<GetAnswerCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
+    );
+  }
+
 // getState
 
 // terminate
-
-// get answer
 }

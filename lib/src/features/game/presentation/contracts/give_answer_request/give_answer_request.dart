@@ -12,7 +12,7 @@ class GiveAnswerRequest {
     required this.answer,
   });
 
-  final LobbyID lobbyID;
+  final String lobbyID;
   final String answer;
 
   factory GiveAnswerRequest.fromJson(JsonMap json) =>

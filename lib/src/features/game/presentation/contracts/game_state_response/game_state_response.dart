@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../utils/typedef.dart';
-import '../../../domain/domain.dart';
+import '../../../application/view_models/view_models.dart';
 
 part 'game_state_response.g.dart';
 
@@ -11,7 +11,7 @@ class GameStateResponse {
     required this.gameState,
   });
 
-  final GameState gameState;
+  final GameStateVM gameState;
 
   factory GameStateResponse.fromJson(JsonMap json) =>
       _$GameStateResponseFromJson(json);

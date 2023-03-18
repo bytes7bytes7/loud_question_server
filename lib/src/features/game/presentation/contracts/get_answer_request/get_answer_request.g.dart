@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'start_round_request.dart';
+part of 'get_answer_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-StartRoundRequest _$StartRoundRequestFromJson(Map<String, dynamic> json) =>
-    StartRoundRequest(
+GetAnswerRequest _$GetAnswerRequestFromJson(Map<String, dynamic> json) =>
+    GetAnswerRequest(
       lobbyID: json['lobbyID'] as String,
     );
 
-Map<String, dynamic> _$StartRoundRequestToJson(StartRoundRequest instance) =>
+Map<String, dynamic> _$GetAnswerRequestToJson(GetAnswerRequest instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
     };

@@ -19,5 +19,7 @@ class QuestionID with _$QuestionID {
 
   factory QuestionID.fromJson(JsonMap json) => _$QuestionIDFromJson(json);
 
+  factory QuestionID.fromString(String string) => QuestionID(string);
+
   String get str => value;
 }

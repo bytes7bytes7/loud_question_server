@@ -29,6 +29,12 @@ class GameMapsterRegistrar {
       )
       ..register(
         MapperMeta.two(SetLeaderRequestIDToSetLeaderCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.two(GetAnswerRequestIDToGetAnswerCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.one(GameStateToGameStateVMMapper.new),
       );
   }
 }

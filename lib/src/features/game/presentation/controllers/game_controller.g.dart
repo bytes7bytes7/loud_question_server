@@ -10,28 +10,33 @@ Router _$GameControllerRouter(GameController service) {
   final router = Router();
   router.add(
     'POST',
-    r'/ready',
+    r'/<lobbyID>/ready',
     service.setReady,
   );
   router.add(
     'POST',
-    r'/not_ready',
+    r'/<lobbyID>/not_ready',
     service.setNotReady,
   );
   router.add(
     'POST',
-    r'/start',
+    r'/<lobbyID>/start',
     service.start,
   );
   router.add(
     'POST',
-    r'/give_answer',
+    r'/<lobbyID>/give_answer',
     service.giveAnswer,
   );
   router.add(
     'POST',
-    r'/set_leader',
+    r'/<lobbyID>/set_leader',
     service.setLeader,
+  );
+  router.add(
+    'GET',
+    r'/<lobbyID>/get_answer',
+    service.getAnswer,
   );
   return router;
 }

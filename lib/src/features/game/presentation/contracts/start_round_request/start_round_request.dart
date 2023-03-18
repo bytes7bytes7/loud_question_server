@@ -11,7 +11,7 @@ class StartRoundRequest {
     required this.lobbyID,
   });
 
-  final LobbyID lobbyID;
+  final String lobbyID;
 
   factory StartRoundRequest.fromJson(JsonMap json) =>
       _$StartRoundRequestFromJson(json);

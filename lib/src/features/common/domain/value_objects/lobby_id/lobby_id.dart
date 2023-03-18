@@ -26,5 +26,7 @@ class LobbyID with _$LobbyID {
 
   factory LobbyID.fromJson(JsonMap json) => _$LobbyIDFromJson(json);
 
+  factory LobbyID.fromString(String string) => LobbyID(string);
+
   String get str => value;
 }

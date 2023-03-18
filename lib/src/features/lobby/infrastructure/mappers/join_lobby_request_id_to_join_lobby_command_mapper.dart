@@ -12,7 +12,7 @@ class JoinLobbyRequestIDToJoinLobbyCommandMapper
   JoinLobbyCommand map() {
     return JoinLobbyCommand(
       guestID: _userID,
-      lobbyID: _request.lobbyID,
+      lobbyID: LobbyID.fromString(_request.lobbyID),
       password: _request.password,
     );
   }

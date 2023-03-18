@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mapster/mapster.dart';
 import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
@@ -9,6 +10,7 @@ import '../../../../common/application/exceptions/exceptions.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
+import '../../view_models/view_models.dart';
 import 'set_leader_command.dart';
 
 @singleton
@@ -17,11 +19,14 @@ class SetLeaderCommandHandler extends RequestHandler<
   const SetLeaderCommandHandler({
     required LobbyRepository lobbyRepository,
     required GameRepository gameRepository,
+    required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
-        _gameRepository = gameRepository;
+        _gameRepository = gameRepository,
+        _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
   final GameRepository _gameRepository;
+  final Mapster _mapster;
 
   @override
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
@@ -81,9 +86,11 @@ class SetLeaderCommandHandler extends RequestHandler<
 
     await _gameRepository.update(gameState: newGameState);
 
+    final gameStateVM = _mapster.map1(newGameState, To<GameStateVM>());
+
     return right(
       GameStateResult(
-        gameState: newGameState,
+        gameState: gameStateVM,
       ),
     );
   }

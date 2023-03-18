@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mapster/mapster.dart';
 import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
@@ -10,6 +11,7 @@ import '../../../../common/domain/domain.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
+import '../../view_models/view_models.dart';
 import 'start_round_command.dart';
 
 const _endsAfterSeconds = 60;
@@ -22,15 +24,18 @@ class StartRoundCommandHandler extends RequestHandler<
     required LobbyRepository lobbyRepository,
     required QuestionRepository questionRepository,
     required DateTimeRepository dateTimeRepository,
+    required Mapster mapster,
   })  : _gameRepository = gameRepository,
         _lobbyRepository = lobbyRepository,
         _questionRepository = questionRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _dateTimeRepository = dateTimeRepository,
+        _mapster = mapster;
 
   final GameRepository _gameRepository;
   final LobbyRepository _lobbyRepository;
   final QuestionRepository _questionRepository;
   final DateTimeRepository _dateTimeRepository;
+  final Mapster _mapster;
 
   @override
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
@@ -90,19 +95,21 @@ class StartRoundCommandHandler extends RequestHandler<
     final startedAtMSSinceEpoch =
         _dateTimeRepository.now().millisecondsSinceEpoch;
 
-    final resultGameState = GameState.playing(
+    final newGameState = GameState.playing(
       leaderID: oldGameState.leaderID,
       lobbyID: oldGameState.lobbyID,
       startedAtMSSinceEpoch: startedAtMSSinceEpoch,
       endsAfterSeconds: _endsAfterSeconds,
-      question: question.content,
+      question: question,
     );
 
-    unawaited(_gameRepository.update(gameState: resultGameState));
+    unawaited(_gameRepository.update(gameState: newGameState));
+
+    final gameStateVM = _mapster.map1(newGameState, To<GameStateVM>());
 
     return right(
       GameStateResult(
-        gameState: resultGameState,
+        gameState: gameStateVM,
       ),
     );
   }

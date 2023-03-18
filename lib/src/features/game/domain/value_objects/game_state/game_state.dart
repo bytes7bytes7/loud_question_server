@@ -1,15 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../utils/typedef.dart';
 import '../../../../common/domain/domain.dart';
-import '../user_answer/user_answer.dart';
+import '../../entities/question/question.dart';
 
 part 'game_state.freezed.dart';
-part 'game_state.g.dart';
 
-@Freezed(
-  unionKey: 'type',
-)
+@Freezed(unionKey: 'type')
 class GameState with _$GameState {
   const factory GameState.init({
     required LobbyID lobbyID,
@@ -22,25 +18,20 @@ class GameState with _$GameState {
     required UserID leaderID,
     required int startedAtMSSinceEpoch,
     required int endsAfterSeconds,
-    // question is NOT null only for a presenter
-    required String? question,
+    required Question question,
   }) = PlayingGameState;
 
   const factory GameState.waitingForAnswer({
     required LobbyID lobbyID,
     required UserID leaderID,
-    required List<UserID> hasAnswered,
-    // question is NOT null only for a presenter
-    required String? question,
+    required Map<UserID, String> answers,
+    required Question question,
   }) = WaitingForAnswerGameState;
 
   const factory GameState.checkingAnswer({
     required LobbyID lobbyID,
     required UserID leaderID,
-    required List<UserAnswer> answers,
-    required String question,
-    required String rightAnswer,
+    required Map<UserID, String> answers,
+    required Question question,
   }) = CheckingAnswerGameState;
-
-  factory GameState.fromJson(JsonMap json) => _$GameStateFromJson(json);
 }

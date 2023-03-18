@@ -8,12 +8,12 @@ part 'set_leader_request.g.dart';
 @JsonSerializable()
 class SetLeaderRequest {
   const SetLeaderRequest({
-    required this.userID,
     required this.lobbyID,
+    required this.userID,
   });
 
+  final String lobbyID;
   final UserID userID;
-  final LobbyID lobbyID;
 
   factory SetLeaderRequest.fromJson(JsonMap json) =>
       _$SetLeaderRequestFromJson(json);

@@ -1,31 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'game_state.dart';
+part of 'game_state_vm.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InitGameState _$$InitGameStateFromJson(Map<String, dynamic> json) =>
-    _$InitGameState(
+_$InitGameStateVM _$$InitGameStateVMFromJson(Map<String, dynamic> json) =>
+    _$InitGameStateVM(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
       leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
-      ready: (json['ready'] as List<dynamic>)
+      readyIDs: (json['readyIDs'] as List<dynamic>)
           .map((e) => UserID.fromJson(e as Map<String, dynamic>))
           .toList(),
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$InitGameStateToJson(_$InitGameState instance) =>
+Map<String, dynamic> _$$InitGameStateVMToJson(_$InitGameStateVM instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
       'leaderID': instance.leaderID,
-      'ready': instance.ready,
+      'readyIDs': instance.readyIDs,
       'type': instance.$type,
     };
 
-_$PlayingGameState _$$PlayingGameStateFromJson(Map<String, dynamic> json) =>
-    _$PlayingGameState(
+_$PlayingGameStateVM _$$PlayingGameStateVMFromJson(Map<String, dynamic> json) =>
+    _$PlayingGameStateVM(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
       leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       startedAtMSSinceEpoch: json['startedAtMSSinceEpoch'] as int,
@@ -34,7 +34,8 @@ _$PlayingGameState _$$PlayingGameStateFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$PlayingGameStateToJson(_$PlayingGameState instance) =>
+Map<String, dynamic> _$$PlayingGameStateVMToJson(
+        _$PlayingGameStateVM instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
       'leaderID': instance.leaderID,
@@ -44,9 +45,9 @@ Map<String, dynamic> _$$PlayingGameStateToJson(_$PlayingGameState instance) =>
       'type': instance.$type,
     };
 
-_$WaitingForAnswerGameState _$$WaitingForAnswerGameStateFromJson(
+_$WaitingForAnswerGameStateVM _$$WaitingForAnswerGameStateVMFromJson(
         Map<String, dynamic> json) =>
-    _$WaitingForAnswerGameState(
+    _$WaitingForAnswerGameStateVM(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
       leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       hasAnswered: (json['hasAnswered'] as List<dynamic>)
@@ -56,8 +57,8 @@ _$WaitingForAnswerGameState _$$WaitingForAnswerGameStateFromJson(
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$WaitingForAnswerGameStateToJson(
-        _$WaitingForAnswerGameState instance) =>
+Map<String, dynamic> _$$WaitingForAnswerGameStateVMToJson(
+        _$WaitingForAnswerGameStateVM instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
       'leaderID': instance.leaderID,
@@ -66,21 +67,21 @@ Map<String, dynamic> _$$WaitingForAnswerGameStateToJson(
       'type': instance.$type,
     };
 
-_$CheckingAnswerGameState _$$CheckingAnswerGameStateFromJson(
+_$CheckingAnswerGameStateVM _$$CheckingAnswerGameStateVMFromJson(
         Map<String, dynamic> json) =>
-    _$CheckingAnswerGameState(
+    _$CheckingAnswerGameStateVM(
       lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
       leaderID: UserID.fromJson(json['leaderID'] as Map<String, dynamic>),
       answers: (json['answers'] as List<dynamic>)
-          .map((e) => UserAnswer.fromJson(e as Map<String, dynamic>))
+          .map((e) => UserAnswerVM.fromJson(e as Map<String, dynamic>))
           .toList(),
       question: json['question'] as String,
       rightAnswer: json['rightAnswer'] as String,
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$CheckingAnswerGameStateToJson(
-        _$CheckingAnswerGameState instance) =>
+Map<String, dynamic> _$$CheckingAnswerGameStateVMToJson(
+        _$CheckingAnswerGameStateVM instance) =>
     <String, dynamic>{
       'lobbyID': instance.lobbyID,
       'leaderID': instance.leaderID,

@@ -13,7 +13,7 @@ class SetLeaderRequestIDToSetLeaderCommandMapper
     return SetLeaderCommand(
       userID: _userID,
       leaderID: _request.userID,
-      lobbyID: _request.lobbyID,
+      lobbyID: LobbyID.fromString(_request.lobbyID),
     );
   }
 

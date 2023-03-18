@@ -12,7 +12,7 @@ class StartRoundRequestIDToStartRoundCommandMapper
   StartRoundCommand map() {
     return StartRoundCommand(
       userID: _userID,
-      lobbyID: _request.lobbyID,
+      lobbyID: LobbyID.fromString(_request.lobbyID),
     );
   }
 

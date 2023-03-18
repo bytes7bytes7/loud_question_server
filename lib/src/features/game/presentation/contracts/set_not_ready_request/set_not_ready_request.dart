@@ -11,7 +11,7 @@ class SetNotReadyRequest {
     required this.lobbyID,
   });
 
-  final LobbyID lobbyID;
+  final String lobbyID;
 
   factory SetNotReadyRequest.fromJson(JsonMap json) =>
       _$SetNotReadyRequestFromJson(json);

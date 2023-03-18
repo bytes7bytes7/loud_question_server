@@ -14,23 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-GameState _$GameStateFromJson(Map<String, dynamic> json) {
-  switch (json['type']) {
-    case 'init':
-      return InitGameState.fromJson(json);
-    case 'playing':
-      return PlayingGameState.fromJson(json);
-    case 'waitingForAnswer':
-      return WaitingForAnswerGameState.fromJson(json);
-    case 'checkingAnswer':
-      return CheckingAnswerGameState.fromJson(json);
-
-    default:
-      throw CheckedFromJsonException(
-          json, 'type', 'GameState', 'Invalid union type "${json['type']}"!');
-  }
-}
-
 /// @nodoc
 mixin _$GameState {
   LobbyID get lobbyID => throw _privateConstructorUsedError;
@@ -41,13 +24,13 @@ mixin _$GameState {
             LobbyID lobbyID, UserID leaderID, List<UserID> ready)
         init,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)
         playing,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)
+            Map<UserID, String> answers, Question question)
         waitingForAnswer,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)
+            Map<UserID, String> answers, Question question)
         checkingAnswer,
   }) =>
       throw _privateConstructorUsedError;
@@ -56,13 +39,13 @@ mixin _$GameState {
     TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)?
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)?
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
   }) =>
       throw _privateConstructorUsedError;
@@ -71,13 +54,13 @@ mixin _$GameState {
     TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
-            String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
     required TResult orElse(),
   }) =>
@@ -107,7 +90,7 @@ mixin _$GameState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -218,18 +201,13 @@ class __$$InitGameStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$InitGameState implements InitGameState {
   const _$InitGameState(
       {required this.lobbyID,
       required this.leaderID,
-      required final List<UserID> ready,
-      final String? $type})
-      : _ready = ready,
-        $type = $type ?? 'init';
-
-  factory _$InitGameState.fromJson(Map<String, dynamic> json) =>
-      _$$InitGameStateFromJson(json);
+      required final List<UserID> ready})
+      : _ready = ready;
 
   @override
   final LobbyID lobbyID;
@@ -242,9 +220,6 @@ class _$InitGameState implements InitGameState {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_ready);
   }
-
-  @JsonKey(name: 'type')
-  final String $type;
 
   @override
   String toString() {
@@ -262,7 +237,6 @@ class _$InitGameState implements InitGameState {
             const DeepCollectionEquality().equals(other._ready, _ready));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
       const DeepCollectionEquality().hash(_ready));
@@ -280,13 +254,13 @@ class _$InitGameState implements InitGameState {
             LobbyID lobbyID, UserID leaderID, List<UserID> ready)
         init,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)
         playing,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)
+            Map<UserID, String> answers, Question question)
         waitingForAnswer,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)
+            Map<UserID, String> answers, Question question)
         checkingAnswer,
   }) {
     return init(lobbyID, leaderID, ready);
@@ -298,13 +272,13 @@ class _$InitGameState implements InitGameState {
     TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)?
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)?
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
   }) {
     return init?.call(lobbyID, leaderID, ready);
@@ -316,13 +290,13 @@ class _$InitGameState implements InitGameState {
     TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
-            String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
     required TResult orElse(),
   }) {
@@ -368,13 +342,6 @@ class _$InitGameState implements InitGameState {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$InitGameStateToJson(
-      this,
-    );
-  }
 }
 
 abstract class InitGameState implements GameState {
@@ -382,9 +349,6 @@ abstract class InitGameState implements GameState {
       {required final LobbyID lobbyID,
       required final UserID leaderID,
       required final List<UserID> ready}) = _$InitGameState;
-
-  factory InitGameState.fromJson(Map<String, dynamic> json) =
-      _$InitGameState.fromJson;
 
   @override
   LobbyID get lobbyID;
@@ -410,7 +374,7 @@ abstract class _$$PlayingGameStateCopyWith<$Res>
       UserID leaderID,
       int startedAtMSSinceEpoch,
       int endsAfterSeconds,
-      String? question});
+      Question question});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
@@ -433,7 +397,7 @@ class __$$PlayingGameStateCopyWithImpl<$Res>
     Object? leaderID = null,
     Object? startedAtMSSinceEpoch = null,
     Object? endsAfterSeconds = null,
-    Object? question = freezed,
+    Object? question = null,
   }) {
     return _then(_$PlayingGameState(
       lobbyID: null == lobbyID
@@ -452,28 +416,23 @@ class __$$PlayingGameStateCopyWithImpl<$Res>
           ? _value.endsAfterSeconds
           : endsAfterSeconds // ignore: cast_nullable_to_non_nullable
               as int,
-      question: freezed == question
+      question: null == question
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Question,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$PlayingGameState implements PlayingGameState {
   const _$PlayingGameState(
       {required this.lobbyID,
       required this.leaderID,
       required this.startedAtMSSinceEpoch,
       required this.endsAfterSeconds,
-      required this.question,
-      final String? $type})
-      : $type = $type ?? 'playing';
-
-  factory _$PlayingGameState.fromJson(Map<String, dynamic> json) =>
-      _$$PlayingGameStateFromJson(json);
+      required this.question});
 
   @override
   final LobbyID lobbyID;
@@ -483,12 +442,8 @@ class _$PlayingGameState implements PlayingGameState {
   final int startedAtMSSinceEpoch;
   @override
   final int endsAfterSeconds;
-// question is NOT null only for a presenter
   @override
-  final String? question;
-
-  @JsonKey(name: 'type')
-  final String $type;
+  final Question question;
 
   @override
   String toString() {
@@ -511,7 +466,6 @@ class _$PlayingGameState implements PlayingGameState {
                 other.question == question));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
       startedAtMSSinceEpoch, endsAfterSeconds, question);
@@ -529,13 +483,13 @@ class _$PlayingGameState implements PlayingGameState {
             LobbyID lobbyID, UserID leaderID, List<UserID> ready)
         init,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)
         playing,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)
+            Map<UserID, String> answers, Question question)
         waitingForAnswer,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)
+            Map<UserID, String> answers, Question question)
         checkingAnswer,
   }) {
     return playing(
@@ -548,13 +502,13 @@ class _$PlayingGameState implements PlayingGameState {
     TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)?
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)?
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
   }) {
     return playing?.call(
@@ -567,13 +521,13 @@ class _$PlayingGameState implements PlayingGameState {
     TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
-            String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
     required TResult orElse(),
   }) {
@@ -620,13 +574,6 @@ class _$PlayingGameState implements PlayingGameState {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PlayingGameStateToJson(
-      this,
-    );
-  }
 }
 
 abstract class PlayingGameState implements GameState {
@@ -635,18 +582,15 @@ abstract class PlayingGameState implements GameState {
       required final UserID leaderID,
       required final int startedAtMSSinceEpoch,
       required final int endsAfterSeconds,
-      required final String? question}) = _$PlayingGameState;
-
-  factory PlayingGameState.fromJson(Map<String, dynamic> json) =
-      _$PlayingGameState.fromJson;
+      required final Question question}) = _$PlayingGameState;
 
   @override
   LobbyID get lobbyID;
   @override
   UserID get leaderID;
   int get startedAtMSSinceEpoch;
-  int get endsAfterSeconds; // question is NOT null only for a presenter
-  String? get question;
+  int get endsAfterSeconds;
+  Question get question;
   @override
   @JsonKey(ignore: true)
   _$$PlayingGameStateCopyWith<_$PlayingGameState> get copyWith =>
@@ -665,8 +609,8 @@ abstract class _$$WaitingForAnswerGameStateCopyWith<$Res>
   $Res call(
       {LobbyID lobbyID,
       UserID leaderID,
-      List<UserID> hasAnswered,
-      String? question});
+      Map<UserID, String> answers,
+      Question question});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
@@ -687,8 +631,8 @@ class __$$WaitingForAnswerGameStateCopyWithImpl<$Res>
   $Res call({
     Object? lobbyID = null,
     Object? leaderID = null,
-    Object? hasAnswered = null,
-    Object? question = freezed,
+    Object? answers = null,
+    Object? question = null,
   }) {
     return _then(_$WaitingForAnswerGameState(
       lobbyID: null == lobbyID
@@ -699,55 +643,46 @@ class __$$WaitingForAnswerGameStateCopyWithImpl<$Res>
           ? _value.leaderID
           : leaderID // ignore: cast_nullable_to_non_nullable
               as UserID,
-      hasAnswered: null == hasAnswered
-          ? _value._hasAnswered
-          : hasAnswered // ignore: cast_nullable_to_non_nullable
-              as List<UserID>,
-      question: freezed == question
+      answers: null == answers
+          ? _value._answers
+          : answers // ignore: cast_nullable_to_non_nullable
+              as Map<UserID, String>,
+      question: null == question
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Question,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
   const _$WaitingForAnswerGameState(
       {required this.lobbyID,
       required this.leaderID,
-      required final List<UserID> hasAnswered,
-      required this.question,
-      final String? $type})
-      : _hasAnswered = hasAnswered,
-        $type = $type ?? 'waitingForAnswer';
-
-  factory _$WaitingForAnswerGameState.fromJson(Map<String, dynamic> json) =>
-      _$$WaitingForAnswerGameStateFromJson(json);
+      required final Map<UserID, String> answers,
+      required this.question})
+      : _answers = answers;
 
   @override
   final LobbyID lobbyID;
   @override
   final UserID leaderID;
-  final List<UserID> _hasAnswered;
+  final Map<UserID, String> _answers;
   @override
-  List<UserID> get hasAnswered {
-    if (_hasAnswered is EqualUnmodifiableListView) return _hasAnswered;
+  Map<UserID, String> get answers {
+    if (_answers is EqualUnmodifiableMapView) return _answers;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_hasAnswered);
+    return EqualUnmodifiableMapView(_answers);
   }
 
-// question is NOT null only for a presenter
   @override
-  final String? question;
-
-  @JsonKey(name: 'type')
-  final String $type;
+  final Question question;
 
   @override
   String toString() {
-    return 'GameState.waitingForAnswer(lobbyID: $lobbyID, leaderID: $leaderID, hasAnswered: $hasAnswered, question: $question)';
+    return 'GameState.waitingForAnswer(lobbyID: $lobbyID, leaderID: $leaderID, answers: $answers, question: $question)';
   }
 
   @override
@@ -758,16 +693,14 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
             (identical(other.lobbyID, lobbyID) || other.lobbyID == lobbyID) &&
             (identical(other.leaderID, leaderID) ||
                 other.leaderID == leaderID) &&
-            const DeepCollectionEquality()
-                .equals(other._hasAnswered, _hasAnswered) &&
+            const DeepCollectionEquality().equals(other._answers, _answers) &&
             (identical(other.question, question) ||
                 other.question == question));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
-      const DeepCollectionEquality().hash(_hasAnswered), question);
+      const DeepCollectionEquality().hash(_answers), question);
 
   @JsonKey(ignore: true)
   @override
@@ -783,16 +716,16 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
             LobbyID lobbyID, UserID leaderID, List<UserID> ready)
         init,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)
         playing,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)
+            Map<UserID, String> answers, Question question)
         waitingForAnswer,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)
+            Map<UserID, String> answers, Question question)
         checkingAnswer,
   }) {
-    return waitingForAnswer(lobbyID, leaderID, hasAnswered, question);
+    return waitingForAnswer(lobbyID, leaderID, answers, question);
   }
 
   @override
@@ -801,16 +734,16 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
     TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)?
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)?
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
   }) {
-    return waitingForAnswer?.call(lobbyID, leaderID, hasAnswered, question);
+    return waitingForAnswer?.call(lobbyID, leaderID, answers, question);
   }
 
   @override
@@ -819,18 +752,18 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
     TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
-            String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
     required TResult orElse(),
   }) {
     if (waitingForAnswer != null) {
-      return waitingForAnswer(lobbyID, leaderID, hasAnswered, question);
+      return waitingForAnswer(lobbyID, leaderID, answers, question);
     }
     return orElse();
   }
@@ -871,31 +804,21 @@ class _$WaitingForAnswerGameState implements WaitingForAnswerGameState {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$WaitingForAnswerGameStateToJson(
-      this,
-    );
-  }
 }
 
 abstract class WaitingForAnswerGameState implements GameState {
   const factory WaitingForAnswerGameState(
       {required final LobbyID lobbyID,
       required final UserID leaderID,
-      required final List<UserID> hasAnswered,
-      required final String? question}) = _$WaitingForAnswerGameState;
-
-  factory WaitingForAnswerGameState.fromJson(Map<String, dynamic> json) =
-      _$WaitingForAnswerGameState.fromJson;
+      required final Map<UserID, String> answers,
+      required final Question question}) = _$WaitingForAnswerGameState;
 
   @override
   LobbyID get lobbyID;
   @override
   UserID get leaderID;
-  List<UserID> get hasAnswered; // question is NOT null only for a presenter
-  String? get question;
+  Map<UserID, String> get answers;
+  Question get question;
   @override
   @JsonKey(ignore: true)
   _$$WaitingForAnswerGameStateCopyWith<_$WaitingForAnswerGameState>
@@ -913,9 +836,8 @@ abstract class _$$CheckingAnswerGameStateCopyWith<$Res>
   $Res call(
       {LobbyID lobbyID,
       UserID leaderID,
-      List<UserAnswer> answers,
-      String question,
-      String rightAnswer});
+      Map<UserID, String> answers,
+      Question question});
 
   @override
   $LobbyIDCopyWith<$Res> get lobbyID;
@@ -938,7 +860,6 @@ class __$$CheckingAnswerGameStateCopyWithImpl<$Res>
     Object? leaderID = null,
     Object? answers = null,
     Object? question = null,
-    Object? rightAnswer = null,
   }) {
     return _then(_$CheckingAnswerGameState(
       lobbyID: null == lobbyID
@@ -952,58 +873,43 @@ class __$$CheckingAnswerGameStateCopyWithImpl<$Res>
       answers: null == answers
           ? _value._answers
           : answers // ignore: cast_nullable_to_non_nullable
-              as List<UserAnswer>,
+              as Map<UserID, String>,
       question: null == question
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
-              as String,
-      rightAnswer: null == rightAnswer
-          ? _value.rightAnswer
-          : rightAnswer // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Question,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$CheckingAnswerGameState implements CheckingAnswerGameState {
   const _$CheckingAnswerGameState(
       {required this.lobbyID,
       required this.leaderID,
-      required final List<UserAnswer> answers,
-      required this.question,
-      required this.rightAnswer,
-      final String? $type})
-      : _answers = answers,
-        $type = $type ?? 'checkingAnswer';
-
-  factory _$CheckingAnswerGameState.fromJson(Map<String, dynamic> json) =>
-      _$$CheckingAnswerGameStateFromJson(json);
+      required final Map<UserID, String> answers,
+      required this.question})
+      : _answers = answers;
 
   @override
   final LobbyID lobbyID;
   @override
   final UserID leaderID;
-  final List<UserAnswer> _answers;
+  final Map<UserID, String> _answers;
   @override
-  List<UserAnswer> get answers {
-    if (_answers is EqualUnmodifiableListView) return _answers;
+  Map<UserID, String> get answers {
+    if (_answers is EqualUnmodifiableMapView) return _answers;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_answers);
+    return EqualUnmodifiableMapView(_answers);
   }
 
   @override
-  final String question;
-  @override
-  final String rightAnswer;
-
-  @JsonKey(name: 'type')
-  final String $type;
+  final Question question;
 
   @override
   String toString() {
-    return 'GameState.checkingAnswer(lobbyID: $lobbyID, leaderID: $leaderID, answers: $answers, question: $question, rightAnswer: $rightAnswer)';
+    return 'GameState.checkingAnswer(lobbyID: $lobbyID, leaderID: $leaderID, answers: $answers, question: $question)';
   }
 
   @override
@@ -1016,15 +922,12 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
                 other.leaderID == leaderID) &&
             const DeepCollectionEquality().equals(other._answers, _answers) &&
             (identical(other.question, question) ||
-                other.question == question) &&
-            (identical(other.rightAnswer, rightAnswer) ||
-                other.rightAnswer == rightAnswer));
+                other.question == question));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, lobbyID, leaderID,
-      const DeepCollectionEquality().hash(_answers), question, rightAnswer);
+      const DeepCollectionEquality().hash(_answers), question);
 
   @JsonKey(ignore: true)
   @override
@@ -1040,16 +943,16 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
             LobbyID lobbyID, UserID leaderID, List<UserID> ready)
         init,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)
         playing,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)
+            Map<UserID, String> answers, Question question)
         waitingForAnswer,
     required TResult Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)
+            Map<UserID, String> answers, Question question)
         checkingAnswer,
   }) {
-    return checkingAnswer(lobbyID, leaderID, answers, question, rightAnswer);
+    return checkingAnswer(lobbyID, leaderID, answers, question);
   }
 
   @override
@@ -1058,17 +961,16 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
     TResult? Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserID> hasAnswered, String? question)?
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
     TResult? Function(LobbyID lobbyID, UserID leaderID,
-            List<UserAnswer> answers, String question, String rightAnswer)?
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
   }) {
-    return checkingAnswer?.call(
-        lobbyID, leaderID, answers, question, rightAnswer);
+    return checkingAnswer?.call(lobbyID, leaderID, answers, question);
   }
 
   @override
@@ -1077,18 +979,18 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
     TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> ready)?
         init,
     TResult Function(LobbyID lobbyID, UserID leaderID,
-            int startedAtMSSinceEpoch, int endsAfterSeconds, String? question)?
+            int startedAtMSSinceEpoch, int endsAfterSeconds, Question question)?
         playing,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserID> hasAnswered,
-            String? question)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         waitingForAnswer,
-    TResult Function(LobbyID lobbyID, UserID leaderID, List<UserAnswer> answers,
-            String question, String rightAnswer)?
+    TResult Function(LobbyID lobbyID, UserID leaderID,
+            Map<UserID, String> answers, Question question)?
         checkingAnswer,
     required TResult orElse(),
   }) {
     if (checkingAnswer != null) {
-      return checkingAnswer(lobbyID, leaderID, answers, question, rightAnswer);
+      return checkingAnswer(lobbyID, leaderID, answers, question);
     }
     return orElse();
   }
@@ -1129,33 +1031,21 @@ class _$CheckingAnswerGameState implements CheckingAnswerGameState {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$CheckingAnswerGameStateToJson(
-      this,
-    );
-  }
 }
 
 abstract class CheckingAnswerGameState implements GameState {
   const factory CheckingAnswerGameState(
       {required final LobbyID lobbyID,
       required final UserID leaderID,
-      required final List<UserAnswer> answers,
-      required final String question,
-      required final String rightAnswer}) = _$CheckingAnswerGameState;
-
-  factory CheckingAnswerGameState.fromJson(Map<String, dynamic> json) =
-      _$CheckingAnswerGameState.fromJson;
+      required final Map<UserID, String> answers,
+      required final Question question}) = _$CheckingAnswerGameState;
 
   @override
   LobbyID get lobbyID;
   @override
   UserID get leaderID;
-  List<UserAnswer> get answers;
-  String get question;
-  String get rightAnswer;
+  Map<UserID, String> get answers;
+  Question get question;
   @override
   @JsonKey(ignore: true)
   _$$CheckingAnswerGameStateCopyWith<_$CheckingAnswerGameState> get copyWith =>

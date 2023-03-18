@@ -7,31 +7,30 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
-import '../../../../common/domain/domain.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
 import '../../view_models/view_models.dart';
-import 'set_not_ready_command.dart';
+import 'get_answer_command.dart';
 
 @singleton
-class SetNotReadyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, SetNotReadyCommand> {
-  const SetNotReadyCommandHandler({
-    required GameRepository gameRepository,
+class GetAnswerCommandHandler extends RequestHandler<
+    Either<List<DetailedException>, GameStateResult>, GetAnswerCommand> {
+  const GetAnswerCommandHandler({
     required LobbyRepository lobbyRepository,
+    required GameRepository gameRepository,
     required Mapster mapster,
-  })  : _gameRepository = gameRepository,
-        _lobbyRepository = lobbyRepository,
+  })  : _lobbyRepository = lobbyRepository,
+        _gameRepository = gameRepository,
         _mapster = mapster;
 
-  final GameRepository _gameRepository;
   final LobbyRepository _lobbyRepository;
+  final GameRepository _gameRepository;
   final Mapster _mapster;
 
   @override
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
-    SetNotReadyCommand request,
+    GetAnswerCommand request,
   ) async {
     final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
 
@@ -41,45 +40,41 @@ class SetNotReadyCommandHandler extends RequestHandler<
       );
     }
 
-    final joint = lobby.creatorID == request.userID ||
-        lobby.guestIDs.contains(request.userID);
-
-    if (!joint) {
-      return left(
-        [const YouShouldJoinLobby()],
-      );
-    }
-
     final oldGameState = await _gameRepository.get(lobbyID: request.lobbyID);
 
-    late GameState newGameState;
     if (oldGameState == null) {
-      return left(
-        [const YouAlreadyNotReady()],
-      );
-    } else if (oldGameState is InitGameState) {
-      if (!oldGameState.ready.contains(request.userID)) {
-        return left(
-          [const YouAlreadyNotReady()],
-        );
-      }
-
-      final ready = List<UserID>.from(oldGameState.ready)
-        ..remove(request.userID);
-      newGameState = oldGameState.copyWith(
-        ready: ready,
-      );
-    } else if (oldGameState is CheckingAnswerGameState) {
-      return left(
-        [const YouAlreadyNotReady()],
-      );
-    } else {
       return left(
         [const UnavailableGameOperation()],
       );
     }
 
-    await _gameRepository.update(gameState: newGameState);
+    if (request.userID != oldGameState.leaderID) {
+      return left(
+        [const NoPermission()],
+      );
+    }
+
+    late GameState newGameState;
+    if (oldGameState is WaitingForAnswerGameState) {
+      if (oldGameState.answers.length != (lobby.guestIDs.length + 1)) {
+        return left(
+          [const NotAllPlayersAnswered()],
+        );
+      }
+
+      newGameState = GameState.checkingAnswer(
+        lobbyID: oldGameState.lobbyID,
+        leaderID: oldGameState.leaderID,
+        question: oldGameState.question,
+        answers: oldGameState.answers,
+      );
+
+      await _gameRepository.update(gameState: newGameState);
+    } else {
+      return left(
+        [const UnavailableGameOperation()],
+      );
+    }
 
     final gameStateVM = _mapster.map1(newGameState, To<GameStateVM>());
 

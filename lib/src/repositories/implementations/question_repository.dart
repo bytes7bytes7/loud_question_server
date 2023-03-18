@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/game/domain/entities/question/question.dart';
@@ -19,6 +20,11 @@ class TestQuestionRepository implements QuestionRepository {
     ),
   );
   final _rand = Random();
+
+  @override
+  Future<Question?> getByID({required QuestionID id}) async {
+    return _storage.firstWhereOrNull((e) => e.id == id);
+  }
 
   @override
   Future<Question> getRandom() async {

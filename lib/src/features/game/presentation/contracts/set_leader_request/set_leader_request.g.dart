@@ -8,12 +8,12 @@ part of 'set_leader_request.dart';
 
 SetLeaderRequest _$SetLeaderRequestFromJson(Map<String, dynamic> json) =>
     SetLeaderRequest(
+      lobbyID: json['lobbyID'] as String,
       userID: UserID.fromJson(json['userID'] as Map<String, dynamic>),
-      lobbyID: LobbyID.fromJson(json['lobbyID'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SetLeaderRequestToJson(SetLeaderRequest instance) =>
     <String, dynamic>{
-      'userID': instance.userID,
       'lobbyID': instance.lobbyID,
+      'userID': instance.userID,
     };
