@@ -39,187 +39,189 @@ void main() {
 
   tearDownAll(() => p.kill());
 
-  test('Register first time - OK', () async {
-    final response = await post(
-      _createUri(host, '/register'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'a',
-          'password': 'a',
-        },
-      ),
-    );
+  group('Auth', () {
+    test('Register first time - OK', () async {
+      final response = await post(
+        _createUri(host, '/register'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'a',
+            'password': 'a',
+          },
+        ),
+      );
 
-    expect(response.statusCode, HttpStatus.created);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('token', isNotNull),
-    );
-  });
+      expect(response.statusCode, HttpStatus.created);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('token', isNotNull),
+      );
+    });
 
-  test('Register first time - Error', () async {
-    final response = await post(
-      _createUri(host, '/register'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'a',
-          'password': 'a',
-        },
-      ),
-    );
+    test('Register first time - Error', () async {
+      final response = await post(
+        _createUri(host, '/register'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'a',
+            'password': 'a',
+          },
+        ),
+      );
 
-    expect(response.statusCode, HttpStatus.conflict);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', DuplicateName().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.conflict);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', DuplicateName().description),
+      );
+    });
 
-  test('Log in before register - Error', () async {
-    final response = await post(
-      _createUri(host, '/log_in'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'b',
-          'password': 'a',
-        },
-      ),
-    );
+    test('Log in before register - Error', () async {
+      final response = await post(
+        _createUri(host, '/log_in'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'b',
+            'password': 'a',
+          },
+        ),
+      );
 
-    expect(response.statusCode, HttpStatus.unauthorized);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', InvalidCredentials().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.unauthorized);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', InvalidCredentials().description),
+      );
+    });
 
-  test('Log in with wrong credentials - Error', () async {
-    final response = await post(
-      _createUri(host, '/log_in'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'a',
-          'password': '2',
-        },
-      ),
-    );
+    test('Log in with wrong credentials - Error', () async {
+      final response = await post(
+        _createUri(host, '/log_in'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'a',
+            'password': '2',
+          },
+        ),
+      );
 
-    expect(response.statusCode, HttpStatus.unauthorized);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', InvalidCredentials().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.unauthorized);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', InvalidCredentials().description),
+      );
+    });
 
-  test('Log in after register - OK', () async {
-    final response = await post(
-      _createUri(host, '/log_in'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'a',
-          'password': 'a',
-        },
-      ),
-    );
+    test('Log in after register - OK', () async {
+      final response = await post(
+        _createUri(host, '/log_in'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'a',
+            'password': 'a',
+          },
+        ),
+      );
 
-    expect(response.statusCode, HttpStatus.ok);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('token', isNotNull),
-    );
-  });
+      expect(response.statusCode, HttpStatus.ok);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('token', isNotNull),
+      );
+    });
 
-  test('Log out without token - Error', () async {
-    final response = await post(
-      _createUri(host, '/log_out'),
-    );
+    test('Log out without token - Error', () async {
+      final response = await post(
+        _createUri(host, '/log_out'),
+      );
 
-    expect(response.statusCode, HttpStatus.unauthorized);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', NoTokenProvided().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.unauthorized);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', NoTokenProvided().description),
+      );
+    });
 
-  test('Log out with wrong type token - Error', () async {
-    final response = await post(
-      _createUri(host, '/log_out'),
-      headers: _addTokenToHeaders({}, '123'),
-    );
+    test('Log out with wrong type token - Error', () async {
+      final response = await post(
+        _createUri(host, '/log_out'),
+        headers: _addTokenToHeaders({}, '123'),
+      );
 
-    expect(response.statusCode, HttpStatus.unauthorized);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', TokenExpired().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.unauthorized);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', TokenExpired().description),
+      );
+    });
 
-  test('Log out with token - OK', () async {
-    final logInResponse = await post(
-      _createUri(host, '/log_in'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'a',
-          'password': 'a',
-        },
-      ),
-    );
+    test('Log out with token - OK', () async {
+      final logInResponse = await post(
+        _createUri(host, '/log_in'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'a',
+            'password': 'a',
+          },
+        ),
+      );
 
-    // ignore: avoid_dynamic_calls
-    token = jsonDecoder.convert(logInResponse.body)['token'];
+      // ignore: avoid_dynamic_calls
+      token = jsonDecoder.convert(logInResponse.body)['token'];
 
-    final response = await post(
-      _createUri(host, '/log_out'),
-      headers: _addTokenToHeaders({}, token),
-    );
+      final response = await post(
+        _createUri(host, '/log_out'),
+        headers: _addTokenToHeaders({}, token),
+      );
 
-    expect(response.statusCode, HttpStatus.ok);
-  });
+      expect(response.statusCode, HttpStatus.ok);
+    });
 
-  test('Verify token without token - Error', () async {
-    final response = await get(
-      _createUri(host, '/verify_token'),
-    );
+    test('Verify token without token - Error', () async {
+      final response = await get(
+        _createUri(host, '/verify_token'),
+      );
 
-    expect(response.statusCode, HttpStatus.unauthorized);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', NoTokenProvided().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.unauthorized);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', NoTokenProvided().description),
+      );
+    });
 
-  test('Verify token with incorrect token - Error', () async {
-    final response = await get(
-      _createUri(host, '/verify_token'),
-      headers: _addTokenToHeaders({}, '123'),
-    );
+    test('Verify token with incorrect token - Error', () async {
+      final response = await get(
+        _createUri(host, '/verify_token'),
+        headers: _addTokenToHeaders({}, '123'),
+      );
 
-    expect(response.statusCode, HttpStatus.unauthorized);
-    expect(
-      jsonDecoder.convert(response.body),
-      containsPair('title', TokenExpired().description),
-    );
-  });
+      expect(response.statusCode, HttpStatus.unauthorized);
+      expect(
+        jsonDecoder.convert(response.body),
+        containsPair('title', TokenExpired().description),
+      );
+    });
 
-  test('Verify token - OK', () async {
-    final logInResponse = await post(
-      _createUri(host, '/log_in'),
-      body: jsonEncoder.convert(
-        {
-          'name': 'a',
-          'password': 'a',
-        },
-      ),
-    );
+    test('Verify token - OK', () async {
+      final logInResponse = await post(
+        _createUri(host, '/log_in'),
+        body: jsonEncoder.convert(
+          {
+            'name': 'a',
+            'password': 'a',
+          },
+        ),
+      );
 
-    // ignore: avoid_dynamic_calls
-    token = jsonDecoder.convert(logInResponse.body)['token'];
+      // ignore: avoid_dynamic_calls
+      token = jsonDecoder.convert(logInResponse.body)['token'];
 
-    final response = await get(
-      _createUri(host, '/verify_token'),
-      headers: _addTokenToHeaders({}, token),
-    );
+      final response = await get(
+        _createUri(host, '/verify_token'),
+        headers: _addTokenToHeaders({}, token),
+      );
 
-    expect(response.statusCode, HttpStatus.ok);
+      expect(response.statusCode, HttpStatus.ok);
+    });
   });
 }

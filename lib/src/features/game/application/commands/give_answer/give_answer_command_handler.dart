@@ -43,9 +43,6 @@ class GiveAnswerCommandHandler extends RequestHandler<
       );
     }
 
-    // TODO: add leader (leader read question)
-    // TODO: make question null if user != leader
-
     final joint = lobby.creatorID == request.userID ||
         lobby.guestIDs.contains(request.userID);
 
@@ -74,11 +71,13 @@ class GiveAnswerCommandHandler extends RequestHandler<
     if (oldGameState is PlayingGameState) {
       final endsAt = DateTime.fromMillisecondsSinceEpoch(
         oldGameState.startedAtMSSinceEpoch,
-      )..add(Duration(seconds: oldGameState.endsAfterSeconds));
+      )
+          .add(Duration(seconds: oldGameState.endsAfterSeconds))
+          .millisecondsSinceEpoch;
 
-      final now = _dateTimeRepository.now();
+      final now = _dateTimeRepository.now().millisecondsSinceEpoch;
 
-      if (endsAt.isAfter(now)) {
+      if (now < endsAt) {
         return left(
           [const UnavailableGameOperation()],
         );
