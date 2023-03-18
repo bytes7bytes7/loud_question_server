@@ -60,7 +60,7 @@ void main() {
       ),
     );
 
-    expect(response.statusCode, 401);
+    expect(response.statusCode, HttpStatus.unauthorized);
     expect(
       jsonDecoder.convert(response.body),
       containsPair('title', isNotNull),
@@ -78,10 +78,41 @@ void main() {
       ),
     );
 
-    expect(response.statusCode, 201);
+    expect(response.statusCode, HttpStatus.created);
     expect(
       jsonDecoder.convert(response.body),
       containsPair('lobby', isNotNull),
+    );
+  });
+
+  test('Join lobby without token - Error', () async {
+    final createLobbyResponse = await post(
+      _createUri(host, '/new'),
+      headers: _addTokenToHeaders({}, token),
+      body: jsonEncoder.convert(
+        {
+          'password': 'a',
+        },
+      ),
+    );
+
+    final lobbyID =
+        // ignore: avoid_dynamic_calls
+        jsonDecoder.convert(createLobbyResponse.body)['lobby']['id']['value'];
+
+    final response = await post(
+      _createUri(host, '/$lobbyID/join'),
+      body: jsonEncoder.convert(
+        {
+          'password': 'a',
+        },
+      ),
+    );
+
+    expect(response.statusCode, HttpStatus.unauthorized);
+    expect(
+      jsonDecoder.convert(response.body),
+      containsPair('title', isNotNull),
     );
   });
 }
