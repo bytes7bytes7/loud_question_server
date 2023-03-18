@@ -66,7 +66,8 @@ class RestartCommandHandler extends RequestHandler<
 
     await _gameRepository.update(gameState: newGameState);
 
-    final gameStateVM = _mapster.map1(newGameState, To<GameStateVM>());
+    final gameStateVM =
+        _mapster.map2(newGameState, request.userID, To<GameStateVM>());
 
     return right(
       GameStateResult(

@@ -13,7 +13,7 @@ class GameMapsterRegistrar {
   void register() {
     _mapster
       ..register(
-        MapperMeta.one(GameStateToGameStateVMMapper.new),
+        MapperMeta.two(GameStateToGameStateVMMapper.new),
       )
       ..register(
         MapperMeta.two(SetReadyRequestIDToSetReadyCommandMapper.new),

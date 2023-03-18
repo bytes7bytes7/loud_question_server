@@ -1,10 +1,11 @@
 import 'package:mapster/mapster.dart';
 
+import '../../../common/domain/domain.dart';
 import '../../application/view_models/view_models.dart';
 import '../../domain/domain.dart';
 
 class GameStateToGameStateVMMapper
-    extends OneSourceMapper<GameState, GameStateVM> {
+    extends TwoSourcesMapper<GameState, UserID, GameStateVM> {
   GameStateToGameStateVMMapper(super.input);
 
   @override
@@ -25,8 +26,7 @@ class GameStateToGameStateVMMapper
         leaderID: state.leaderID,
         startedAtMSSinceEpoch: state.startedAtMSSinceEpoch,
         endsAfterSeconds: state.endsAfterSeconds,
-        // TODO:
-        question: state.question.content,
+        question: _userID == state.leaderID ? state.question.content : null,
       );
     }
 
@@ -35,8 +35,7 @@ class GameStateToGameStateVMMapper
         lobbyID: state.lobbyID,
         leaderID: state.leaderID,
         hasAnswered: state.answers.entries.map((e) => e.key).toList(),
-        // TODO:
-        question: state.question.content,
+        question: _userID == state.leaderID ? state.question.content : null,
       );
     }
 
@@ -60,5 +59,7 @@ class GameStateToGameStateVMMapper
     throw Exception('Can not map gameState of type ${state.runtimeType}');
   }
 
-  GameState get _state => source;
+  GameState get _state => source1;
+
+  UserID get _userID => source2;
 }
