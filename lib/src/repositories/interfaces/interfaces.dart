@@ -5,4 +5,5 @@ export 'lobby_repository.dart';
 export 'password_hash_repository.dart';
 export 'question_repository.dart';
 export 'token_repository.dart';
+export 'user_game_state_activity_repository.dart';
 export 'user_repository.dart';

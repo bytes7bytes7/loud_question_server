@@ -20,13 +20,19 @@ class SetNotReadyCommandHandler extends RequestHandler<
   const SetNotReadyCommandHandler({
     required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,
+    required UserGameStateActivityRepository userGameStateActivityRepository,
+    required DateTimeRepository dateTimeRepository,
     required Mapster mapster,
   })  : _gameStateService = gameStateService,
         _lobbyRepository = lobbyRepository,
+        _userGameStateActivityRepository = userGameStateActivityRepository,
+        _dateTimeRepository = dateTimeRepository,
         _mapster = mapster;
 
   final GameStateService _gameStateService;
   final LobbyRepository _lobbyRepository;
+  final UserGameStateActivityRepository _userGameStateActivityRepository;
+  final DateTimeRepository _dateTimeRepository;
   final Mapster _mapster;
 
   @override
@@ -80,6 +86,11 @@ class SetNotReadyCommandHandler extends RequestHandler<
     }
 
     await _gameStateService.update(gameState: newGameState);
+
+    await _userGameStateActivityRepository.update(
+      userID: request.userID,
+      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+    );
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

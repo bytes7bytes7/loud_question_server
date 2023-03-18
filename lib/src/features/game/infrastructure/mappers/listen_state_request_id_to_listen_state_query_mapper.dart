@@ -13,8 +13,6 @@ class ListenStateRequestIDToListenStateQueryMapper
     return ListenStateQuery(
       lobbyID: LobbyID.fromString(_request.lobbyID),
       userID: _userID,
-      lastRequestInMSSinceEpoch:
-          int.tryParse(_request.lastRequestInMSSinceEpoch) ?? 0,
     );
   }
 

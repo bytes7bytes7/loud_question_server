@@ -10,10 +10,8 @@ class ListenStateQuery
   ListenStateQuery({
     required this.lobbyID,
     required this.userID,
-    required this.lastRequestInMSSinceEpoch,
   }) : super(ListenStateQuery);
 
   final LobbyID lobbyID;
   final UserID userID;
-  final int lastRequestInMSSinceEpoch;
 }

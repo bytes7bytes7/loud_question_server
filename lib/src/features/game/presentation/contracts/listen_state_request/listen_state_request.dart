@@ -8,11 +8,9 @@ part 'listen_state_request.g.dart';
 class ListenStateRequest {
   const ListenStateRequest({
     required this.lobbyID,
-    required this.lastRequestInMSSinceEpoch,
   });
 
   final String lobbyID;
-  final String lastRequestInMSSinceEpoch;
 
   factory ListenStateRequest.fromJson(JsonMap json) =>
       _$ListenStateRequestFromJson(json);

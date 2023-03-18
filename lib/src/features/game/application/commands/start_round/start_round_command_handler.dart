@@ -24,17 +24,20 @@ class StartRoundCommandHandler extends RequestHandler<
     required LobbyRepository lobbyRepository,
     required QuestionRepository questionRepository,
     required DateTimeRepository dateTimeRepository,
+    required UserGameStateActivityRepository userGameStateActivityRepository,
     required Mapster mapster,
   })  : _gameStateService = gameStateService,
         _lobbyRepository = lobbyRepository,
         _questionRepository = questionRepository,
         _dateTimeRepository = dateTimeRepository,
+        _userGameStateActivityRepository = userGameStateActivityRepository,
         _mapster = mapster;
 
   final GameStateService _gameStateService;
   final LobbyRepository _lobbyRepository;
   final QuestionRepository _questionRepository;
   final DateTimeRepository _dateTimeRepository;
+  final UserGameStateActivityRepository _userGameStateActivityRepository;
   final Mapster _mapster;
 
   @override
@@ -104,6 +107,13 @@ class StartRoundCommandHandler extends RequestHandler<
     );
 
     unawaited(_gameStateService.update(gameState: newGameState));
+
+    unawaited(
+      _userGameStateActivityRepository.update(
+        userID: request.userID,
+        msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      ),
+    );
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

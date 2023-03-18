@@ -20,15 +20,18 @@ class GiveAnswerCommandHandler extends RequestHandler<
     required LobbyRepository lobbyRepository,
     required GameStateService gameStateService,
     required DateTimeRepository dateTimeRepository,
+    required UserGameStateActivityRepository userGameStateActivityRepository,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
         _gameStateService = gameStateService,
         _dateTimeRepository = dateTimeRepository,
+        _userGameStateActivityRepository = userGameStateActivityRepository,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
   final GameStateService _gameStateService;
   final DateTimeRepository _dateTimeRepository;
+  final UserGameStateActivityRepository _userGameStateActivityRepository;
   final Mapster _mapster;
 
   @override
@@ -106,6 +109,11 @@ class GiveAnswerCommandHandler extends RequestHandler<
     }
 
     await _gameStateService.update(gameState: newGameState);
+
+    await _userGameStateActivityRepository.update(
+      userID: request.userID,
+      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+    );
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

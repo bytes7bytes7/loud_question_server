@@ -18,13 +18,19 @@ class RestartCommandHandler extends RequestHandler<
   const RestartCommandHandler({
     required LobbyRepository lobbyRepository,
     required GameStateService gameStateService,
+    required UserGameStateActivityRepository userGameStateActivityRepository,
+    required DateTimeRepository dateTimeRepository,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
         _gameStateService = gameStateService,
+        _userGameStateActivityRepository = userGameStateActivityRepository,
+        _dateTimeRepository = dateTimeRepository,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
   final GameStateService _gameStateService;
+  final UserGameStateActivityRepository _userGameStateActivityRepository;
+  final DateTimeRepository _dateTimeRepository;
   final Mapster _mapster;
 
   @override
@@ -65,6 +71,11 @@ class RestartCommandHandler extends RequestHandler<
     }
 
     await _gameStateService.update(gameState: newGameState);
+
+    await _userGameStateActivityRepository.update(
+      userID: request.userID,
+      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+    );
 
     final gameStateVM =
         _mapster.map2(newGameState, request.userID, To<GameStateVM>());

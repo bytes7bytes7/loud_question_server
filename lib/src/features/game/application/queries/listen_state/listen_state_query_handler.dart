@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mapster/mapster.dart';
 import 'package:mediator/mediator.dart';
 
+import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/detailed_exception.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
@@ -16,11 +17,17 @@ class ListenStateQueryHandler extends RequestHandler<
     Either<List<DetailedException>, GameStateResult>, ListenStateQuery> {
   const ListenStateQueryHandler({
     required GameStateService gameStateService,
+    required UserGameStateActivityRepository userGameStateActivityRepository,
+    required DateTimeRepository dateTimeRepository,
     required Mapster mapster,
   })  : _gameStateService = gameStateService,
+        _userGameStateActivityRepository = userGameStateActivityRepository,
+        _dateTimeRepository = dateTimeRepository,
         _mapster = mapster;
 
   final GameStateService _gameStateService;
+  final UserGameStateActivityRepository _userGameStateActivityRepository;
+  final DateTimeRepository _dateTimeRepository;
   final Mapster _mapster;
 
   @override
@@ -29,9 +36,18 @@ class ListenStateQueryHandler extends RequestHandler<
   ) async {
     final lastEvent =
         _gameStateService.getLastEventByID(lobbyID: request.lobbyID);
+    final lastRequestInMSSinceEpoch = await _userGameStateActivityRepository
+        .lastRequestInMSSinceEpoch(userID: request.userID);
+
+    if (lastRequestInMSSinceEpoch == null) {
+      await _userGameStateActivityRepository.update(
+        userID: request.userID,
+        msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      );
+    }
 
     if (lastEvent != null) {
-      if (request.lastRequestInMSSinceEpoch < lastEvent.msSinceEpoch) {
+      if ((lastRequestInMSSinceEpoch ?? 0) < lastEvent.msSinceEpoch) {
         final gameStateVM = _mapster.map2(
           lastEvent.gameState,
           request.userID,
@@ -49,6 +65,11 @@ class ListenStateQueryHandler extends RequestHandler<
     final stream = _gameStateService.eventsByID(request.lobbyID);
 
     final event = await stream.first;
+
+    await _userGameStateActivityRepository.update(
+      userID: request.userID,
+      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+    );
 
     final gameState = event.gameState;
 
