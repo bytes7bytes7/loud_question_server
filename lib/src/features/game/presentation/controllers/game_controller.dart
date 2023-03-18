@@ -195,7 +195,33 @@ class GameController extends ApiController {
     );
   }
 
-// getState
+  @Route.post('/<lobbyID>/restart')
+  Future<Response> restart(Request request) async {
+    late final RestartRequest restartRequest;
+    try {
+      restartRequest = await parseRequest<RestartRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
 
-// terminate
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(restartRequest, user.id, To<RestartCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
+    );
+  }
+
+// getState
 }

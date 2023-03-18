@@ -38,5 +38,10 @@ Router _$GameControllerRouter(GameController service) {
     r'/<lobbyID>/get_answer',
     service.getAnswer,
   );
+  router.add(
+    'POST',
+    r'/<lobbyID>/restart',
+    service.restart,
+  );
   return router;
 }

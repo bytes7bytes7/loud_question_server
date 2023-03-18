@@ -23,6 +23,7 @@ class GameMediatorRegistrar {
       ..registerRequestHandler(() => _getIt.get<GiveAnswerCommandHandler>())
       ..registerRequestHandler(() => _getIt.get<SetLeaderCommandHandler>())
       ..registerRequestHandler(() => _getIt.get<GetAnswerCommandHandler>())
+      ..registerRequestHandler(() => _getIt.get<RestartCommandHandler>())
 
       // PipelineBehavior
       ..registerPipelineBehavior(
@@ -42,6 +43,9 @@ class GameMediatorRegistrar {
       )
       ..registerPipelineBehavior(
         () => ValidationBehavior([_getIt.get<GetAnswerCommandValidator>()]),
+      )
+      ..registerPipelineBehavior(
+        () => ValidationBehavior([_getIt.get<RestartCommandValidator>()]),
       );
   }
 }

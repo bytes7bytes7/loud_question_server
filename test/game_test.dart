@@ -68,7 +68,7 @@ void main() {
   group('Game', () {
     test('Start, not all ready - Error', () async {
       final response = await post(
-        _createUri(host, '/$lobbyID/give_answer'),
+        _createUri(host, '/$lobbyID/start'),
         headers: _addTokenToHeaders({}, token),
       );
 
