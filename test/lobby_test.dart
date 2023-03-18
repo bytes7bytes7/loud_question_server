@@ -198,7 +198,6 @@ void main() {
     );
   });
 
-
   test('Join lobby - OK', () async {
     final registerResponse = await post(
       Uri.parse('$host/auth/register'),
@@ -224,8 +223,8 @@ void main() {
     );
 
     final lobbyID =
-    // ignore: avoid_dynamic_calls
-    jsonDecoder.convert(createLobbyResponse.body)['lobby']['id']['value'];
+        // ignore: avoid_dynamic_calls
+        jsonDecoder.convert(createLobbyResponse.body)['lobby']['id']['value'];
 
     final response = await post(
       _createUri(host, '/$lobbyID/join'),
@@ -241,6 +240,31 @@ void main() {
     expect(
       jsonDecoder.convert(response.body),
       containsPair('lobby', isNotNull),
+    );
+  });
+
+  test('Get all lobbies without token - Error', () async {
+    final response = await get(
+      _createUri(host, '/all'),
+    );
+
+    expect(response.statusCode, HttpStatus.unauthorized);
+    expect(
+      jsonDecoder.convert(response.body),
+      containsPair('title', NoTokenProvided().description),
+    );
+  });
+
+  test('Get all lobbies - OK', () async {
+    final response = await get(
+      _createUri(host, '/all'),
+      headers: _addTokenToHeaders({}, token),
+    );
+
+    expect(response.statusCode, HttpStatus.ok);
+    expect(
+      jsonDecoder.convert(response.body),
+      containsPair('lobbies', isNotNull),
     );
   });
 }
