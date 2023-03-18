@@ -1,14 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:load_question_server/load_question_server.dart';
 import 'package:test/test.dart';
+
+const _authHeaderKey = 'Authorization';
 
 Map<String, String> _addTokenToHeaders(
   Map<String, String> headers,
   String token,
 ) {
-  return Map.of(headers)..['Authorization'] = 'Bearer $token';
+  return Map.of(headers)..[_authHeaderKey] = 'Bearer $token';
 }
 
 Uri _createUri(String host, String path) {
@@ -69,7 +71,7 @@ void main() {
     expect(response.statusCode, HttpStatus.conflict);
     expect(
       jsonDecoder.convert(response.body),
-      containsPair('title', isNotNull),
+      containsPair('title', DuplicateName().description),
     );
   });
 
@@ -87,10 +89,9 @@ void main() {
     expect(response.statusCode, HttpStatus.unauthorized);
     expect(
       jsonDecoder.convert(response.body),
-      containsPair('title', isNotNull),
+      containsPair('title', InvalidCredentials().description),
     );
   });
-
 
   test('Log in with wrong credentials - Error', () async {
     final response = await post(
@@ -106,7 +107,7 @@ void main() {
     expect(response.statusCode, HttpStatus.unauthorized);
     expect(
       jsonDecoder.convert(response.body),
-      containsPair('title', isNotNull),
+      containsPair('title', InvalidCredentials().description),
     );
   });
 
@@ -136,11 +137,24 @@ void main() {
     expect(response.statusCode, HttpStatus.unauthorized);
     expect(
       jsonDecoder.convert(response.body),
-      containsPair('title', isNotNull),
+      containsPair('title', NoTokenProvided().description),
     );
   });
 
-  test('Log out without token - OK', () async {
+  test('Log out with wrong type token - Error', () async {
+    final response = await post(
+      _createUri(host, '/log_out'),
+      headers: _addTokenToHeaders({}, '123'),
+    );
+
+    expect(response.statusCode, HttpStatus.unauthorized);
+    expect(
+      jsonDecoder.convert(response.body),
+      containsPair('title', TokenExpired().description),
+    );
+  });
+
+  test('Log out with token - OK', () async {
     final logInResponse = await post(
       _createUri(host, '/log_in'),
       body: jsonEncoder.convert(
@@ -170,7 +184,7 @@ void main() {
     expect(response.statusCode, HttpStatus.unauthorized);
     expect(
       jsonDecoder.convert(response.body),
-      containsPair('title', isNotNull),
+      containsPair('title', NoTokenProvided().description),
     );
   });
 
@@ -183,7 +197,7 @@ void main() {
     expect(response.statusCode, HttpStatus.unauthorized);
     expect(
       jsonDecoder.convert(response.body),
-      containsPair('title', isNotNull),
+      containsPair('title', TokenExpired().description),
     );
   });
 
