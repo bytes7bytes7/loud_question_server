@@ -55,6 +55,34 @@ class LobbyController extends ApiController {
     );
   }
 
+  @Route.get('/<lobbyID>')
+  Future<Response> getLobby(Request request) async {
+    late final GetLobbyRequest getLobbyRequest;
+    try {
+      getLobbyRequest = await parseRequest<GetLobbyRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(getLobbyRequest, user.id, To<GetLobbyQuery>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => created(_mapster.map1(r, To<GetLobbyResponse>())),
+    );
+  }
+
   @Route.post('/<lobbyID>/join')
   Future<Response> joinLobby(Request request) async {
     late final JoinLobbyRequest joinLobbyRequest;

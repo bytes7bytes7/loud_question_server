@@ -4,7 +4,6 @@ import 'package:mediator/mediator.dart' as mediator;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import '../../../../utils/utils.dart';
 import '../../../common/application/application.dart';
 import '../../../common/presentation/controllers/controllers.dart';
 import '../../application/application.dart';
