@@ -54,7 +54,7 @@ class GameController extends ApiController {
     );
   }
 
-  /// Long polling
+  // Long polling
   @Route.get('/<lobbyID>/listen_state')
   Future<Response> listenState(Request request) async {
     late final ListenStateRequest listenStateRequest;

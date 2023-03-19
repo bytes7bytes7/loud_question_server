@@ -45,6 +45,6 @@ class LogOutCommandHandler extends RequestHandler<
       token: request.token,
     );
 
-    return right(LogOutResult(info: 'Log out succeeded'));
+    return right(const LogOutResult());
   }
 }

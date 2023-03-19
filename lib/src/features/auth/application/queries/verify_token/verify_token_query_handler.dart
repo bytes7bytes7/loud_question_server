@@ -41,6 +41,6 @@ class VerifyTokenQueryHandler extends RequestHandler<
       return left([const TokenExpired()]);
     }
 
-    return right(VerifyTokenResult(info: 'Token is valid'));
+    return right(const VerifyTokenResult());
   }
 }

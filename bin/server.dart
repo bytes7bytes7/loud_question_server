@@ -43,6 +43,10 @@ void main(List<String> args) async {
     ..mount(
       GameController.path,
       _getIt.get<GameController>().router.addAuthorization(),
+    )
+    ..mount(
+      UserController.path,
+      _getIt.get<UserController>().router.addAuthorization(),
     );
 
   final handler = Pipeline()

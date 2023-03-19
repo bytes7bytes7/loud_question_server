@@ -51,8 +51,6 @@ class RestartCommandHandler extends RequestHandler<
       );
     }
 
-    // TODO: cancel timer (playing timer - 60 seconds)
-
     final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;
