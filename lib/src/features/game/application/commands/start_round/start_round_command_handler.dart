@@ -8,7 +8,6 @@ import 'package:mediator/mediator.dart';
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
 import '../../../../common/domain/domain.dart';
-import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
 import '../../view_models/view_models.dart';
@@ -44,7 +43,7 @@ class StartRoundCommandHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
     StartRoundCommand request,
   ) async {
-    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
+    final lobby = await _lobbyRepository.get(id: request.lobbyID);
 
     if (lobby == null) {
       return left(
@@ -61,19 +60,19 @@ class StartRoundCommandHandler extends RequestHandler<
       );
     }
 
-    final hasPermission = lobby.creatorID == request.userID;
-
-    if (!hasPermission) {
-      return left(
-        [const NoPermission()],
-      );
-    }
-
     final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     if (oldGameState == null) {
       return left(
         [const UnavailableGameOperation()],
+      );
+    }
+
+    final hasPermission = oldGameState.leaderID == request.userID;
+
+    if (!hasPermission) {
+      return left(
+        [const NoPermission()],
       );
     }
 
@@ -106,7 +105,7 @@ class StartRoundCommandHandler extends RequestHandler<
       question: question,
     );
 
-    unawaited(_gameStateService.update(gameState: newGameState));
+    unawaited(_gameStateService.updateOrAdd(gameState: newGameState));
 
     unawaited(
       _userGameStateActivityRepository.update(

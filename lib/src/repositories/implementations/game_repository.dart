@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/domain.dart';
-import '../../features/game/domain/domain.dart';
 import '../interfaces/game_repository.dart';
 
 @test
@@ -19,16 +18,7 @@ class TestGameRepository implements GameRepository {
   }
 
   @override
-  Future<GameState> add({
-    required GameState gameState,
-  }) async {
-    _storage[gameState.lobbyID] = gameState;
-
-    return gameState;
-  }
-
-  @override
-  Future<GameState> update({
+  Future<GameState> updateOrAdd({
     required GameState gameState,
   }) async {
     _storage[gameState.lobbyID] = gameState;

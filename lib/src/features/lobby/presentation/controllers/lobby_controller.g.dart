@@ -24,6 +24,11 @@ Router _$LobbyControllerRouter(LobbyController service) {
     service.getLobby,
   );
   router.add(
+    'GET',
+    r'/<lobbyID>/listen',
+    service.listenLobby,
+  );
+  router.add(
     'POST',
     r'/<lobbyID>/join',
     service.joinLobby,

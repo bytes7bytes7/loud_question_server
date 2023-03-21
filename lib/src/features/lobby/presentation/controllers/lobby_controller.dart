@@ -100,14 +100,41 @@ class LobbyController extends ApiController {
       return problem([const UserDoesNotExist()]);
     }
 
-    final command =
-        _mapster.map2(getLobbyRequest, user.id, To<GetLobbyQuery>());
+    final query = _mapster.map2(getLobbyRequest, user.id, To<GetLobbyQuery>());
 
-    final result = await command.sendTo(_mediator);
+    final result = await query.sendTo(_mediator);
 
     return result.match(
       problem,
       (r) => ok(_mapster.map1(r, To<GetLobbyResponse>())),
+    );
+  }
+
+  @Route.get('/<lobbyID>/listen')
+  Future<Response> listenLobby(Request request) async {
+    late final ListenLobbyRequest listenLobbyRequest;
+    try {
+      listenLobbyRequest = await parseRequest<ListenLobbyRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final query =
+        _mapster.map2(listenLobbyRequest, user.id, To<ListenLobbyQuery>());
+
+    final result = await query.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<ListenLobbyResponse>())),
     );
   }
 

@@ -10,7 +10,7 @@ abstract class LobbyRepository {
     required UserID creatorID,
   });
 
-  Future<Lobby?> getByID({
+  Future<Lobby?> get({
     required LobbyID id,
   });
 
@@ -18,7 +18,7 @@ abstract class LobbyRepository {
     required LobbyID id,
   });
 
-  Future<Lobby?> update({
+  Future<Lobby> updateOrAdd({
     required Lobby lobby,
   });
 }

@@ -7,7 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
-import '../../../domain/domain.dart';
+import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../view_models/view_models.dart';
 import 'restart_command.dart';
@@ -37,7 +37,7 @@ class RestartCommandHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
     RestartCommand request,
   ) async {
-    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
+    final lobby = await _lobbyRepository.get(id: request.lobbyID);
 
     if (lobby == null) {
       return left(
@@ -45,13 +45,13 @@ class RestartCommandHandler extends RequestHandler<
       );
     }
 
-    if (request.userID != lobby.creatorID) {
+    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
+
+    if (request.userID != (oldGameState?.leaderID ?? lobby.creatorID)) {
       return left(
         [const NoPermission()],
       );
     }
-
-    final oldGameState = await _gameStateService.get(lobbyID: request.lobbyID);
 
     late GameState newGameState;
     if (oldGameState == null) {
@@ -68,7 +68,7 @@ class RestartCommandHandler extends RequestHandler<
       );
     }
 
-    await _gameStateService.update(gameState: newGameState);
+    await _gameStateService.updateOrAdd(gameState: newGameState);
 
     await _userGameStateActivityRepository.update(
       userID: request.userID,

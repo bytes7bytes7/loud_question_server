@@ -7,7 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
-import '../../../domain/domain.dart';
+import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
 import '../../view_models/view_models.dart';
@@ -38,7 +38,7 @@ class SetLeaderCommandHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
     SetLeaderCommand request,
   ) async {
-    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
+    final lobby = await _lobbyRepository.get(id: request.lobbyID);
 
     if (lobby == null) {
       return left(
@@ -90,7 +90,7 @@ class SetLeaderCommandHandler extends RequestHandler<
       );
     }
 
-    await _gameStateService.update(gameState: newGameState);
+    await _gameStateService.updateOrAdd(gameState: newGameState);
 
     await _userGameStateActivityRepository.update(
       userID: request.userID,

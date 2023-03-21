@@ -4,8 +4,7 @@ import 'dart:collection';
 import 'package:injectable/injectable.dart';
 
 import '../../../../repositories/interfaces/interfaces.dart';
-import '../../../common/domain/domain.dart';
-import '../value_objects/game_state/game_state.dart';
+import '../value_objects/value_objects.dart';
 
 class GameStateServiceEvent {
   const GameStateServiceEvent({
@@ -52,7 +51,7 @@ class GameStateService {
     return _gameRepository.get(lobbyID: lobbyID);
   }
 
-  Future<GameState> add({
+  Future<GameState> updateOrAdd({
     required GameState gameState,
   }) async {
     _addEvent(
@@ -63,21 +62,7 @@ class GameStateService {
       ),
     );
 
-    return _gameRepository.add(gameState: gameState);
-  }
-
-  Future<GameState> update({
-    required GameState gameState,
-  }) async {
-    _addEvent(
-      GameStateServiceEvent(
-        lobbyID: gameState.lobbyID,
-        gameState: gameState,
-        msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
-      ),
-    );
-
-    return _gameRepository.update(gameState: gameState);
+    return _gameRepository.updateOrAdd(gameState: gameState);
   }
 
   void _addEvent(GameStateServiceEvent event) {

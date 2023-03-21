@@ -1,16 +1,11 @@
 import '../../features/common/domain/domain.dart';
-import '../../features/game/domain/domain.dart';
 
 abstract class GameRepository {
   Future<GameState?> get({
     required LobbyID lobbyID,
   });
 
-  Future<GameState> add({
-    required GameState gameState,
-  });
-
-  Future<GameState> update({
+  Future<GameState> updateOrAdd({
     required GameState gameState,
   });
 }

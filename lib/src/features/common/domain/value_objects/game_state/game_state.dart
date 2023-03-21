@@ -1,7 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../common/domain/domain.dart';
 import '../../entities/question/question.dart';
+import '../lobby_id/lobby_id.dart';
+import '../user_id/user_id.dart';
 
 part 'game_state.freezed.dart';
 

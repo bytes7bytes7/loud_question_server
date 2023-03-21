@@ -6,3 +6,5 @@ export 'get_lobby_request_id_to_get_lobby_query_mapper.dart';
 export 'get_lobby_result_to_get_lobby_response_mapper.dart';
 export 'join_lobby_request_id_to_join_lobby_command_mapper.dart';
 export 'join_lobby_result_to_join_lobby_response_mapper.dart';
+export 'listen_lobby_request_id_to_listen_lobby_query_mapper.dart';
+export 'listen_lobby_result_to_listen_lobby_response_mapper.dart';

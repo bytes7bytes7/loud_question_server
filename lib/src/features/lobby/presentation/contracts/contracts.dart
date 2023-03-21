@@ -6,3 +6,5 @@ export 'get_lobby_request/get_lobby_request.dart';
 export 'get_lobby_response/get_lobby_response.dart';
 export 'join_lobby_request/join_lobby_request.dart';
 export 'join_lobby_response/join_lobby_response.dart';
+export 'listen_lobby_request/listen_lobby_request.dart';
+export 'listen_lobby_response/listen_lobby_response.dart';

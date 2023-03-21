@@ -7,7 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
-import '../../../domain/domain.dart';
+import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../view_models/view_models.dart';
 import 'get_state_query.dart';
@@ -37,7 +37,7 @@ class GetStateQueryHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
     GetStateQuery request,
   ) async {
-    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
+    final lobby = await _lobbyRepository.get(id: request.lobbyID);
 
     if (lobby == null) {
       return left(
@@ -62,7 +62,7 @@ class GetStateQueryHandler extends RequestHandler<
         ready: [],
       );
 
-      await _gameStateService.update(gameState: newGameState);
+      await _gameStateService.updateOrAdd(gameState: newGameState);
     } else {
       newGameState = oldGameState;
     }

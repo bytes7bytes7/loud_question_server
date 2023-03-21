@@ -22,7 +22,7 @@ class GetLobbyQueryHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, GetLobbyResult>> handle(
     GetLobbyQuery request,
   ) async {
-    final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
+    final lobby = await _lobbyRepository.get(id: request.lobbyID);
 
     if (lobby == null) {
       return left(

@@ -16,20 +16,21 @@ class TestLobbyRepository implements LobbyRepository {
 
   final DateTimeRepository _dateTimeRepository;
 
-  final _creatorIDToLobbyIDs = HashMap<UserID, List<LobbyID>>();
+  final _userIDToLobbyIDs = HashMap<UserID, List<LobbyID>>();
+  final _lobbyIDToUserIDs = HashMap<LobbyID, List<UserID>>();
   final _lobbyIDToLobby = HashMap<LobbyID, Lobby>();
-  final _lobbyIDToUserID = HashMap<LobbyID, UserID>();
 
   @override
   Future<List<Lobby>> getAllByUserID({
     required UserID userID,
   }) async {
+    final lobbyIDs = _userIDToLobbyIDs[userID] ?? [];
+
     final lobbies = <Lobby>[];
+    for (final id in lobbyIDs) {
+      final lobby = _lobbyIDToLobby[id];
 
-    for (final pair in _lobbyIDToLobby.entries) {
-      final lobby = pair.value;
-
-      if (lobby.creatorID == userID || lobby.guestIDs.contains(userID)) {
+      if (lobby != null) {
         lobbies.add(lobby);
       }
     }
@@ -44,7 +45,7 @@ class TestLobbyRepository implements LobbyRepository {
     late LobbyID lobbyID;
     do {
       lobbyID = LobbyID.generate();
-    } while (_lobbyIDToLobby.containsKey(lobbyID));
+    } while (_lobbyIDToUserIDs.containsKey(lobbyID));
 
     final lobby = Lobby(
       id: lobbyID,
@@ -53,22 +54,17 @@ class TestLobbyRepository implements LobbyRepository {
       guestIDs: [],
     );
 
-    _lobbyIDToLobby[lobbyID] = lobby;
-    _lobbyIDToUserID[lobbyID] = creatorID;
+    final lobbyIDs = (_userIDToLobbyIDs[creatorID] ?? [])..add(lobby.id);
+    _userIDToLobbyIDs[creatorID] = lobbyIDs;
 
-    final lobbies = _creatorIDToLobbyIDs[creatorID];
-
-    if (lobbies != null) {
-      lobbies.add(lobbyID);
-    } else {
-      _creatorIDToLobbyIDs[creatorID] = <LobbyID>[lobbyID];
-    }
+    _lobbyIDToUserIDs[lobbyID] = [creatorID];
+    _lobbyIDToLobby[lobby.id] = lobby;
 
     return lobby;
   }
 
   @override
-  Future<Lobby?> getByID({
+  Future<Lobby?> get({
     required LobbyID id,
   }) async {
     return _lobbyIDToLobby[id];
@@ -78,33 +74,39 @@ class TestLobbyRepository implements LobbyRepository {
   Future<void> remove({
     required LobbyID id,
   }) async {
-    final userID = _lobbyIDToUserID.remove(id);
+    final userIDs = _lobbyIDToUserIDs.remove(id) ?? [];
 
-    if (userID != null) {
-      _lobbyIDToLobby.remove(id);
-
-      _creatorIDToLobbyIDs[userID] =
-          List<LobbyID>.from(_creatorIDToLobbyIDs[userID] ?? [])..remove(id);
+    for (final id in userIDs) {
+      _userIDToLobbyIDs.remove(id);
     }
+
+    _lobbyIDToLobby.remove(id);
   }
 
   @override
-  Future<Lobby?> update({
+  Future<Lobby> updateOrAdd({
     required Lobby lobby,
   }) async {
-    final creatorID = _lobbyIDToUserID[lobby.id];
+    final hasLobby = _lobbyIDToLobby[lobby.id] != null;
 
-    if (creatorID != null) {
-      final lobbyIDs = _creatorIDToLobbyIDs[creatorID] ?? [];
+    if (hasLobby) {
+      _lobbyIDToLobby[lobby.id] = lobby;
+    } else {
+      _lobbyIDToLobby[lobby.id] = lobby;
 
-      final hasLobby = lobbyIDs.contains(lobby.id);
+      final lobbyIDs = (_userIDToLobbyIDs[lobby.creatorID] ?? [])
+        ..add(lobby.id);
+      _userIDToLobbyIDs[lobby.creatorID] = lobbyIDs;
 
-      if (hasLobby) {
-        _lobbyIDToLobby[lobby.id] = lobby;
-        return lobby;
+      for (final id in lobby.guestIDs) {
+        final lobbyIDs = (_userIDToLobbyIDs[id] ?? [])..add(lobby.id);
+        _userIDToLobbyIDs[id] = lobbyIDs;
       }
+
+      final userIDs = [lobby.creatorID, ...lobby.guestIDs];
+      _lobbyIDToUserIDs[lobby.id] = userIDs;
     }
 
-    return null;
+    return lobby;
   }
 }

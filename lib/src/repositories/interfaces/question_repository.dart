@@ -1,4 +1,4 @@
-import '../../features/game/domain/domain.dart';
+import '../../features/common/domain/domain.dart';
 
 abstract class QuestionRepository {
   Future<Question?> getByID({required QuestionID id});

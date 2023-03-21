@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/game/domain/entities/question/question.dart';
-import '../../features/game/domain/value_objects/question_id/question_id.dart';
+import '../../features/common/domain/domain.dart';
 import '../interfaces/question_repository.dart';
 
 @test

@@ -7,7 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/detailed_exception.dart';
-import '../../../domain/domain.dart';
+import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../view_models/view_models.dart';
 import 'listen_state_query.dart';

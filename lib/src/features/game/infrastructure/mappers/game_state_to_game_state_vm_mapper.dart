@@ -2,7 +2,6 @@ import 'package:mapster/mapster.dart';
 
 import '../../../common/domain/domain.dart';
 import '../../application/view_models/view_models.dart';
-import '../../domain/domain.dart';
 
 class GameStateToGameStateVMMapper
     extends TwoSourcesMapper<GameState, UserID, GameStateVM> {
