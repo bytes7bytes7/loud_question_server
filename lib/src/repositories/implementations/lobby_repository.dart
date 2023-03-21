@@ -87,25 +87,26 @@ class TestLobbyRepository implements LobbyRepository {
   Future<Lobby> updateOrAdd({
     required Lobby lobby,
   }) async {
-    final hasLobby = _lobbyIDToLobby[lobby.id] != null;
+    _lobbyIDToLobby[lobby.id] = lobby;
 
-    if (hasLobby) {
-      _lobbyIDToLobby[lobby.id] = lobby;
-    } else {
-      _lobbyIDToLobby[lobby.id] = lobby;
+    final lobbyIDs = _userIDToLobbyIDs[lobby.creatorID] ?? [];
+    if (!lobbyIDs.contains(lobby.id)) {
+      lobbyIDs.add(lobby.id);
+    }
 
-      final lobbyIDs = (_userIDToLobbyIDs[lobby.creatorID] ?? [])
-        ..add(lobby.id);
-      _userIDToLobbyIDs[lobby.creatorID] = lobbyIDs;
+    _userIDToLobbyIDs[lobby.creatorID] = lobbyIDs;
 
-      for (final id in lobby.guestIDs) {
-        final lobbyIDs = (_userIDToLobbyIDs[id] ?? [])..add(lobby.id);
-        _userIDToLobbyIDs[id] = lobbyIDs;
+    for (final id in lobby.guestIDs) {
+      final lobbyIDs = _userIDToLobbyIDs[id] ?? [];
+      if (!lobbyIDs.contains(lobby.id)) {
+        lobbyIDs.add(lobby.id);
       }
 
-      final userIDs = [lobby.creatorID, ...lobby.guestIDs];
-      _lobbyIDToUserIDs[lobby.id] = userIDs;
+      _userIDToLobbyIDs[id] = lobbyIDs;
     }
+
+    final userIDs = [lobby.creatorID, ...lobby.guestIDs];
+    _lobbyIDToUserIDs[lobby.id] = userIDs;
 
     return lobby;
   }
