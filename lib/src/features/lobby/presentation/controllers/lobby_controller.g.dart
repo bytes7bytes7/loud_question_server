@@ -15,6 +15,11 @@ Router _$LobbyControllerRouter(LobbyController service) {
   );
   router.add(
     'GET',
+    r'/all',
+    service.getLobbies,
+  );
+  router.add(
+    'GET',
     r'/<lobbyID>',
     service.getLobby,
   );
@@ -22,11 +27,6 @@ Router _$LobbyControllerRouter(LobbyController service) {
     'POST',
     r'/<lobbyID>/join',
     service.joinLobby,
-  );
-  router.add(
-    'GET',
-    r'/all',
-    service.getLobbies,
   );
   return router;
 }

@@ -55,6 +55,34 @@ class LobbyController extends ApiController {
     );
   }
 
+  @Route.get('/all')
+  Future<Response> getLobbies(Request request) async {
+    late final GetLobbiesRequest getLobbiesRequest;
+    try {
+      getLobbiesRequest = await parseRequest<GetLobbiesRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(getLobbiesRequest, user.id, To<GetLobbiesQuery>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GetLobbiesResponse>())),
+    );
+  }
+
   @Route.get('/<lobbyID>')
   Future<Response> getLobby(Request request) async {
     late final GetLobbyRequest getLobbyRequest;
@@ -79,7 +107,7 @@ class LobbyController extends ApiController {
 
     return result.match(
       problem,
-      (r) => created(_mapster.map1(r, To<GetLobbyResponse>())),
+      (r) => ok(_mapster.map1(r, To<GetLobbyResponse>())),
     );
   }
 
@@ -108,34 +136,6 @@ class LobbyController extends ApiController {
     return result.match(
       problem,
       (r) => ok(_mapster.map1(r, To<JoinLobbyResponse>())),
-    );
-  }
-
-  @Route.get('/all')
-  Future<Response> getLobbies(Request request) async {
-    late final GetLobbiesRequest getLobbiesRequest;
-    try {
-      getLobbiesRequest = await parseRequest<GetLobbiesRequest>(request);
-    } catch (e) {
-      return problem(
-        [const InvalidBodyException()],
-      );
-    }
-
-    final user = request.user;
-
-    if (user == null) {
-      return problem([const UserDoesNotExist()]);
-    }
-
-    final command =
-        _mapster.map2(getLobbiesRequest, user.id, To<GetLobbiesQuery>());
-
-    final result = await command.sendTo(_mediator);
-
-    return result.match(
-      problem,
-      (r) => ok(_mapster.map1(r, To<GetLobbiesResponse>())),
     );
   }
 }

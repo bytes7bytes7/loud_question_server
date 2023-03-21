@@ -167,6 +167,34 @@ class GameController extends ApiController {
     );
   }
 
+  @Route.post('/<lobbyID>/start_answer')
+  Future<Response> startAnswer(Request request) async {
+    late final StartAnswerRequest startAnswerRequest;
+    try {
+      startAnswerRequest = await parseRequest<StartAnswerRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final command =
+        _mapster.map2(startAnswerRequest, user.id, To<StartAnswerCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GameStateResponse>())),
+    );
+  }
+
   @Route.post('/<lobbyID>/give_answer')
   Future<Response> giveAnswer(Request request) async {
     late final GiveAnswerRequest giveAnswerRequest;

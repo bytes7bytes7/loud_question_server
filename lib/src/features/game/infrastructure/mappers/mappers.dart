@@ -8,4 +8,5 @@ export 'restart_request_id_to_request_command_mapper.dart';
 export 'set_leader_request_id_to_set_leader_command_mapper.dart';
 export 'set_not_ready_request_id_to_set_not_ready_command_mapper.dart';
 export 'set_ready_request_id_to_set_ready_command_mapper.dart';
+export 'start_answer_request_id_to_start_answer_command_mapper.dart';
 export 'start_round_request_id_to_start_round_command_mapper.dart';

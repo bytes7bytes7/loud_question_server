@@ -29,7 +29,7 @@ class GameStateService {
 
   final GameRepository _gameRepository;
   final DateTimeRepository _dateTimeRepository;
-  final _eventController = StreamController<GameStateServiceEvent>();
+  final _eventController = StreamController<GameStateServiceEvent>.broadcast();
   final _lastEventByID = HashMap<LobbyID, GameStateServiceEvent>();
 
   Stream<GameStateServiceEvent> get events => _eventController.stream;

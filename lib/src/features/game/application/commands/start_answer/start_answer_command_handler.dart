@@ -10,33 +10,33 @@ import '../../../../common/application/exceptions/exceptions.dart';
 import '../../../domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
-import '../../view_models/view_models.dart';
-import 'give_answer_command.dart';
+import '../../view_models/game_state_vm/game_state_vm.dart';
+import 'start_answer_command.dart';
 
 @singleton
-class GiveAnswerCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, GiveAnswerCommand> {
-  const GiveAnswerCommandHandler({
-    required LobbyRepository lobbyRepository,
+class StartAnswerCommandHandler extends RequestHandler<
+    Either<List<DetailedException>, GameStateResult>, StartAnswerCommand> {
+  const StartAnswerCommandHandler({
     required GameStateService gameStateService,
+    required LobbyRepository lobbyRepository,
     required DateTimeRepository dateTimeRepository,
     required UserGameStateActivityRepository userGameStateActivityRepository,
     required Mapster mapster,
-  })  : _lobbyRepository = lobbyRepository,
-        _gameStateService = gameStateService,
+  })  : _gameStateService = gameStateService,
+        _lobbyRepository = lobbyRepository,
         _dateTimeRepository = dateTimeRepository,
         _userGameStateActivityRepository = userGameStateActivityRepository,
         _mapster = mapster;
 
-  final LobbyRepository _lobbyRepository;
   final GameStateService _gameStateService;
+  final LobbyRepository _lobbyRepository;
   final DateTimeRepository _dateTimeRepository;
   final UserGameStateActivityRepository _userGameStateActivityRepository;
   final Mapster _mapster;
 
   @override
   FutureOr<Either<List<DetailedException>, GameStateResult>> handle(
-    GiveAnswerCommand request,
+    StartAnswerCommand request,
   ) async {
     final lobby = await _lobbyRepository.getByID(id: request.lobbyID);
 
@@ -63,23 +63,40 @@ class GiveAnswerCommandHandler extends RequestHandler<
       );
     }
 
-    if (oldGameState is! WaitingForAnswerGameState) {
+    final hasPermission = oldGameState.leaderID == request.userID;
+
+    if (!hasPermission) {
+      return left(
+        [const NoPermission()],
+      );
+    }
+
+    if (oldGameState is! PlayingGameState) {
       return left(
         [const UnavailableGameOperation()],
       );
     }
 
-    final answers = Map.of(oldGameState.answers);
+    final endsAt = DateTime.fromMillisecondsSinceEpoch(
+      oldGameState.startedAtMSSinceEpoch,
+    )
+        .add(Duration(seconds: oldGameState.endsAfterSeconds))
+        .millisecondsSinceEpoch;
 
-    if (answers.keys.contains(request.userID)) {
+    final now = _dateTimeRepository.now().millisecondsSinceEpoch;
+
+    if (now < endsAt) {
       return left(
-        [const YouAlreadyAnswered()],
+        [const UnavailableGameOperation()],
       );
     }
 
     // must specify `GameState` type for Mapster
-    final GameState newGameState = oldGameState.copyWith(
-      answers: answers..[request.userID] = request.answer,
+    final GameState newGameState = WaitingForAnswerGameState(
+      leaderID: oldGameState.leaderID,
+      lobbyID: oldGameState.lobbyID,
+      answers: {},
+      question: oldGameState.question,
     );
 
     await _gameStateService.update(gameState: newGameState);

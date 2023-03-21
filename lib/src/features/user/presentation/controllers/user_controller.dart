@@ -43,7 +43,7 @@ class UserController extends ApiController {
 
     return result.match(
       problem,
-      (r) => created(_mapster.map1(r, To<GetUserResponse>())),
+      (r) => ok(_mapster.map1(r, To<GetUserResponse>())),
     );
   }
 }
