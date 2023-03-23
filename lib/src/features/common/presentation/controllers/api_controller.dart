@@ -35,22 +35,32 @@ class ApiController {
   Response problem(List<DetailedException> exceptions) =>
       problemHandler(exceptions);
 
-  Response ok(Object result) {
+  Response ok(
+    Object result, {
+    ContentType? contentType,
+  }) {
+    contentType ??= ContentType.json;
+
     return _createResponse(
       statusCode: HttpStatus.ok,
       body: _jsonEncoder.convert(result),
       headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+        HttpHeaders.contentTypeHeader: contentType.toString(),
       },
     );
   }
 
-  Response created(Object result) {
+  Response created(
+    Object result, {
+    ContentType? contentType,
+  }) {
+    contentType ??= ContentType.json;
+
     return _createResponse(
       statusCode: HttpStatus.created,
       body: _jsonEncoder.convert(result),
       headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+        HttpHeaders.contentTypeHeader: contentType.toString(),
       },
     );
   }

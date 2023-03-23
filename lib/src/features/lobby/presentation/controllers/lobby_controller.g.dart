@@ -20,6 +20,11 @@ Router _$LobbyControllerRouter(LobbyController service) {
   );
   router.add(
     'GET',
+    r'/song',
+    service.getSong,
+  );
+  router.add(
+    'GET',
     r'/<lobbyID>',
     service.getLobby,
   );

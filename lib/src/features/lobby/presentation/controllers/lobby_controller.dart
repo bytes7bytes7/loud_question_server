@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:mapster/mapster.dart';
 import 'package:mediator/mediator.dart' as mediator;
@@ -81,6 +83,42 @@ class LobbyController extends ApiController {
       problem,
       (r) => ok(_mapster.map1(r, To<GetLobbiesResponse>())),
     );
+  }
+
+  @Route.get('/song')
+  Future<Response> getSong(Request request) async {
+    final bytes = File('D:/Music/wild one.mp3').readAsBytesSync();
+
+    return ok(
+      bytes,
+      contentType: ContentType.binary,
+    );
+
+    /*
+    late final GetSongRequest getSongRequest;
+    try {
+      getSongRequest = await parseRequest<GetSongRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final user = request.user;
+
+    if (user == null) {
+      return problem([const UserDoesNotExist()]);
+    }
+
+    final query = _mapster.map2(getSongRequest, user.id, To<GetSongQuery>());
+
+    final result = await query.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<GetSongResponse>())),
+    );
+    */
   }
 
   @Route.get('/<lobbyID>')
