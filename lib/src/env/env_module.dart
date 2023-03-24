@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../utils/jwt_settings.dart';
+import '../utils/utils.dart';
 import 'env.dart';
 
 @module
@@ -11,5 +11,10 @@ abstract class EnvModule {
         issuer: Env.jwtIssuer,
         tokenExpiresInMins: int.parse(Env.jwtTokenExpiresInMins),
         audience: Env.jwtAudience,
+      );
+
+  @singleton
+  SongSettings get songSettings => SongSettings(
+        path: Env.songPath,
       );
 }

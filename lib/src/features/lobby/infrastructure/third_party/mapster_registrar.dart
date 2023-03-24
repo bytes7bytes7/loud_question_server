@@ -41,6 +41,12 @@ class LobbyMapsterRegistrar {
       )
       ..register(
         MapperMeta.one(ListenLobbyResultToListenLobbyResponseMapper.new),
+      )
+      ..register(
+        MapperMeta.one(GetSongRequestToGetSongQueryMapper.new),
+      )
+      ..register(
+        MapperMeta.one(GetSongResultToGetSongResponse.new),
       );
   }
 }

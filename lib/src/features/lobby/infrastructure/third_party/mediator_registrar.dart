@@ -22,6 +22,7 @@ class LobbyMediatorRegistrar {
       ..registerRequestHandler(() => _getIt.get<GetLobbiesQueryHandler>())
       ..registerRequestHandler(() => _getIt.get<GetLobbyQueryHandler>())
       ..registerRequestHandler(() => _getIt.get<ListenLobbyQueryHandler>())
+      ..registerRequestHandler(() => _getIt.get<GetSongQueryHandler>())
 
       // PipelineBehavior
       ..registerPipelineBehavior(
@@ -38,6 +39,9 @@ class LobbyMediatorRegistrar {
       )
       ..registerPipelineBehavior(
         () => ValidationBehavior([_getIt.get<ListenLobbyQueryValidator>()]),
+      )
+      ..registerPipelineBehavior(
+        () => ValidationBehavior([_getIt.get<GetSongQueryValidator>()]),
       );
   }
 }
