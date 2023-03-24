@@ -7,6 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
+import '../../../../common/application/providers/date_time_provider.dart';
 import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
@@ -19,18 +20,18 @@ class StartAnswerCommandHandler extends RequestHandler<
   const StartAnswerCommandHandler({
     required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
     required UserGameStateActivityRepository userGameStateActivityRepository,
     required Mapster mapster,
   })  : _gameStateService = gameStateService,
         _lobbyRepository = lobbyRepository,
-        _dateTimeRepository = dateTimeRepository,
+        _dateTimeProvider = dateTimeProvider,
         _userGameStateActivityRepository = userGameStateActivityRepository,
         _mapster = mapster;
 
   final GameStateService _gameStateService;
   final LobbyRepository _lobbyRepository;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
   final UserGameStateActivityRepository _userGameStateActivityRepository;
   final Mapster _mapster;
 
@@ -83,7 +84,7 @@ class StartAnswerCommandHandler extends RequestHandler<
         .add(Duration(seconds: oldGameState.endsAfterSeconds))
         .millisecondsSinceEpoch;
 
-    final now = _dateTimeRepository.now().millisecondsSinceEpoch;
+    final now = _dateTimeProvider.now().millisecondsSinceEpoch;
 
     if (now < endsAt) {
       return left(
@@ -103,7 +104,7 @@ class StartAnswerCommandHandler extends RequestHandler<
 
     await _userGameStateActivityRepository.update(
       userID: request.userID,
-      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
     );
 
     final gameStateVM =

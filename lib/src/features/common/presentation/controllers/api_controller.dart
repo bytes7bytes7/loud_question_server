@@ -37,13 +37,14 @@ class ApiController {
 
   Response ok(
     Object result, {
+    bool convertToJson = true,
     ContentType? contentType,
   }) {
     contentType ??= ContentType.json;
 
     return _createResponse(
       statusCode: HttpStatus.ok,
-      body: _jsonEncoder.convert(result),
+      body: convertToJson ? _jsonEncoder.convert(result) : result,
       headers: {
         HttpHeaders.contentTypeHeader: contentType.toString(),
       },
@@ -52,13 +53,14 @@ class ApiController {
 
   Response created(
     Object result, {
+    bool convertToJson = true,
     ContentType? contentType,
   }) {
     contentType ??= ContentType.json;
 
     return _createResponse(
       statusCode: HttpStatus.created,
-      body: _jsonEncoder.convert(result),
+      body: convertToJson ? _jsonEncoder.convert(result) : result,
       headers: {
         HttpHeaders.contentTypeHeader: contentType.toString(),
       },

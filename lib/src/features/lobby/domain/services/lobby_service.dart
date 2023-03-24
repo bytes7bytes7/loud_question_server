@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:injectable/injectable.dart';
 
 import '../../../../repositories/interfaces/interfaces.dart';
+import '../../../common/application/providers/date_time_provider.dart';
 import '../../../common/domain/domain.dart';
 import '../entities/lobby/lobby.dart';
 
@@ -23,12 +24,12 @@ class LobbyServiceEvent {
 class LobbyService {
   LobbyService({
     required LobbyRepository lobbyRepository,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
   })  : _lobbyRepository = lobbyRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _dateTimeProvider = dateTimeProvider;
 
   final LobbyRepository _lobbyRepository;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
   final _eventController = StreamController<LobbyServiceEvent>.broadcast();
   final _lastEventByID = HashMap<LobbyID, LobbyServiceEvent>();
 
@@ -59,7 +60,7 @@ class LobbyService {
       LobbyServiceEvent(
         lobbyID: lobby.id,
         lobby: lobby,
-        msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
       ),
     );
 

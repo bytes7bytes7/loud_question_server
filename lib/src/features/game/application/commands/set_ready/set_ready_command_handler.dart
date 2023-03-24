@@ -7,6 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
+import '../../../../common/application/providers/date_time_provider.dart';
 import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
@@ -20,18 +21,18 @@ class SetReadyCommandHandler extends RequestHandler<
     required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,
     required UserGameStateActivityRepository userGameStateActivityRepository,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
     required Mapster mapster,
   })  : _gameStateService = gameStateService,
         _lobbyRepository = lobbyRepository,
         _userGameStateActivityRepository = userGameStateActivityRepository,
-        _dateTimeRepository = dateTimeRepository,
+        _dateTimeProvider = dateTimeProvider,
         _mapster = mapster;
 
   final GameStateService _gameStateService;
   final LobbyRepository _lobbyRepository;
   final UserGameStateActivityRepository _userGameStateActivityRepository;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
   final Mapster _mapster;
 
   @override
@@ -91,7 +92,7 @@ class SetReadyCommandHandler extends RequestHandler<
 
     await _userGameStateActivityRepository.update(
       userID: request.userID,
-      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
     );
 
     final gameStateVM =

@@ -6,6 +6,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
+import '../../../../common/application/providers/date_time_provider.dart';
 import '../../../../common/application/services/hash_service.dart';
 import '../../../domain/services/lobby_service.dart';
 import '../../common/common.dart';
@@ -19,18 +20,18 @@ class JoinLobbyCommandHandler extends RequestHandler<
     required LobbyService lobbyService,
     required UserLobbyActivityRepository userLobbyActivityRepository,
     required LobbyPasswordHashRepository lobbyPasswordHashRepository,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
     required HashService hashService,
   })  : _lobbyService = lobbyService,
         _userLobbyActivityRepository = userLobbyActivityRepository,
         _lobbyPasswordHashRepository = lobbyPasswordHashRepository,
-        _dateTimeRepository = dateTimeRepository,
+        _dateTimeProvider = dateTimeProvider,
         _hashService = hashService;
 
   final LobbyService _lobbyService;
   final UserLobbyActivityRepository _userLobbyActivityRepository;
   final LobbyPasswordHashRepository _lobbyPasswordHashRepository;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
   final HashService _hashService;
 
   @override
@@ -72,7 +73,7 @@ class JoinLobbyCommandHandler extends RequestHandler<
 
     await _userLobbyActivityRepository.update(
       userID: request.guestID,
-      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
     );
 
     return right(

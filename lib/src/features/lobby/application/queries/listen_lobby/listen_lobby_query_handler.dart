@@ -6,6 +6,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/detailed_exception.dart';
+import '../../../../common/application/providers/date_time_provider.dart';
 import '../../../domain/services/lobby_service.dart';
 import '../../common/common.dart';
 import 'listen_lobby_query.dart';
@@ -16,14 +17,14 @@ class ListenLobbyQueryHandler extends RequestHandler<
   const ListenLobbyQueryHandler({
     required LobbyService lobbyService,
     required UserLobbyActivityRepository userLobbyActivityRepository,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
   })  : _lobbyService = lobbyService,
         _userLobbyActivityRepository = userLobbyActivityRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _dateTimeProvider = dateTimeProvider;
 
   final LobbyService _lobbyService;
   final UserLobbyActivityRepository _userLobbyActivityRepository;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
 
   @override
   FutureOr<Either<List<DetailedException>, ListenLobbyResult>> handle(
@@ -36,7 +37,7 @@ class ListenLobbyQueryHandler extends RequestHandler<
     if (lastRequestInMSSinceEpoch == null) {
       await _userLobbyActivityRepository.update(
         userID: request.userID,
-        msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
       );
     }
 
@@ -56,7 +57,7 @@ class ListenLobbyQueryHandler extends RequestHandler<
 
     await _userLobbyActivityRepository.update(
       userID: request.userID,
-      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
     );
 
     return right(

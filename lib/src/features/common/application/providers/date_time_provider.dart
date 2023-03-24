@@ -1,3 +1,7 @@
 abstract class DateTimeProvider {
-  DateTime nowUtc();
+  Future<void> init();
+
+  void dispose();
+
+  DateTime now();
 }

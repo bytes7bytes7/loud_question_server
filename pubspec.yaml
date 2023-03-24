@@ -27,6 +27,7 @@ dependencies:
     git:
       url: https://github.com/bytes7bytes7/mediator
       ref: b81e395
+  ntp: ^2.0.0
   problem_details: ^0.0.2
   shelf: ^1.4.0
   shelf_router: ^1.1.3

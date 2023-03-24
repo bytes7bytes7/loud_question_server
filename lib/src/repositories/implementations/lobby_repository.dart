@@ -2,19 +2,19 @@ import 'dart:collection';
 
 import 'package:injectable/injectable.dart';
 
+import '../../features/common/application/providers/date_time_provider.dart';
 import '../../features/common/domain/domain.dart';
 import '../../features/lobby/domain/domain.dart';
-import '../interfaces/date_time_repository.dart';
 import '../interfaces/lobby_repository.dart';
 
 @test
 @Singleton(as: LobbyRepository)
 class TestLobbyRepository implements LobbyRepository {
   TestLobbyRepository({
-    required DateTimeRepository dateTimeRepository,
-  }) : _dateTimeRepository = dateTimeRepository;
+    required DateTimeProvider dateTimeProvider,
+  }) : _dateTimeProvider = dateTimeProvider;
 
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
 
   final _userIDToLobbyIDs = HashMap<UserID, List<LobbyID>>();
   final _lobbyIDToUserIDs = HashMap<LobbyID, List<UserID>>();
@@ -50,7 +50,8 @@ class TestLobbyRepository implements LobbyRepository {
     final lobby = Lobby(
       id: lobbyID,
       creatorID: creatorID,
-      createdAtInMSSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      createdAtInMSSinceEpoch:
+          _dateTimeProvider.now().millisecondsSinceEpoch,
       guestIDs: [],
     );
 

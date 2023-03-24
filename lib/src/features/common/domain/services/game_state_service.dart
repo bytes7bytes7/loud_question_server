@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:injectable/injectable.dart';
 
 import '../../../../repositories/interfaces/interfaces.dart';
+import '../../application/providers/date_time_provider.dart';
 import '../value_objects/value_objects.dart';
 
 class GameStateServiceEvent {
@@ -22,12 +23,12 @@ class GameStateServiceEvent {
 class GameStateService {
   GameStateService({
     required GameRepository gameRepository,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
   })  : _gameRepository = gameRepository,
-        _dateTimeRepository = dateTimeRepository;
+        _dateTimeProvider = dateTimeProvider;
 
   final GameRepository _gameRepository;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
   final _eventController = StreamController<GameStateServiceEvent>.broadcast();
   final _lastEventByID = HashMap<LobbyID, GameStateServiceEvent>();
 
@@ -58,7 +59,7 @@ class GameStateService {
       GameStateServiceEvent(
         lobbyID: gameState.lobbyID,
         gameState: gameState,
-        msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
       ),
     );
 

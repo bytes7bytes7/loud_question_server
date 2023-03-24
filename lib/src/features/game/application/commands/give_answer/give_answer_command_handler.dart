@@ -7,6 +7,7 @@ import 'package:mediator/mediator.dart';
 
 import '../../../../../repositories/interfaces/interfaces.dart';
 import '../../../../common/application/exceptions/exceptions.dart';
+import '../../../../common/application/providers/date_time_provider.dart';
 import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
@@ -19,18 +20,18 @@ class GiveAnswerCommandHandler extends RequestHandler<
   const GiveAnswerCommandHandler({
     required LobbyRepository lobbyRepository,
     required GameStateService gameStateService,
-    required DateTimeRepository dateTimeRepository,
+    required DateTimeProvider dateTimeProvider,
     required UserGameStateActivityRepository userGameStateActivityRepository,
     required Mapster mapster,
   })  : _lobbyRepository = lobbyRepository,
         _gameStateService = gameStateService,
-        _dateTimeRepository = dateTimeRepository,
+        _dateTimeProvider = dateTimeProvider,
         _userGameStateActivityRepository = userGameStateActivityRepository,
         _mapster = mapster;
 
   final LobbyRepository _lobbyRepository;
   final GameStateService _gameStateService;
-  final DateTimeRepository _dateTimeRepository;
+  final DateTimeProvider _dateTimeProvider;
   final UserGameStateActivityRepository _userGameStateActivityRepository;
   final Mapster _mapster;
 
@@ -86,7 +87,7 @@ class GiveAnswerCommandHandler extends RequestHandler<
 
     await _userGameStateActivityRepository.update(
       userID: request.userID,
-      msSinceEpoch: _dateTimeRepository.now().millisecondsSinceEpoch,
+      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
     );
 
     final gameStateVM =

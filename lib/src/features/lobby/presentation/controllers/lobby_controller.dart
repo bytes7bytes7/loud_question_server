@@ -91,34 +91,9 @@ class LobbyController extends ApiController {
 
     return ok(
       bytes,
-      contentType: ContentType.binary,
+      convertToJson: false,
+      contentType: ContentType('audio', 'mpeg'),
     );
-
-    /*
-    late final GetSongRequest getSongRequest;
-    try {
-      getSongRequest = await parseRequest<GetSongRequest>(request);
-    } catch (e) {
-      return problem(
-        [const InvalidBodyException()],
-      );
-    }
-
-    final user = request.user;
-
-    if (user == null) {
-      return problem([const UserDoesNotExist()]);
-    }
-
-    final query = _mapster.map2(getSongRequest, user.id, To<GetSongQuery>());
-
-    final result = await query.sendTo(_mediator);
-
-    return result.match(
-      problem,
-      (r) => ok(_mapster.map1(r, To<GetSongResponse>())),
-    );
-    */
   }
 
   @Route.get('/<lobbyID>')
