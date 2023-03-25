@@ -6,9 +6,8 @@ import 'package:injectable/injectable.dart';
 import '../../features/common/domain/domain.dart';
 import '../interfaces/question_repository.dart';
 
-@test
 @Singleton(as: QuestionRepository)
-class TestQuestionRepository implements QuestionRepository {
+class ProdQuestionRepository implements QuestionRepository {
   final _storage = List<Question>.generate(
     100,
     (index) => Question(

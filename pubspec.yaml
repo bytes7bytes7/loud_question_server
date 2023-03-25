@@ -28,6 +28,7 @@ dependencies:
       url: https://github.com/bytes7bytes7/mediator
       ref: b81e395
   ntp: ^2.0.0
+  path: ^1.8.3
   problem_details: ^0.0.2
   shelf: ^1.4.0
   shelf_cors_headers: ^0.1.4
