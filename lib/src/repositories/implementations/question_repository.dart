@@ -27,9 +27,10 @@ class ProdQuestionRepository implements QuestionRepository {
     final file = File(_questionSettings.path);
     final rawString = file.readAsStringSync();
     final jsonData = json.decode(rawString);
-    final questions = (jsonData as Map)['questions'] as List<JsonMap>;
+    final questions = (jsonData as Map)['questions'] as List;
 
-    _storage.addAll(questions.map(Question.fromJson));
+    // ignore: unnecessary_lambdas
+    _storage.addAll(questions.map((e) => Question.fromJson(e)));
   }
 
   @override
