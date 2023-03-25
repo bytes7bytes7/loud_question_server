@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:load_question_server/load_question_server.dart';
+import 'package:loud_question_server/loud_question_server.dart';
 
 final _getIt = GetIt.instance;
 

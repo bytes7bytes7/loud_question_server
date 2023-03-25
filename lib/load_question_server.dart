@@ -1,4 +1,4 @@
-library load_question_server;
+library loud_question_server;
 
 export 'dart:io';
 export 'package:args/args.dart';

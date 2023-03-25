@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:load_question_server/load_question_server.dart';
+import 'package:loud_question_server/loud_question_server.dart';
 import 'package:path/path.dart';
 
 const _questionType = 'q';

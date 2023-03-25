@@ -1,3 +1,3 @@
-# Load question server
+# Loud question server
 
-Server for `Load question` app.
+Server for `Loud question` app.
