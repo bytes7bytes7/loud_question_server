@@ -1,4 +1,5 @@
 import 'package:load_question_server/load_question_server.dart';
+import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
 import 'router_authorization_x.dart';
 
@@ -56,6 +57,7 @@ void main(List<String> args) async {
               isError ? _logger.shout(message) : _logger.info(message),
         ),
       )
+      .addMiddleware(corsHeaders())
       .addHandler(app);
 
   final ip = InternetAddress.anyIPv4;
