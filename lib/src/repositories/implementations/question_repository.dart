@@ -1,23 +1,36 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/domain.dart';
+import '../../utils/question_settings.dart';
+import '../../utils/typedef.dart';
 import '../interfaces/question_repository.dart';
 
 @Singleton(as: QuestionRepository)
 class ProdQuestionRepository implements QuestionRepository {
-  final _storage = List<Question>.generate(
-    100,
-    (index) => Question(
-      id: QuestionID('$index'),
-      content: '$index + 1 = ?',
-      answer: '${index + 1}',
-      theme: '${index % 2}',
-    ),
-  );
+  ProdQuestionRepository({
+    required QuestionSettings questionSettings,
+  }) : _questionSettings = questionSettings;
+
+  final QuestionSettings _questionSettings;
+
+  final _storage = <Question>[];
   final _rand = Random();
+
+  @override
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    final file = File(_questionSettings.path);
+    final rawString = file.readAsStringSync();
+    final jsonData = json.decode(rawString);
+    final questions = (jsonData as Map)['questions'] as List<JsonMap>;
+
+    _storage.addAll(questions.map(Question.fromJson));
+  }
 
   @override
   Future<Question?> getByID({required QuestionID id}) async {
