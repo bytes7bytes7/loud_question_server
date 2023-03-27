@@ -39,7 +39,7 @@ class ProdTokenRepository implements TokenRepository {
     for (final key in _box.keys) {
       for (final value in _box.get(key) ?? []) {
         if (value == token) {
-          return key;
+          return UserID.fromString(key);
         }
       }
     }

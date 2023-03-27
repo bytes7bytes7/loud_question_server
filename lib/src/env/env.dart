@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
+import 'dart:io';
+
 import 'package:envied/envied.dart';
 
 part 'env.g.dart';
@@ -24,4 +26,9 @@ abstract class Env {
       'D:/Dart_Projects/loud_question_server/questions.json';
 
   static final dbPath = 'D:/Trash/loud_question';
+}
+
+
+void a(HttpRequest request) {
+  request.response.headers.add('content-type', '');
 }
