@@ -60,7 +60,7 @@ class ProdLobbyRepository implements LobbyRepository {
     late LobbyID lobbyID;
     do {
       lobbyID = LobbyID.generate();
-    } while (_lobbyIDToUserIDs.containsKey(lobbyID));
+    } while (_lobbyIDToUserIDs.containsKey(lobbyID.str));
 
     final lobby = Lobby(
       id: lobbyID,
