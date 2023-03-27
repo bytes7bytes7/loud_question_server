@@ -12,14 +12,4 @@ abstract class EnvModule {
         tokenExpiresInMins: int.parse(Env.jwtTokenExpiresInMins),
         audience: Env.jwtAudience,
       );
-
-  @singleton
-  SongSettings get songSettings => SongSettings(
-        path: Env.songPath,
-      );
-
-  @singleton
-  QuestionSettings get questionSettings => QuestionSettings(
-        path: Env.questionPath,
-      );
 }

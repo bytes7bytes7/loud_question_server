@@ -9,5 +9,4 @@ build/
 .fvm/
 .idea/
 .env.*
-**/env.dart
 **/env.g.dart

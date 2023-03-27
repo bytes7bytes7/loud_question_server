@@ -5,25 +5,20 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../env/env.dart';
 import '../../features/common/domain/domain.dart';
-import '../../utils/question_settings.dart';
 import '../interfaces/question_repository.dart';
 
 @Singleton(as: QuestionRepository)
 class ProdQuestionRepository implements QuestionRepository {
-  ProdQuestionRepository({
-    required QuestionSettings questionSettings,
-  }) : _questionSettings = questionSettings;
-
-  final QuestionSettings _questionSettings;
-
+  final _questionPath = Env.questionsPath;
   final _storage = <Question>[];
   final _rand = Random();
 
   @override
   @PostConstruct(preResolve: true)
   Future<void> init() async {
-    final file = File(_questionSettings.path);
+    final file = File(_questionPath);
     final rawString = file.readAsStringSync();
     final jsonData = json.decode(rawString);
     final questions = (jsonData as Map)['questions'] as List;
