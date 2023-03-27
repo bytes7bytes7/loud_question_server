@@ -1,35 +1,52 @@
-import 'package:collection/collection.dart';
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/domain.dart';
+import '../../utils/typedef.dart';
 import '../interfaces/interfaces.dart';
 
-@test
 @Singleton(as: UserRepository)
-class TestUserRepository implements UserRepository {
-  final _storage = <UserID, User>{};
+class ProdUserRepository implements UserRepository {
+  late Box<JsonMap> _box;
 
   @override
-  Future<void> addOrUpdate({required User user}) async {
-    _storage[user.id] = user;
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    _box = await Hive.openBox('user');
   }
 
   @override
-  Future<User?> getByEmail({required String email}) async {
-    return _storage.entries
-        .firstWhereOrNull((e) => e.value.name == email)
-        ?.value;
+  @disposeMethod
+  Future<void> dispose() async {
+    return _box.close();
+  }
+
+  @override
+  Future<void> addOrUpdate({required User user}) async {
+    await _box.put(user.id.str, user.toJson());
   }
 
   @override
   Future<User?> getByID({required UserID id}) async {
-    return _storage[id];
+    final map = _box.get(id.str);
+
+    if (map == null) {
+      return null;
+    }
+
+    return User.fromJson(map);
   }
 
   @override
   Future<User?> getByName({required String name}) async {
-    return _storage.entries
-        .firstWhereOrNull((e) => e.value.name == name)
-        ?.value;
+    for (final e in _box.values) {
+      final user = User.fromJson(e);
+
+      if (user.name == name) {
+        return user;
+      }
+    }
+
+    return null;
   }
 }

@@ -5,6 +5,7 @@ import 'router_authorization_x.dart';
 
 const _printLogsKey = 'print_logs';
 const _envKey = 'env';
+const _portKey = 'port';
 
 const _defaultPort = 8080;
 
@@ -20,11 +21,13 @@ void main(List<String> args) async {
     ..addFlag(
       _printLogsKey,
       defaultsTo: true,
-    );
+    )
+    ..addOption(_portKey);
 
   final result = parser.parse(args);
   final env = result[_envKey];
   final printLogs = result[_printLogsKey];
+  final portOrNull = result[_portKey];
 
   _configLogger(
     printLogs: printLogs,
@@ -61,7 +64,7 @@ void main(List<String> args) async {
       .addHandler(app);
 
   final ip = InternetAddress.anyIPv4;
-  final port = int.parse(Platform.environment['PORT'] ?? '$_defaultPort');
+  final port = int.parse(portOrNull ?? '$_defaultPort');
   final server = await serve(handler, ip, port);
 
   _logger.info('Server listening on port ${server.port}');

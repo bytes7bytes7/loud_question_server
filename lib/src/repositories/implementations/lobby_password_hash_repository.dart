@@ -1,34 +1,44 @@
-import 'dart:collection';
-
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/domain.dart';
 import '../interfaces/lobby_password_hash_repository.dart';
 
-@test
 @Singleton(as: LobbyPasswordHashRepository)
-class TestLobbyPasswordHashRepository implements LobbyPasswordHashRepository {
-  final _storage = HashMap<LobbyID, String>();
+class ProdLobbyPasswordHashRepository implements LobbyPasswordHashRepository {
+  late Box<String> _box;
+
+  @override
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    _box = await Hive.openBox('lobby_password_hash');
+  }
+
+  @override
+  @disposeMethod
+  Future<void> dispose() async {
+    return _box.close();
+  }
 
   @override
   Future<void> setOrUpdate({
     required LobbyID id,
     required String passwordHash,
   }) async {
-    _storage[id] = passwordHash;
+    await _box.put(id.str, passwordHash);
   }
 
   @override
   Future<String?> getPasswordHashByID({
     required LobbyID id,
   }) async {
-    return _storage[id];
+    return _box.get(id.str);
   }
 
   @override
   Future<void> remove({
     required LobbyID id,
   }) async {
-    _storage.remove(id);
+    await _box.delete(id.str);
   }
 }

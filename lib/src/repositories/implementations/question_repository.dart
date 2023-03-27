@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/domain.dart';
 import '../../utils/question_settings.dart';
-import '../../utils/typedef.dart';
 import '../interfaces/question_repository.dart';
 
 @Singleton(as: QuestionRepository)

@@ -37,7 +37,7 @@ class LogInQueryHandler extends RequestHandler<
   FutureOr<Either<List<DetailedException>, AuthResult>> handle(
     LogInQuery request,
   ) async {
-    final user = await _userRepository.getByEmail(email: request.name);
+    final user = await _userRepository.getByName(name: request.name);
     final userDoesNotExist = user == null;
 
     if (userDoesNotExist) {

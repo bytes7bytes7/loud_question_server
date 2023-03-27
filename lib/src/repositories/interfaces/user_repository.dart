@@ -1,9 +1,11 @@
 import '../../features/common/domain/domain.dart';
 
 abstract class UserRepository {
-  Future<void> addOrUpdate({required User user});
+  Future<void> init();
 
-  Future<User?> getByEmail({required String email});
+  Future<void> dispose();
+
+  Future<void> addOrUpdate({required User user});
 
   Future<User?> getByID({required UserID id});
 

@@ -1,18 +1,28 @@
-import 'dart:collection';
-
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/value_objects/user_id/user_id.dart';
 import '../interfaces/interfaces.dart';
 
-@test
 @Singleton(as: PasswordHashRepository)
-class TestPasswordHashRepository implements PasswordHashRepository {
-  final _storage = HashMap<UserID, String>();
+class ProdPasswordHashRepository implements PasswordHashRepository {
+  late Box<String> _box;
+
+  @override
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    _box = await Hive.openBox('password_hash');
+  }
+
+  @override
+  @disposeMethod
+  Future<void> dispose() async {
+    return _box.close();
+  }
 
   @override
   Future<String?> getHashByID({required UserID userID}) async {
-    return _storage[userID];
+    return _box.get(userID.str);
   }
 
   @override
@@ -20,6 +30,6 @@ class TestPasswordHashRepository implements PasswordHashRepository {
     required UserID userID,
     required String passwordHash,
   }) async {
-    _storage[userID] = passwordHash;
+    return _box.put(userID.str, passwordHash);
   }
 }

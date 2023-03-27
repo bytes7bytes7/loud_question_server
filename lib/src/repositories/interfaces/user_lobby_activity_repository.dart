@@ -1,6 +1,10 @@
 import '../../features/common/domain/domain.dart';
 
 abstract class UserLobbyActivityRepository {
+  Future<void> init();
+
+  Future<void> dispose();
+
   Future<int?> lastRequestInMSSinceEpoch({
     required UserID userID,
   });

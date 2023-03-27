@@ -35,7 +35,7 @@ class RegisterCommandHandler extends RequestHandler<
     RegisterCommand request,
   ) async {
     final userAlreadyExists =
-        await _userRepository.getByEmail(email: request.name) != null;
+        await _userRepository.getByName(name: request.name) != null;
 
     if (userAlreadyExists) {
       return left([const DuplicateName()]);

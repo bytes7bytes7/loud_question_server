@@ -1,35 +1,45 @@
-import 'dart:collection';
-
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/common.dart';
 import '../interfaces/interfaces.dart';
 
-@test
 @Singleton(as: TokenRepository)
-class TestTokenRepository implements TokenRepository {
-  final _storage = HashMap<UserID, List<String>>();
+class ProdTokenRepository implements TokenRepository {
+  late Box<List<String>> _box;
+
+  @override
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    _box = await Hive.openBox('token');
+  }
+
+  @override
+  @disposeMethod
+  Future<void> dispose() async {
+    return _box.close();
+  }
 
   @override
   Future<void> add({
     required String token,
     required UserID userID,
   }) async {
-    final notes = _storage[userID];
+    final notes = _box.get(userID.str);
 
     if (notes != null) {
       notes.add(token);
     } else {
-      _storage[userID] = <String>[token];
+      await _box.put(userID.str, <String>[token]);
     }
   }
 
   @override
   Future<UserID?> getUserIDByToken({required String token}) async {
-    for (final notes in _storage.entries) {
-      for (final note in notes.value) {
-        if (note == token) {
-          return notes.key;
+    for (final key in _box.keys) {
+      for (final value in _box.get(key) ?? []) {
+        if (value == token) {
+          return key;
         }
       }
     }
@@ -41,19 +51,22 @@ class TestTokenRepository implements TokenRepository {
   Future<void> removeNoteByToken({
     required String token,
   }) async {
-    for (final notes in _storage.entries) {
-      final iterator = notes.value.iterator..moveNext();
+    for (final key in _box.keys) {
+      final value = _box.get(key) ?? [];
+      final iterator = value.iterator..moveNext();
 
-      for (var i = 0; i < notes.value.length; i++) {
+      for (var i = 0; i < value.length; i++) {
         final note = iterator.current;
 
         if (note == token) {
-          notes.value.removeAt(i);
+          value.removeAt(i);
           return;
         }
 
         iterator.moveNext();
       }
+
+      await _box.put(key, value);
     }
 
     return;

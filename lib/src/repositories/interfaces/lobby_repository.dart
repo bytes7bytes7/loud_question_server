@@ -2,6 +2,10 @@ import '../../features/common/domain/domain.dart';
 import '../../features/lobby/domain/domain.dart';
 
 abstract class LobbyRepository {
+  Future<void> init();
+
+  Future<void> dispose();
+
   Future<List<Lobby>> getAllByUserID({
     required UserID userID,
   });

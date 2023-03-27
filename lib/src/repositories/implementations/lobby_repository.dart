@@ -1,37 +1,52 @@
-import 'dart:collection';
-
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/application/providers/date_time_provider.dart';
 import '../../features/common/domain/domain.dart';
 import '../../features/lobby/domain/domain.dart';
+import '../../utils/utils.dart';
 import '../interfaces/lobby_repository.dart';
 
-@test
 @Singleton(as: LobbyRepository)
-class TestLobbyRepository implements LobbyRepository {
-  TestLobbyRepository({
+class ProdLobbyRepository implements LobbyRepository {
+  ProdLobbyRepository({
     required DateTimeProvider dateTimeProvider,
   }) : _dateTimeProvider = dateTimeProvider;
 
   final DateTimeProvider _dateTimeProvider;
 
-  final _userIDToLobbyIDs = HashMap<UserID, List<LobbyID>>();
-  final _lobbyIDToUserIDs = HashMap<LobbyID, List<UserID>>();
-  final _lobbyIDToLobby = HashMap<LobbyID, Lobby>();
+  late Box<List<String>> _userIDToLobbyIDs;
+  late Box<List<String>> _lobbyIDToUserIDs;
+  late Box<JsonMap> _lobbyIDToLobby;
+
+  @override
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    _userIDToLobbyIDs = await Hive.openBox('user_id_to_lobby_ids');
+    _lobbyIDToUserIDs = await Hive.openBox('lobby_id_to_user_ids');
+    _lobbyIDToLobby = await Hive.openBox('lobby_id_to_lobby');
+  }
+
+  @override
+  @disposeMethod
+  Future<void> dispose() async {
+    await _userIDToLobbyIDs.close();
+    await _lobbyIDToUserIDs.close();
+    await _lobbyIDToLobby.close();
+  }
 
   @override
   Future<List<Lobby>> getAllByUserID({
     required UserID userID,
   }) async {
-    final lobbyIDs = _userIDToLobbyIDs[userID] ?? [];
+    final lobbyIDs = _userIDToLobbyIDs.get(userID.str) ?? [];
 
     final lobbies = <Lobby>[];
     for (final id in lobbyIDs) {
-      final lobby = _lobbyIDToLobby[id];
+      final lobby = _lobbyIDToLobby.get(id);
 
       if (lobby != null) {
-        lobbies.add(lobby);
+        lobbies.add(Lobby.fromJson(lobby));
       }
     }
 
@@ -50,16 +65,16 @@ class TestLobbyRepository implements LobbyRepository {
     final lobby = Lobby(
       id: lobbyID,
       creatorID: creatorID,
-      createdAtInMSSinceEpoch:
-          _dateTimeProvider.now().millisecondsSinceEpoch,
+      createdAtInMSSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
       guestIDs: [],
     );
 
-    final lobbyIDs = (_userIDToLobbyIDs[creatorID] ?? [])..add(lobby.id);
-    _userIDToLobbyIDs[creatorID] = lobbyIDs;
+    final lobbyIDs = (_userIDToLobbyIDs.get(creatorID.str) ?? [])
+      ..add(lobby.id.str);
+    await _userIDToLobbyIDs.put(creatorID.str, lobbyIDs);
 
-    _lobbyIDToUserIDs[lobbyID] = [creatorID];
-    _lobbyIDToLobby[lobby.id] = lobby;
+    await _lobbyIDToUserIDs.put(lobbyID.str, [creatorID.str]);
+    await _lobbyIDToLobby.put(lobby.id.str, lobby.toJson());
 
     return lobby;
   }
@@ -68,46 +83,56 @@ class TestLobbyRepository implements LobbyRepository {
   Future<Lobby?> get({
     required LobbyID id,
   }) async {
-    return _lobbyIDToLobby[id];
+    final map = _lobbyIDToLobby.get(id.str);
+
+    if (map == null) {
+      return null;
+    }
+
+    return Lobby.fromJson(map);
   }
 
   @override
   Future<void> remove({
     required LobbyID id,
   }) async {
-    final userIDs = _lobbyIDToUserIDs.remove(id) ?? [];
+    final userIDs = _lobbyIDToUserIDs.get(id.str) ?? [];
+    await _lobbyIDToUserIDs.delete(id.str);
 
     for (final id in userIDs) {
-      _userIDToLobbyIDs.remove(id);
+      await _userIDToLobbyIDs.delete(id);
     }
 
-    _lobbyIDToLobby.remove(id);
+    await _lobbyIDToLobby.delete(id.str);
   }
 
   @override
   Future<Lobby> updateOrAdd({
     required Lobby lobby,
   }) async {
-    _lobbyIDToLobby[lobby.id] = lobby;
+    await _lobbyIDToLobby.put(lobby.id.str, lobby.toJson());
 
-    final lobbyIDs = _userIDToLobbyIDs[lobby.creatorID] ?? [];
-    if (!lobbyIDs.contains(lobby.id)) {
-      lobbyIDs.add(lobby.id);
+    final lobbyIDs = _userIDToLobbyIDs.get(lobby.creatorID.str) ?? [];
+    if (!lobbyIDs.contains(lobby.id.str)) {
+      lobbyIDs.add(lobby.id.str);
     }
 
-    _userIDToLobbyIDs[lobby.creatorID] = lobbyIDs;
+    await _userIDToLobbyIDs.put(lobby.creatorID.str, lobbyIDs);
 
+    final guestIDs = <String>[];
     for (final id in lobby.guestIDs) {
-      final lobbyIDs = _userIDToLobbyIDs[id] ?? [];
-      if (!lobbyIDs.contains(lobby.id)) {
-        lobbyIDs.add(lobby.id);
+      guestIDs.add(id.str);
+
+      final lobbyIDs = _userIDToLobbyIDs.get(id.str) ?? [];
+      if (!lobbyIDs.contains(lobby.id.str)) {
+        lobbyIDs.add(lobby.id.str);
       }
 
-      _userIDToLobbyIDs[id] = lobbyIDs;
+      await _userIDToLobbyIDs.put(id.str, lobbyIDs);
     }
 
-    final userIDs = [lobby.creatorID, ...lobby.guestIDs];
-    _lobbyIDToUserIDs[lobby.id] = userIDs;
+    final userIDs = [lobby.creatorID.str, ...guestIDs];
+    await _lobbyIDToUserIDs.put(lobby.id.str, userIDs);
 
     return lobby;
   }

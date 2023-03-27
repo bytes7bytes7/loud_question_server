@@ -1,18 +1,28 @@
-import 'dart:collection';
-
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/value_objects/user_id/user_id.dart';
 import '../interfaces/user_lobby_activity_repository.dart';
 
-@test
 @Singleton(as: UserLobbyActivityRepository)
-class TestUserLobbyActivityRepository implements UserLobbyActivityRepository {
-  final _storage = HashMap<UserID, int>();
+class ProdUserLobbyActivityRepository implements UserLobbyActivityRepository {
+  late Box<int> _box;
+
+  @override
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    _box = await Hive.openBox('user_lobby_activity');
+  }
+
+  @override
+  @disposeMethod
+  Future<void> dispose() async {
+    return _box.close();
+  }
 
   @override
   Future<int?> lastRequestInMSSinceEpoch({required UserID userID}) async {
-    return _storage[userID];
+    return _box.get(userID.str);
   }
 
   @override
@@ -20,6 +30,6 @@ class TestUserLobbyActivityRepository implements UserLobbyActivityRepository {
     required UserID userID,
     required int msSinceEpoch,
   }) async {
-    _storage[userID] = msSinceEpoch;
+    await _box.put(userID.str, msSinceEpoch);
   }
 }
