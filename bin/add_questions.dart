@@ -95,7 +95,8 @@ void main() {
 
   outputFile.writeAsStringSync(encodedMap);
 
-  _logger.info('All data is written');
+  _logger
+      .info('Questions amount: ${oldQuestions.length + newQuestions.length}');
 }
 
 void _configLogger() {
