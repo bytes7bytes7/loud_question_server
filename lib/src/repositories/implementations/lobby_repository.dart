@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/application/providers/date_time_provider.dart';
 import '../../features/common/domain/domain.dart';
 import '../../features/lobby/domain/domain.dart';
-import '../../utils/utils.dart';
 import '../interfaces/lobby_repository.dart';
 
 @Singleton(as: LobbyRepository)
@@ -14,10 +15,12 @@ class ProdLobbyRepository implements LobbyRepository {
   }) : _dateTimeProvider = dateTimeProvider;
 
   final DateTimeProvider _dateTimeProvider;
+  final _jsonEncoder = JsonEncoder();
+  final _jsonDecoder = JsonDecoder();
 
   late Box<List<String>> _userIDToLobbyIDs;
   late Box<List<String>> _lobbyIDToUserIDs;
-  late Box<JsonMap> _lobbyIDToLobby;
+  late Box<String> _lobbyIDToLobby;
 
   @override
   @PostConstruct(preResolve: true)
@@ -46,7 +49,8 @@ class ProdLobbyRepository implements LobbyRepository {
       final lobby = _lobbyIDToLobby.get(id);
 
       if (lobby != null) {
-        lobbies.add(Lobby.fromJson(lobby));
+        final string = _jsonDecoder.convert(lobby);
+        lobbies.add(Lobby.fromJson(string));
       }
     }
 
@@ -74,7 +78,10 @@ class ProdLobbyRepository implements LobbyRepository {
     await _userIDToLobbyIDs.put(creatorID.str, lobbyIDs);
 
     await _lobbyIDToUserIDs.put(lobbyID.str, [creatorID.str]);
-    await _lobbyIDToLobby.put(lobby.id.str, lobby.toJson());
+    await _lobbyIDToLobby.put(
+      lobby.id.str,
+      _jsonEncoder.convert(lobby.toJson()),
+    );
 
     return lobby;
   }
@@ -83,11 +90,13 @@ class ProdLobbyRepository implements LobbyRepository {
   Future<Lobby?> get({
     required LobbyID id,
   }) async {
-    final map = _lobbyIDToLobby.get(id.str);
+    final string = _lobbyIDToLobby.get(id.str);
 
-    if (map == null) {
+    if (string == null) {
       return null;
     }
+
+    final map = _jsonDecoder.convert(string);
 
     return Lobby.fromJson(map);
   }
@@ -110,7 +119,10 @@ class ProdLobbyRepository implements LobbyRepository {
   Future<Lobby> updateOrAdd({
     required Lobby lobby,
   }) async {
-    await _lobbyIDToLobby.put(lobby.id.str, lobby.toJson());
+    await _lobbyIDToLobby.put(
+      lobby.id.str,
+      _jsonEncoder.convert(lobby.toJson()),
+    );
 
     final lobbyIDs = _userIDToLobbyIDs.get(lobby.creatorID.str) ?? [];
     if (!lobbyIDs.contains(lobby.id.str)) {

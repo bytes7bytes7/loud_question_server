@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/common/domain/domain.dart';
-import '../../utils/utils.dart';
 import '../interfaces/game_repository.dart';
 
 @Singleton(as: GameRepository)
 class ProdGameRepository implements GameRepository {
-  late Box<JsonMap> _box;
+  final _jsonEncoder = JsonEncoder();
+  final _jsonDecoder = JsonDecoder();
+
+  late Box<String> _box;
 
   @override
   @PostConstruct(preResolve: true)
@@ -25,11 +29,13 @@ class ProdGameRepository implements GameRepository {
   Future<GameState?> get({
     required LobbyID lobbyID,
   }) async {
-    final map = _box.get(lobbyID.str);
+    final string = _box.get(lobbyID.str);
 
-    if (map == null) {
+    if (string == null) {
       return null;
     }
+
+    final map = _jsonDecoder.convert(string);
 
     return GameState.fromJson(map);
   }
@@ -38,7 +44,9 @@ class ProdGameRepository implements GameRepository {
   Future<GameState> updateOrAdd({
     required GameState gameState,
   }) async {
-    await _box.put(gameState.lobbyID.str, gameState.toJson());
+    final string = _jsonEncoder.convert(gameState.toJson());
+
+    await _box.put(gameState.lobbyID.str, string);
 
     return gameState;
   }
