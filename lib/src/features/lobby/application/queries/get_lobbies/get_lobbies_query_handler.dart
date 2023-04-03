@@ -10,8 +10,8 @@ import '../../common/common.dart';
 import 'get_lobbies_query.dart';
 
 @singleton
-class GetLobbiesQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, GetLobbiesResult>, GetLobbiesQuery> {
+class GetLobbiesQueryHandler extends RequestHandler<GetLobbiesQuery,
+    Either<List<DetailedException>, GetLobbiesResult>> {
   const GetLobbiesQueryHandler({
     required LobbyRepository lobbyRepository,
   }) : _lobbyRepository = lobbyRepository;

@@ -11,8 +11,8 @@ import '../../common/common.dart';
 import 'create_lobby_command.dart';
 
 @singleton
-class CreateLobbyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, CreateLobbyResult>, CreateLobbyCommand> {
+class CreateLobbyCommandHandler extends RequestHandler<CreateLobbyCommand,
+    Either<List<DetailedException>, CreateLobbyResult>> {
   const CreateLobbyCommandHandler({
     required LobbyRepository lobbyRepository,
     required LobbyPasswordHashRepository lobbyPasswordHashRepository,
@@ -30,8 +30,7 @@ class CreateLobbyCommandHandler extends RequestHandler<
     CreateLobbyCommand request,
   ) async {
     final passwordHash = _hashService.hashLobbyPassword(request.password);
-    final lobby =
-        await _lobbyRepository.create(creatorID: request.creatorID);
+    final lobby = await _lobbyRepository.create(creatorID: request.creatorID);
     await _lobbyPasswordHashRepository.setOrUpdate(
       id: lobby.id,
       passwordHash: passwordHash,

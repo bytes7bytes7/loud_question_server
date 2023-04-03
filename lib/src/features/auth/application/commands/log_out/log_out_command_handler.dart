@@ -12,8 +12,8 @@ import '../../services/jwt_token_service.dart';
 import 'log_out_command.dart';
 
 @singleton
-class LogOutCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, LogOutResult>, LogOutCommand> {
+class LogOutCommandHandler extends RequestHandler<LogOutCommand,
+    Either<List<DetailedException>, LogOutResult>> {
   const LogOutCommandHandler({
     required JwtTokenService jwtTokenService,
     required TokenRepository tokenRepository,

@@ -35,6 +35,11 @@ Router _$GameControllerRouter(GameController service) {
   );
   router.add(
     'POST',
+    r'/<lobbyID>/change_question',
+    service.changeQuestion,
+  );
+  router.add(
+    'POST',
     r'/<lobbyID>/start_answer',
     service.startAnswer,
   );

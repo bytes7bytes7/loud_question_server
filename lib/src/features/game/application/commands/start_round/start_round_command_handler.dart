@@ -17,8 +17,8 @@ import 'start_round_command.dart';
 const _endsAfterSeconds = 60;
 
 @singleton
-class StartRoundCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, StartRoundCommand> {
+class StartRoundCommandHandler extends RequestHandler<StartRoundCommand,
+    Either<List<DetailedException>, GameStateResult>> {
   const StartRoundCommandHandler({
     required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,

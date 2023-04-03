@@ -14,8 +14,8 @@ import '../../view_models/view_models.dart';
 import 'listen_state_query.dart';
 
 @singleton
-class ListenStateQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, ListenStateQuery> {
+class ListenStateQueryHandler extends RequestHandler<ListenStateQuery,
+    Either<List<DetailedException>, GameStateResult>> {
   const ListenStateQueryHandler({
     required GameStateService gameStateService,
     required UserGameStateActivityRepository userGameStateActivityRepository,

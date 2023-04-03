@@ -10,8 +10,8 @@ import '../../common/common.dart';
 import 'get_song_query.dart';
 
 @singleton
-class GetSongQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, GetSongResult>, GetSongQuery> {
+class GetSongQueryHandler extends RequestHandler<GetSongQuery,
+    Either<List<DetailedException>, GetSongResult>> {
   const GetSongQueryHandler({
     required SongRepository songRepository,
   }) : _songRepository = songRepository;

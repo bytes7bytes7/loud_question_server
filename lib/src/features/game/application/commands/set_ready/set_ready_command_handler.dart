@@ -15,8 +15,8 @@ import '../../view_models/view_models.dart';
 import 'set_ready_command.dart';
 
 @singleton
-class SetReadyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, SetReadyCommand> {
+class SetReadyCommandHandler extends RequestHandler<SetReadyCommand,
+    Either<List<DetailedException>, GameStateResult>> {
   const SetReadyCommandHandler({
     required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,

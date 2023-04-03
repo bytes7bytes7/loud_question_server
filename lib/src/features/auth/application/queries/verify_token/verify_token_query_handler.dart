@@ -12,8 +12,8 @@ import '../../services/jwt_token_service.dart';
 import 'verify_token.dart';
 
 @singleton
-class VerifyTokenQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, VerifyTokenResult>, VerifyTokenQuery> {
+class VerifyTokenQueryHandler extends RequestHandler<VerifyTokenQuery,
+    Either<List<DetailedException>, VerifyTokenResult>> {
   const VerifyTokenQueryHandler({
     required JwtTokenService jwtTokenService,
     required TokenRepository tokenRepository,

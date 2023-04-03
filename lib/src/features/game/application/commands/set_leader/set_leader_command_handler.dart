@@ -15,8 +15,8 @@ import '../../view_models/view_models.dart';
 import 'set_leader_command.dart';
 
 @singleton
-class SetLeaderCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, SetLeaderCommand> {
+class SetLeaderCommandHandler extends RequestHandler<SetLeaderCommand,
+    Either<List<DetailedException>, GameStateResult>> {
   const SetLeaderCommandHandler({
     required LobbyRepository lobbyRepository,
     required GameStateService gameStateService,

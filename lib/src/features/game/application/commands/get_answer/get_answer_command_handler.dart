@@ -15,8 +15,8 @@ import '../../view_models/view_models.dart';
 import 'get_answer_command.dart';
 
 @singleton
-class GetAnswerCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, GetAnswerCommand> {
+class GetAnswerCommandHandler extends RequestHandler<GetAnswerCommand,
+    Either<List<DetailedException>, GameStateResult>> {
   const GetAnswerCommandHandler({
     required LobbyRepository lobbyRepository,
     required GameStateService gameStateService,

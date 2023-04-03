@@ -15,8 +15,8 @@ import '../../view_models/game_state_vm/game_state_vm.dart';
 import 'start_answer_command.dart';
 
 @singleton
-class StartAnswerCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, StartAnswerCommand> {
+class StartAnswerCommandHandler extends RequestHandler<StartAnswerCommand,
+    Either<List<DetailedException>, GameStateResult>> {
   const StartAnswerCommandHandler({
     required GameStateService gameStateService,
     required LobbyRepository lobbyRepository,

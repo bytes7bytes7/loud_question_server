@@ -413,8 +413,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: b81e395
-      resolved-ref: b81e3953a0fc721c02f9aa18a6ae8412bea0390a
+      ref: "50e3335"
+      resolved-ref: "50e3335dd01584ecd88454623eba92fc6aa2528f"
       url: "https://github.com/bytes7bytes7/mediator"
     source: git
     version: "0.0.1"

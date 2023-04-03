@@ -14,8 +14,8 @@ import '../../exceptions/exceptions.dart';
 import 'join_lobby_command.dart';
 
 @singleton
-class JoinLobbyCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, JoinLobbyResult>, JoinLobbyCommand> {
+class JoinLobbyCommandHandler extends RequestHandler<JoinLobbyCommand,
+    Either<List<DetailedException>, JoinLobbyResult>> {
   const JoinLobbyCommandHandler({
     required LobbyService lobbyService,
     required UserLobbyActivityRepository userLobbyActivityRepository,

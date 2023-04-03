@@ -1,3 +1,4 @@
+export 'change_question_request/change_question_request.dart';
 export 'game_state_response/game_state_response.dart';
 export 'get_answer_request/get_answer_request.dart';
 export 'get_state_request/get_state_request.dart';

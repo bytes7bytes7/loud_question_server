@@ -10,8 +10,8 @@ import '../../services/jwt_token_service.dart';
 import 'register_command.dart';
 
 @singleton
-class RegisterCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, AuthResult>, RegisterCommand> {
+class RegisterCommandHandler extends RequestHandler<RegisterCommand,
+    Either<List<DetailedException>, AuthResult>> {
   const RegisterCommandHandler({
     required JwtTokenService jwtTokenService,
     required HashService hashService,

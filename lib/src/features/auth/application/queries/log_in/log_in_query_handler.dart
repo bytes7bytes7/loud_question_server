@@ -13,8 +13,8 @@ import '../../services/jwt_token_service.dart';
 import 'log_in_query.dart';
 
 @singleton
-class LogInQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, AuthResult>, LogInQuery> {
+class LogInQueryHandler extends RequestHandler<LogInQuery,
+    Either<List<DetailedException>, AuthResult>> {
   const LogInQueryHandler({
     required JwtTokenService jwtTokenService,
     required HashService hashService,

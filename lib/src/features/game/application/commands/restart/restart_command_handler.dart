@@ -14,8 +14,8 @@ import '../../view_models/view_models.dart';
 import 'restart_command.dart';
 
 @singleton
-class RestartCommandHandler extends RequestHandler<
-    Either<List<DetailedException>, GameStateResult>, RestartCommand> {
+class RestartCommandHandler extends RequestHandler<RestartCommand,
+    Either<List<DetailedException>, GameStateResult>> {
   const RestartCommandHandler({
     required LobbyRepository lobbyRepository,
     required GameStateService gameStateService,

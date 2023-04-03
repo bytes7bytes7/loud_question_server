@@ -10,8 +10,8 @@ import '../../common/common.dart';
 import 'get_user_query.dart';
 
 @singleton
-class GetUserQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, GetUserResult>, GetUserQuery> {
+class GetUserQueryHandler extends RequestHandler<GetUserQuery,
+    Either<List<DetailedException>, GetUserResult>> {
   const GetUserQueryHandler({
     required UserRepository userRepository,
   }) : _userRepository = userRepository;

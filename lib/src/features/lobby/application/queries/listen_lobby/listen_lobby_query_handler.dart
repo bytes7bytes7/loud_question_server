@@ -12,8 +12,8 @@ import '../../common/common.dart';
 import 'listen_lobby_query.dart';
 
 @singleton
-class ListenLobbyQueryHandler extends RequestHandler<
-    Either<List<DetailedException>, ListenLobbyResult>, ListenLobbyQuery> {
+class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
+    Either<List<DetailedException>, ListenLobbyResult>> {
   const ListenLobbyQueryHandler({
     required LobbyService lobbyService,
     required UserLobbyActivityRepository userLobbyActivityRepository,
