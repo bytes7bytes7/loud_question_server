@@ -76,16 +76,18 @@ class GetAnswerCommandHandler extends RequestHandler<GetAnswerCommand,
         answers: oldGameState.answers,
       );
 
-      await _gameStateService.updateOrAdd(gameState: newGameState);
+      unawaited(_gameStateService.updateOrAdd(gameState: newGameState));
     } else {
       return left(
         [const UnavailableGameOperation()],
       );
     }
 
-    await _userGameStateActivityRepository.update(
-      userID: request.userID,
-      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+    unawaited(
+      _userGameStateActivityRepository.update(
+        userID: request.userID,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+      ),
     );
 
     final gameStateVM =

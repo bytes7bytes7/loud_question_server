@@ -71,9 +71,11 @@ class JoinLobbyCommandHandler extends RequestHandler<JoinLobbyCommand,
 
     final resultLobby = await _lobbyService.updateOrAdd(lobby: updatedLobby);
 
-    await _userLobbyActivityRepository.update(
-      userID: request.guestID,
-      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+    unawaited(
+      _userLobbyActivityRepository.update(
+        userID: request.guestID,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+      ),
     );
 
     return right(

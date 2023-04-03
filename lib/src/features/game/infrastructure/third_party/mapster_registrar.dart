@@ -47,6 +47,11 @@ class GameMapsterRegistrar {
       )
       ..register(
         MapperMeta.two(StartAnswerRequestIDToStartAnswerCommandMapper.new),
+      )
+      ..register(
+        MapperMeta.two(
+          ChangeQuestionRequestIDToChangeQuestionCommandMapper.new,
+        ),
       );
   }
 }

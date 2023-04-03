@@ -1,3 +1,4 @@
+export 'change_question_request_id_to_change_question_command_mapper.dart';
 export 'game_state_result_to_game_state_response_mapper.dart';
 export 'game_state_to_game_state_vm_mapper.dart';
 export 'get_answer_request_id_to_get_answer_command_mapper.dart';

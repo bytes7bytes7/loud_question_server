@@ -35,10 +35,10 @@ class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
         .lastRequestInMSSinceEpoch(userID: request.userID);
 
     if (lastRequestInMSSinceEpoch == null) {
-      await _userLobbyActivityRepository.update(
+      unawaited(_userLobbyActivityRepository.update(
         userID: request.userID,
         msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
-      );
+      ));
     }
 
     if (lastEvent != null) {
@@ -55,9 +55,11 @@ class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
 
     final event = await stream.first;
 
-    await _userLobbyActivityRepository.update(
-      userID: request.userID,
-      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+    unawaited(
+      _userLobbyActivityRepository.update(
+        userID: request.userID,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+      ),
     );
 
     return right(

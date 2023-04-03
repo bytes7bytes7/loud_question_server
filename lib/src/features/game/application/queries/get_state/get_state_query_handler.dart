@@ -63,14 +63,16 @@ class GetStateQueryHandler extends RequestHandler<GetStateQuery,
         ready: [],
       );
 
-      await _gameStateService.updateOrAdd(gameState: newGameState);
+      unawaited(_gameStateService.updateOrAdd(gameState: newGameState));
     } else {
       newGameState = oldGameState;
     }
 
-    await _userGameStateActivityRepository.update(
-      userID: request.userID,
-      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+    unawaited(
+      _userGameStateActivityRepository.update(
+        userID: request.userID,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+      ),
     );
 
     final gameStateVM =

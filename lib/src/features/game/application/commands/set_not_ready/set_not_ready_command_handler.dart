@@ -85,11 +85,13 @@ class SetNotReadyCommandHandler extends RequestHandler<SetNotReadyCommand,
       );
     }
 
-    await _gameStateService.updateOrAdd(gameState: newGameState);
+    unawaited(_gameStateService.updateOrAdd(gameState: newGameState));
 
-    await _userGameStateActivityRepository.update(
-      userID: request.userID,
-      msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+    unawaited(
+      _userGameStateActivityRepository.update(
+        userID: request.userID,
+        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+      ),
     );
 
     final gameStateVM =
