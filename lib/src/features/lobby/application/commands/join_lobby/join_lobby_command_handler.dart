@@ -15,7 +15,7 @@ import 'join_lobby_command.dart';
 
 @singleton
 class JoinLobbyCommandHandler extends RequestHandler<JoinLobbyCommand,
-    Either<List<DetailedException>, JoinLobbyResult>> {
+    Either<List<DetailedException>, LobbyResult>> {
   const JoinLobbyCommandHandler({
     required LobbyService lobbyService,
     required UserLobbyActivityRepository userLobbyActivityRepository,
@@ -35,7 +35,7 @@ class JoinLobbyCommandHandler extends RequestHandler<JoinLobbyCommand,
   final HashService _hashService;
 
   @override
-  FutureOr<Either<List<DetailedException>, JoinLobbyResult>> handle(
+  FutureOr<Either<List<DetailedException>, LobbyResult>> handle(
     JoinLobbyCommand request,
   ) async {
     final rightPassword = await _lobbyPasswordHashRepository
@@ -79,7 +79,7 @@ class JoinLobbyCommandHandler extends RequestHandler<JoinLobbyCommand,
     );
 
     return right(
-      JoinLobbyResult(
+      LobbyResult(
         lobby: resultLobby,
       ),
     );

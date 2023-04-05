@@ -13,6 +13,7 @@ _$_Lobby _$$_LobbyFromJson(Map<String, dynamic> json) => _$_Lobby(
       guestIDs: (json['guestIDs'] as List<dynamic>)
           .map((e) => UserID.fromJson(e as Map<String, dynamic>))
           .toList(),
+      songID: json['songID'],
     );
 
 Map<String, dynamic> _$$_LobbyToJson(_$_Lobby instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$_LobbyToJson(_$_Lobby instance) => <String, dynamic>{
       'creatorID': instance.creatorID,
       'createdAtInMSSinceEpoch': instance.createdAtInMSSinceEpoch,
       'guestIDs': instance.guestIDs,
+      'songID': instance.songID,
     };

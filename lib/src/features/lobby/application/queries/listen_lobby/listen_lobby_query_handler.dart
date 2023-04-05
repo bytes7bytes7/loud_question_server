@@ -13,7 +13,7 @@ import 'listen_lobby_query.dart';
 
 @singleton
 class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
-    Either<List<DetailedException>, ListenLobbyResult>> {
+    Either<List<DetailedException>, LobbyResult>> {
   const ListenLobbyQueryHandler({
     required LobbyService lobbyService,
     required UserLobbyActivityRepository userLobbyActivityRepository,
@@ -27,7 +27,7 @@ class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
   final DateTimeProvider _dateTimeProvider;
 
   @override
-  FutureOr<Either<List<DetailedException>, ListenLobbyResult>> handle(
+  FutureOr<Either<List<DetailedException>, LobbyResult>> handle(
     ListenLobbyQuery request,
   ) async {
     final lastEvent = _lobbyService.getLastEventByID(lobbyID: request.lobbyID);
@@ -35,16 +35,18 @@ class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
         .lastRequestInMSSinceEpoch(userID: request.userID);
 
     if (lastRequestInMSSinceEpoch == null) {
-      unawaited(_userLobbyActivityRepository.update(
-        userID: request.userID,
-        msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
-      ));
+      unawaited(
+        _userLobbyActivityRepository.update(
+          userID: request.userID,
+          msSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
+        ),
+      );
     }
 
     if (lastEvent != null) {
       if ((lastRequestInMSSinceEpoch ?? 0) < lastEvent.msSinceEpoch) {
         return right(
-          ListenLobbyResult(
+          LobbyResult(
             lobby: lastEvent.lobby,
           ),
         );
@@ -63,7 +65,7 @@ class ListenLobbyQueryHandler extends RequestHandler<ListenLobbyQuery,
     );
 
     return right(
-      ListenLobbyResult(
+      LobbyResult(
         lobby: event.lobby,
       ),
     );

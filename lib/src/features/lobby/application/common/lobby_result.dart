@@ -1,7 +1,7 @@
 import '../../domain/domain.dart';
 
-class CreateLobbyResult {
-  const CreateLobbyResult({
+class LobbyResult {
+  const LobbyResult({
     required this.lobby,
   });
 

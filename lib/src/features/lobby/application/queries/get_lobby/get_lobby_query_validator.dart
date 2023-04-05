@@ -6,4 +6,4 @@ import 'get_lobby_query.dart';
 
 @singleton
 class GetLobbyQueryValidator
-    extends BehaviorValidator<GetLobbyQuery, GetLobbyResult> {}
+    extends BehaviorValidator<GetLobbyQuery, LobbyResult> {}

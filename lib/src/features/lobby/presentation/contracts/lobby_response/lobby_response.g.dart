@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'join_lobby_response.dart';
+part of 'lobby_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-JoinLobbyResponse _$JoinLobbyResponseFromJson(Map<String, dynamic> json) =>
-    JoinLobbyResponse(
+LobbyResponse _$LobbyResponseFromJson(Map<String, dynamic> json) =>
+    LobbyResponse(
       lobby: Lobby.fromJson(json['lobby'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$JoinLobbyResponseToJson(JoinLobbyResponse instance) =>
+Map<String, dynamic> _$LobbyResponseToJson(LobbyResponse instance) =>
     <String, dynamic>{
       'lobby': instance.lobby,
     };

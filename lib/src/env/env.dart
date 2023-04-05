@@ -18,7 +18,9 @@ abstract class Env {
   @EnviedField(varName: 'JWT_AUDIENCE')
   static final jwtAudience = _Env.jwtAudience;
 
-  static final songPath = 'D:/Music/song.mp3';
+  static final songDir = 'D:/Music/';
+
+  static final defaultSongName = 'Wild One - Jerry Lee Lewis.mp3';
 
   static final questionsPath =
       'D:/Dart_Projects/loud_question_server/questions.json';

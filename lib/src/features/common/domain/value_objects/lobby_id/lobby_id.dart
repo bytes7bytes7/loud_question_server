@@ -19,7 +19,7 @@ class LobbyID with _$LobbyID {
     // `110ec58a`
     // instead of this:
     // '110ec58a-a0f2-4ac4-8393-c866d813b8d1'
-    return _LobbyID(uuid.substring(0, uuid.indexOf('-')));
+    return LobbyID(uuid.substring(0, uuid.indexOf('-')));
   }
 
   const LobbyID._();

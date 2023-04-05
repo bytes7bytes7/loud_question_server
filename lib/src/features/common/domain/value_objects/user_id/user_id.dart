@@ -12,7 +12,7 @@ class UserID with _$UserID {
   const factory UserID(String value) = _UserID;
 
   factory UserID.generate() {
-    return _UserID(Uuid().v4());
+    return UserID(Uuid().v4());
   }
 
   const UserID._();

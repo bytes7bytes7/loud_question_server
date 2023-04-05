@@ -5,13 +5,13 @@ import '../../../../common/application/exceptions/detailed_exception.dart';
 import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
-class CreateLobbyCommand
+class UploadSongCommand
     extends Request<Either<List<DetailedException>, LobbyResult>> {
-  CreateLobbyCommand({
-    required this.creatorID,
-    required this.password,
-  }) : super(CreateLobbyCommand);
+  UploadSongCommand({
+    required this.userID,
+    required this.lobbyID,
+  }) : super(UploadSongCommand);
 
-  final UserID creatorID;
-  final String password;
+  final LobbyID lobbyID;
+  final UserID userID;
 }

@@ -7,14 +7,18 @@ import '../../features/common/application/providers/date_time_provider.dart';
 import '../../features/common/domain/domain.dart';
 import '../../features/lobby/domain/domain.dart';
 import '../interfaces/lobby_repository.dart';
+import '../interfaces/song_repository.dart';
 
 @Singleton(as: LobbyRepository)
 class ProdLobbyRepository implements LobbyRepository {
   ProdLobbyRepository({
     required DateTimeProvider dateTimeProvider,
-  }) : _dateTimeProvider = dateTimeProvider;
+    required SongRepository songRepository,
+  })  : _dateTimeProvider = dateTimeProvider,
+        _songRepository = songRepository;
 
   final DateTimeProvider _dateTimeProvider;
+  final SongRepository _songRepository;
   final _jsonEncoder = JsonEncoder();
   final _jsonDecoder = JsonDecoder();
 
@@ -71,6 +75,7 @@ class ProdLobbyRepository implements LobbyRepository {
       creatorID: creatorID,
       createdAtInMSSinceEpoch: _dateTimeProvider.now().millisecondsSinceEpoch,
       guestIDs: [],
+      songID: await _songRepository.getDefaultSongID(),
     );
 
     final lobbyIDs = (_userIDToLobbyIDs.get(creatorID.str) ?? [])

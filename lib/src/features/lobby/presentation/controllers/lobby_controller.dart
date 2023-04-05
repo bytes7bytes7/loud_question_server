@@ -51,7 +51,7 @@ class LobbyController extends ApiController {
 
     return result.match(
       problem,
-      (r) => created(_mapster.map1(r, To<CreateLobbyResponse>())),
+      (r) => created(_mapster.map1(r, To<LobbyResponse>())),
     );
   }
 
@@ -104,6 +104,27 @@ class LobbyController extends ApiController {
     );
   }
 
+  @Route.post('/song')
+  Future<Response> uploadSong(Request request) async {
+    late final UploadSongRequest uploadSongRequest;
+    try {
+      uploadSongRequest = await parseRequest<UploadSongRequest>(request);
+    } catch (e) {
+      return problem(
+        [const InvalidBodyException()],
+      );
+    }
+
+    final command = _mapster.map1(uploadSongRequest, To<UploadSongCommand>());
+
+    final result = await command.sendTo(_mediator);
+
+    return result.match(
+      problem,
+      (r) => ok(_mapster.map1(r, To<LobbyResponse>())),
+    );
+  }
+
   @Route.get('/<lobbyID>')
   Future<Response> getLobby(Request request) async {
     late final GetLobbyRequest getLobbyRequest;
@@ -127,7 +148,7 @@ class LobbyController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<GetLobbyResponse>())),
+      (r) => ok(_mapster.map1(r, To<LobbyResponse>())),
     );
   }
 
@@ -155,7 +176,7 @@ class LobbyController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<ListenLobbyResponse>())),
+      (r) => ok(_mapster.map1(r, To<LobbyResponse>())),
     );
   }
 
@@ -183,7 +204,7 @@ class LobbyController extends ApiController {
 
     return result.match(
       problem,
-      (r) => ok(_mapster.map1(r, To<JoinLobbyResponse>())),
+      (r) => ok(_mapster.map1(r, To<LobbyResponse>())),
     );
   }
 }

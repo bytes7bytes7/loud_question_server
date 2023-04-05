@@ -16,13 +16,10 @@ class LobbyMapsterRegistrar {
         MapperMeta.two(CreateLobbyRequestIDToCreateLobbyCommandMapper.new),
       )
       ..register(
-        MapperMeta.one(CreateLobbyResultToCreateLobbyResponseMapper.new),
+        MapperMeta.one(LobbyResultToLobbyResponseMapper.new),
       )
       ..register(
         MapperMeta.two(JoinLobbyRequestIDToJoinLobbyCommandMapper.new),
-      )
-      ..register(
-        MapperMeta.one(JoinLobbyResultToJoinLobbyResponseMapper.new),
       )
       ..register(
         MapperMeta.two(GetLobbiesRequestIDToGetLobbiesQueryMapper.new),
@@ -34,19 +31,16 @@ class LobbyMapsterRegistrar {
         MapperMeta.two(GetLobbyRequestIDToGetLobbyQueryMapper.new),
       )
       ..register(
-        MapperMeta.one(GetLobbyResultToGetLobbyResponseMapper.new),
-      )
-      ..register(
         MapperMeta.two(ListenLobbyRequestIDToListenLobbyQueryMapper.new),
-      )
-      ..register(
-        MapperMeta.one(ListenLobbyResultToListenLobbyResponseMapper.new),
       )
       ..register(
         MapperMeta.one(GetSongRequestToGetSongQueryMapper.new),
       )
       ..register(
         MapperMeta.one(GetSongResultToGetSongResponse.new),
+      )
+      ..register(
+        MapperMeta.two(UploadSongRequestIDToUploadSongCommandMapper.new),
       );
   }
 }

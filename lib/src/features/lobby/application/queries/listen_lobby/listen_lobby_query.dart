@@ -6,7 +6,7 @@ import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
 class ListenLobbyQuery
-    extends Request<Either<List<DetailedException>, ListenLobbyResult>> {
+    extends Request<Either<List<DetailedException>, LobbyResult>> {
   ListenLobbyQuery({
     required this.lobbyID,
     required this.userID,

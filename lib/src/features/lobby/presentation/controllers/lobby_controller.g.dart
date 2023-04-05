@@ -24,6 +24,11 @@ Router _$LobbyControllerRouter(LobbyController service) {
     service.getSong,
   );
   router.add(
+    'POST',
+    r'/song',
+    service.uploadSong,
+  );
+  router.add(
     'GET',
     r'/<lobbyID>',
     service.getLobby,

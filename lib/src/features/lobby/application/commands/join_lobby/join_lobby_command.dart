@@ -6,7 +6,7 @@ import '../../../../common/domain/domain.dart';
 import '../../common/common.dart';
 
 class JoinLobbyCommand
-    extends Request<Either<List<DetailedException>, JoinLobbyResult>> {
+    extends Request<Either<List<DetailedException>, LobbyResult>> {
   JoinLobbyCommand({
     required this.guestID,
     required this.lobbyID,

@@ -12,7 +12,7 @@ import 'create_lobby_command.dart';
 
 @singleton
 class CreateLobbyCommandHandler extends RequestHandler<CreateLobbyCommand,
-    Either<List<DetailedException>, CreateLobbyResult>> {
+    Either<List<DetailedException>, LobbyResult>> {
   const CreateLobbyCommandHandler({
     required LobbyRepository lobbyRepository,
     required LobbyPasswordHashRepository lobbyPasswordHashRepository,
@@ -26,7 +26,7 @@ class CreateLobbyCommandHandler extends RequestHandler<CreateLobbyCommand,
   final HashService _hashService;
 
   @override
-  FutureOr<Either<List<DetailedException>, CreateLobbyResult>> handle(
+  FutureOr<Either<List<DetailedException>, LobbyResult>> handle(
     CreateLobbyCommand request,
   ) async {
     final passwordHash = _hashService.hashLobbyPassword(request.password);
@@ -36,6 +36,6 @@ class CreateLobbyCommandHandler extends RequestHandler<CreateLobbyCommand,
       passwordHash: passwordHash,
     );
 
-    return right(CreateLobbyResult(lobby: lobby));
+    return right(LobbyResult(lobby: lobby));
   }
 }

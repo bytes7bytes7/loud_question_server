@@ -11,7 +11,7 @@ import 'get_lobby_query.dart';
 
 @singleton
 class GetLobbyQueryHandler extends RequestHandler<GetLobbyQuery,
-    Either<List<DetailedException>, GetLobbyResult>> {
+    Either<List<DetailedException>, LobbyResult>> {
   const GetLobbyQueryHandler({
     required LobbyRepository lobbyRepository,
   }) : _lobbyRepository = lobbyRepository;
@@ -19,7 +19,7 @@ class GetLobbyQueryHandler extends RequestHandler<GetLobbyQuery,
   final LobbyRepository _lobbyRepository;
 
   @override
-  FutureOr<Either<List<DetailedException>, GetLobbyResult>> handle(
+  FutureOr<Either<List<DetailedException>, LobbyResult>> handle(
     GetLobbyQuery request,
   ) async {
     final lobby = await _lobbyRepository.get(id: request.lobbyID);
@@ -38,7 +38,7 @@ class GetLobbyQueryHandler extends RequestHandler<GetLobbyQuery,
     }
 
     return right(
-      GetLobbyResult(
+      LobbyResult(
         lobby: lobby,
       ),
     );

@@ -12,7 +12,7 @@ class QuestionID with _$QuestionID {
   const factory QuestionID(String value) = _QuestionID;
 
   factory QuestionID.generate() {
-    return _QuestionID(Uuid().v4());
+    return QuestionID(Uuid().v4());
   }
 
   const QuestionID._();

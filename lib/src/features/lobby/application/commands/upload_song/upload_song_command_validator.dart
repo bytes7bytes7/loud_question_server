@@ -2,8 +2,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../common/application/behaviors/behavior_validator.dart';
 import '../../common/common.dart';
-import 'listen_lobby_query.dart';
+import 'upload_song_command.dart';
 
 @singleton
-class ListenLobbyQueryValidator
-    extends BehaviorValidator<ListenLobbyQuery, LobbyResult> {}
+class UploadSongCommandValidator
+    extends BehaviorValidator<UploadSongCommand, LobbyResult> {}
